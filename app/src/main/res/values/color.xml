@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimary">#545557</color>
+    <color name="colorPrimaryDark">#545557</color>
+    <color name="colorAccent">#545557</color>
+
+    <!-- 基础颜色 -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="green">#8ec31f</color>
+    <color name="red">#ff0000</color>
+    <color name="orange">#FFA500</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="indigo">#008B8B</color>
+    <color name="blue">#0000ff</color>
+    <color name="purple">#800080</color>
+    <color name="transparent">#00000000</color>
+    <color name="darkgrey">#545454</color>
+    <color name="gray">#8a8a8a</color>
+    <color name="light_gray">#E6E6E6</color>
+    <color name="list_on">#f9f9f9</color>
+
+    <color name="titleBlue">#298eea</color>
+
+    <!-- 标绘 -->
+    <color name="dotline_color">#CACACA</color>
+    <color name="plot_blue">#1E70C6</color>
+    <color name="load_bg">#2181CB</color>
+    <color name="gps_text">#0F6BB8</color>
+    <color name="light_black">#6F6F6F</color>
+    <color name="light_orange">#f6ecff</color>
+
+    <!-- 首页 -->
+    <color name="radio_on">#58537b</color>
+    <color name="radio_off">#34314e</color>
+
+
+    <!-- 文件 -->
+    <color name="tieqing"> #4682B4 </color>
+    <color name="item_color">#1A87E2</color>
+    <color name="shuiya"> #008080 </color>
+    <color name="top_bg">#00bdd7</color>
+    <color name="top_pop">#033155</color>
+
+    <!-- 主题 -->
+    <item type="color" name="app_actionbar_color">@color/esri_dark_blue</item>
+    <color name="esri_dark_blue">#ff005e95</color>
+
+</resources>
