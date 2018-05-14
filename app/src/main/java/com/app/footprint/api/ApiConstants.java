@@ -22,7 +22,7 @@ public class ApiConstants {
     //    public static final String RELEASE_URL = ISRELEASE ? "http://zhsq.digitalcq.com/zckgpro/" : "http://192.168.21.37/zckg/";
     public static final String RELEASE_URL = ISRELEASE ? "http://zhsq.digitalcq.com/ghdwpro/" : "http://172.16.4.237:8080/ghdwpro/";
 //        public static final String SERVER_URL = "api_v3.php";
-    public static final String SERVER_URL = "api_v1.do";
+    public static final String SERVER_URL = "api_v1.do";  
     public static final String FILEDOWNLOAD_URL = ISRELEASE ? "http://zhsq.digitalcq.com/zckgpro/serviceMap/" : "http://zhsq.digitalcq.com/zckgpro/serviceMap/";
 
 
