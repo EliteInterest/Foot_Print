@@ -5,11 +5,18 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <TextView
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:text="足迹"-->
+        <!--android:gravity="center"-->
+        <!--android:textSize="20sp"/>-->
+
+    <FrameLayout
+        android:id="@+id/fm_map"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="足迹"
-        android:gravity="center"
-        android:textSize="20sp"/>
+        android:layout_height="match_parent">
+
+    </FrameLayout>
 
 </LinearLayout>

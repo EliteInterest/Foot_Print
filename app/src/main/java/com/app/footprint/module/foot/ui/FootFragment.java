@@ -8,6 +8,8 @@ import com.app.footprint.base.BaseFragment;
 import com.app.footprint.module.foot.mvp.contract.FootContract;
 import com.app.footprint.module.foot.mvp.model.FootModel;
 import com.app.footprint.module.foot.mvp.presenter.FootPresenter;
+import com.app.footprint.module.map.ui.MapFragment;
+import com.zx.zxutils.util.ZXFragmentUtil;
 
 /**
  * Create By admin On 2017/7/11
@@ -28,7 +30,7 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-
+        ZXFragmentUtil.addFragment(getFragmentManager(), MapFragment.newInstance(), R.id.fm_map);
     }
 
     public void onViewClicked(View view) {
