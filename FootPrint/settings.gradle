@@ -1,2 +1,0 @@
-include ':app', ':zxmvp'
-project(':zxmvp').projectDir = new File('zxmvp')
