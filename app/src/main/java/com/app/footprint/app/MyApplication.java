@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.os.StrictMode;
+import android.support.multidex.MultiDex;
 
 import com.frame.zxmvp.baseapp.BaseApplication;
 import com.frame.zxmvp.di.component.AppComponent;
@@ -33,6 +34,13 @@ public class MyApplication extends BaseApplication {
             StrictMode.setVmPolicy(builder.build());
         }
 //        AndFixUtil.init(this);
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+
     }
 
     // 单例模式中获取唯一的ExitApplication实例

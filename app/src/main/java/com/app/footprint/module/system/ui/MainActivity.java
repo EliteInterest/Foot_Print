@@ -50,13 +50,14 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
 //        mPresenter.getVersionInfo(ApiParamUtil.getVersionUpdateDataInfo(ZXSystemUtil.getVersionName()));
         tvpMain.setManager(getSupportFragmentManager())
                 .setTabLayoutGravity(ZXTabViewPager.TabGravity.GRAVITY_BOTTOM)
-                .addTab(FootFragment.newInstance(), "足迹",R.mipmap.ic_launcher)
-                .addTab(TaskFragment.newInstance(), "任务",R.mipmap.ic_launcher)
-                .addTab(MyFragment.newInstance(), "我的",R.mipmap.ic_launcher)
+                .addTab(FootFragment.newInstance(), "足迹", R.mipmap.ic_launcher)
+                .addTab(TaskFragment.newInstance(), "任务", R.mipmap.ic_launcher)
+                .addTab(MyFragment.newInstance(), "我的", R.mipmap.ic_launcher)
                 .setTitleColor(ContextCompat.getColor(this, R.color.white), ContextCompat.getColor(this, R.color.red))
                 .setIndicatorColor(ContextCompat.getColor(this, R.color.wheat))
                 .setIndicatorHeight(3)
                 .setSelectOn(1)
+                .setViewpagerCanScroll(false)
                 .build();
 
     }

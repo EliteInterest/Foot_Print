@@ -65,6 +65,6 @@
     <dimen name="text_size_large">16sp</dimen>
     <dimen name="text_size_normal">14sp</dimen>
     <dimen name="text_size_small">12sp</dimen>
-    <dimen name="text_size_smaller">0sp</dimen>
+    <dimen name="text_size_smaller">10sp</dimen>
 
 </resources>
