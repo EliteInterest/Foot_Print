@@ -47,4 +47,6 @@
     <item type="color" name="app_actionbar_color">@color/esri_dark_blue</item>
     <color name="esri_dark_blue">#ff005e95</color>
 
+    <color name="record_color">#737fde</color>
+
 </resources>

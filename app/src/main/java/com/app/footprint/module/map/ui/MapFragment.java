@@ -150,18 +150,26 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
         }, 500);
     }
 
-    @OnClick({R.id.iv_map_layer})
+    @OnClick({R.id.iv_map_layer, R.id.iv_map_location})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_map_layer:
-                if (tianDiTuVectorLayer.isVisible()){
+                if (tianDiTuVectorLayer.isVisible()) {
                     tianDiTuVectorLayer.setVisible(false);
                     tianDiTuImageLayer.setVisible(true);
                     ivLayer.setBackground(ContextCompat.getDrawable(getActivity(), R.mipmap.map_mode_img));
-                }else {
+                } else {
                     tianDiTuVectorLayer.setVisible(true);
                     tianDiTuImageLayer.setVisible(false);
                     ivLayer.setBackground(ContextCompat.getDrawable(getActivity(), R.mipmap.map_mode_vector));
+                }
+                break;
+            case R.id.iv_map_location:
+                try {
+                    GpsUtil.location(mMapView, (MainActivity) getActivity());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    mMapView.zoomToScale(DEFAULTPOINT, DEFAULT_SCALE);
                 }
                 break;
             default:

@@ -18,21 +18,23 @@
 
         <ImageView
             android:id="@+id/iv_map_location"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentLeft="true"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:background="@mipmap/my_location"/>
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@mipmap/map_btn_location"/>
 
         <TextView
             android:id="@+id/tv_map_address"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/iv_map_layer"
             android:layout_toRightOf="@id/iv_map_location"
-            android:background="#50f1f1f1"
+            android:background="@drawable/shape_map_address_bg"
             android:ellipsize="end"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:minWidth="100dp"
             android:padding="3dp"
             android:singleLine="true"
@@ -43,9 +45,17 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentRight="true"
+            android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:background="@mipmap/map_mode_vector"/>
     </RelativeLayout>
 
+    <com.app.footprint.module.foot.func.view.FootRecordView
+        android:id="@+id/foot_record_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+    </com.app.footprint.module.foot.func.view.FootRecordView>
 
 </RelativeLayout>
