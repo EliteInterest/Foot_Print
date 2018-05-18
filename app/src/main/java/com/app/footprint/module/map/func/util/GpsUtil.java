@@ -4,11 +4,14 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
+import android.widget.Toast;
 
 import com.app.footprint.module.system.ui.MainActivity;
 import com.esri.android.map.LocationDisplayManager;
@@ -25,8 +28,9 @@ public class GpsUtil {
     private static MainActivity mAtivity;
     private static boolean isLocationChanged = false;
     private static final double GPS_SCALE = 30000;
-    private static LocationDisplayManager locationManager;
+    private static LocationDisplayManager locationDisplayManager;
     private static String TAG = GpsUtil.class.getName();
+    private static LocationManager locationManager;
 
     public static double getDistance(double lat1, double lng1, double lat2, double lng2) {
         double radLat1 = rad(lat1);
@@ -50,14 +54,14 @@ public class GpsUtil {
         mAtivity = mainActivity;
         isLocationChanged = true;
         if (mMapView.isLoaded()) {
-            locationManager = mMapView.getLocationDisplayManager();
-            if (!locationManager.isStarted()) {
-                locationManager.setAllowNetworkLocation(true);
-                locationManager.setLocationListener(locationListener);
-                locationManager.setAutoPanMode(LocationDisplayManager.AutoPanMode.OFF);
-                locationManager.start();
+            locationDisplayManager = mMapView.getLocationDisplayManager();
+            if (!locationDisplayManager.isStarted()) {
+                locationDisplayManager.setAllowNetworkLocation(true);
+                locationDisplayManager.setLocationListener(locationListener);
+                locationDisplayManager.setAutoPanMode(LocationDisplayManager.AutoPanMode.OFF);
+                locationDisplayManager.start();
             } else {
-                locationManager.stop();
+                locationDisplayManager.stop();
             }
         }
     }
@@ -77,7 +81,7 @@ public class GpsUtil {
         public void onProviderDisabled(String provider) {
             if (!ZXStringUtil.isEmpty(provider)) {
                 if (isLocationChanged) {
-                    Location location = locationManager.getLocation();
+                    Location location = locationDisplayManager.getLocation();
                     if (location == null) {
                         GpsUtil.changeGPSMode(mAtivity);
                     }
@@ -140,4 +144,80 @@ public class GpsUtil {
             mActivity.startActivityForResult(intent, 0); // 设置完成后返回到原来的界面
         });
     }
+
+
+    /**
+     * 判断手机GPS是否开启
+     *
+     * @param
+     * @return
+     */
+    public static boolean isOpen(Context context) {
+        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        //通过GPS卫星定位,定位级别到街
+        boolean gps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        //通过WLAN或者移动网络确定位置
+        boolean network = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        if (gps || network) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * GPS功能已经打开-->根据GPS去获取经纬度
+     */
+    public static Location getLocation(Context context) {
+        Location location = null;
+        if (isOpen(context)) {
+            String[] strArr = null;
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                    || ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, mListener);
+                    location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                } else {
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, mListener);
+                    location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                }
+                if (location != null) {
+//                    double latitude = location.getLatitude();
+//                    double longitude = location.getLongitude();
+//                    strArr = new String[]{String.valueOf(latitude), String.valueOf(longitude)};
+                } else {
+                    Toast.makeText(context, "获取经纬度信息失败！", Toast.LENGTH_SHORT).show();
+                }
+            }
+        } else {
+            openGPS((Activity) context);
+        }
+        return location;
+
+    }
+
+    public static LocationListener mListener = new LocationListener() {
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+
+        }
+
+        @Override
+        public void onLocationChanged(Location location) {
+            if (null != location) {
+
+
+            }
+        }
+    };
+
 }

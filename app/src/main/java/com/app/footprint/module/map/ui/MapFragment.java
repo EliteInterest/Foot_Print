@@ -14,6 +14,7 @@ import com.amap.api.location.AMapLocationListener;
 import com.app.footprint.R;
 import com.app.footprint.app.ConstStrings;
 import com.app.footprint.base.BaseFragment;
+import com.app.footprint.module.foot.func.view.FootRecordView;
 import com.app.footprint.module.map.func.tool.tiditu.TianDiTuLayer;
 import com.app.footprint.module.map.func.tool.tiditu.TianDiTuLayerTypes;
 import com.app.footprint.module.map.func.util.GpsUtil;
@@ -50,6 +51,8 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
     TextView tvAddress;
     @BindView(R.id.iv_map_layer)
     ImageView ivLayer;
+    @BindView(R.id.foot_record_view)
+    FootRecordView footRecordView;
     private static final double DEFAULT_SCALE = 350000;
     private static final Point DEFAULTPOINT = new Point(106.52252214551413, 29.55847182396155);//默认坐标
     private MapOnTouchListener defaultListener;
@@ -71,6 +74,7 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
     //声明AMapLocationClientOption对象
     private AMapLocationClientOption mLocationOption = null;
 
+
     public static MapFragment newInstance() {
         MapFragment fragment = new MapFragment();
         return fragment;
@@ -84,11 +88,12 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
     @Override
     protected void initView(Bundle savedInstanceState) {
         Object ins = getActivity().getLastNonConfigurationInstance();
-        if (ins != null) {
+        if (ins != null && mMapView != null) {
             mMapView.restoreState((String) ins);
         }
         initMap();
         initGaoDe();
+        footRecordView.setMapView(mMapView);
     }
 
     /**
@@ -221,5 +226,6 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
     public void onDestroy() {
         super.onDestroy();
         mLocationClient.onDestroy();//销毁定位客户端，同时销毁本地定位服务。
+        footRecordView.onDestory();
     }
 }
