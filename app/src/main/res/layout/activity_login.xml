@@ -1,60 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/login_layout"
+    android:layout_width="fill_parent"
               android:layout_height="fill_parent"
-              android:background="@mipmap/login_bg"
               android:gravity="center"
               android:orientation="vertical">
 
 
     <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:id="@+id/login_layout_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="50dp"
-        android:background="@mipmap/logo_zc"/>
+        android:src="@mipmap/bg"
+        android:alpha="0.2"
+        android:scaleX="1.2"
+        android:visibility="visible"/>
 
     <LinearLayout
-        android:layout_width="220dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@color/white"
-        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="20dp">
+
+        <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/px5"
+        android:gravity="center_horizontal"
+        android:text="登录"
+        android:textColor="@color/black"
+            android:textSize="@dimen/px30"/>
 
         <EditText
             android:id="@+id/et_username"
-            android:layout_width="200dp"
-            android:layout_height="35dp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px50"
             android:background="@null"
-            android:drawableLeft="@mipmap/login_name"
+            android:drawableLeft="@mipmap/iconfont_user"
             android:gravity="center_vertical"
             android:hint="请输入用户名"
             android:singleLine="true"
-            android:textSize="15sp"/>
+            android:textSize="@dimen/px20" />
 
         <EditText
             android:id="@+id/et_password"
-            android:layout_width="200dp"
-            android:layout_height="35dp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px50"
             android:background="@null"
-            android:drawableLeft="@mipmap/login_passsword"
+            android:drawableLeft="@mipmap/iconfont_password"
             android:gravity="center_vertical"
             android:hint="请输入用户密码"
             android:imeOptions="actionDone"
             android:inputType="textPassword"
             android:singleLine="true"
-            android:textSize="15sp"/>
+            android:textSize="@dimen/px20" />
 
         <Button
             android:id="@+id/btn_dologin"
-            android:layout_width="200dp"
-            android:layout_height="35dp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px50"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:background="@mipmap/logbtn"
-            android:gravity="center"/>
+            android:background="@color/dp_darker_blue"
+            android:text="登  录"
+            android:textColor="@color/white"
+            android:textSize="@dimen/px20"
+            android:gravity="center" />
+
+        <Button
+            android:id="@+id/btn_doregister"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px50"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/dp_darker_blue"
+            android:gravity="center"
+            android:text="注   册"
+            android:textSize="@dimen/px20"
+            android:textColor="@color/white"/>
     </LinearLayout>
 
     <View
@@ -69,7 +94,8 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
 
         <TextView
@@ -89,4 +115,4 @@
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_small"/>
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

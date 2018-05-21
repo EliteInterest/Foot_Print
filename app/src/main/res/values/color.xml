@@ -20,8 +20,19 @@
     <color name="gray">#8a8a8a</color>
     <color name="light_gray">#E6E6E6</color>
     <color name="list_on">#f9f9f9</color>
-
     <color name="titleBlue">#298eea</color>
+
+    <color name="skyblue">#87CEEB</color>
+    <color name="lightskyblue">#87CEFA</color>
+    <color name="otherblue">#93afe3</color>
+    <color name="buttonblue">#1b4c9f</color>
+    <color name="bottombgblue">#10264e</color>
+    <color name="msgblue">#144eb9</color>
+    <color name="textblue">#4154ff</color>
+    <color name="light_blue">#009fe1</color>
+    <color name="localmap_blue">#ff0093ee</color>
+    <color name="dp_blue">#ff33b5e5</color>
+    <color name="dp_darker_blue">#ff0099cc</color>
 
     <!-- 标绘 -->
     <color name="dotline_color">#CACACA</color>

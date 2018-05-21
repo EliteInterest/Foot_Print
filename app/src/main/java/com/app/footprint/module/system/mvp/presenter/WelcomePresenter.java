@@ -22,11 +22,11 @@ public class WelcomePresenter extends WelcomeContract.Presenter {
                 .subscribe(new RxSubscriber<LoginEntity>(mView) {
                     @Override
                     protected void _onNext(LoginEntity loginEntity) {
-                        ConstStrings.code = loginEntity.getCode();
-                        ConstStrings.adrApikey = loginEntity.getAdrApikey();
+//                        ConstStrings.code = loginEntity.getCode();
+//                        ConstStrings.adrApikey = loginEntity.getAdrApikey();
                         ZXSharedPrefUtil zxSharedPrefUtil = new ZXSharedPrefUtil("maincity");
                         zxSharedPrefUtil.putString("code", ConstStrings.code);
-                        zxSharedPrefUtil.putString("adrApikey", ConstStrings.adrApikey);
+//                        zxSharedPrefUtil.putString("adrApikey", ConstStrings.adrApikey);
                         mView.onLoginResult(loginEntity);
                     }
 

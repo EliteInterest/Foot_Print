@@ -23,7 +23,7 @@ public interface LoginContract {
 
     interface View extends IView {
         void onLoginResult(LoginEntity loginResult);
-
+        void onLoginStart();
     }
 
     abstract class Presenter extends BasePresenter<View, Model> {

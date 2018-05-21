@@ -48,7 +48,10 @@ public class FootRecordView extends RelativeLayout implements View.OnClickListen
     private ImageView ivTabCancel;//取消录制
     private CardView cvRecordTab;//录制界面
     private TextView tvTabDate, tvTabCountTime, tvTabCountSize;//日期  时长  距离
+<<<<<<< Updated upstream
     private ImageView ivStartCamera, ivStartRecord, ivStartText;
+=======
+>>>>>>> Stashed changes
 
     private Timer timeTimer, routeTimer;//计时器
     private ZXSharedPrefUtil zxSharedPrefUtil;
@@ -97,15 +100,19 @@ public class FootRecordView extends RelativeLayout implements View.OnClickListen
         tvTabDate = findViewById(R.id.tv_record_tab_date);
         tvTabCountTime = findViewById(R.id.tv_record_tab_time);
         tvTabCountSize = findViewById(R.id.tv_record_tab_mileage);
+<<<<<<< Updated upstream
         ivStartCamera = findViewById(R.id.iv_record_tab_camera);
         ivStartRecord = findViewById(R.id.iv_record_tab_vedio);
         ivStartText = findViewById(R.id.iv_record_tab_text);
+=======
+>>>>>>> Stashed changes
 
         ivModeRoute.setOnClickListener(this);
         ivModeFoot.setOnClickListener(this);
         llStartRecord.setOnClickListener(this);
         ivTabCancel.setOnClickListener(this);
         cvRecordTab.setOnClickListener(this);
+<<<<<<< Updated upstream
         ivStartCamera.setOnClickListener(this);
         ivStartRecord.setOnClickListener(this);
         ivStartText.setOnClickListener(this);
@@ -113,6 +120,12 @@ public class FootRecordView extends RelativeLayout implements View.OnClickListen
         lastCurrentTime = System.currentTimeMillis();
         zxSharedPrefUtil = new ZXSharedPrefUtil();
         tvTabDate.setText(ZXTimeUtil.getTime(lastCurrentTime) + " " + ZXTimeUtil.dateToWeek(lastCurrentTime).replace("周", "星期"));
+=======
+
+        lastCurrentTime = System.currentTimeMillis();
+        zxSharedPrefUtil = new ZXSharedPrefUtil();
+        tvTabDate.setText(ZXTimeUtil.getTime(lastCurrentTime) + " " + ZXTimeUtil.dateToWeek(lastCurrentTime));
+>>>>>>> Stashed changes
     }
 
     /**
@@ -198,7 +211,11 @@ public class FootRecordView extends RelativeLayout implements View.OnClickListen
         if (resumeRoute) {
             lastCurrentTime = zxSharedPrefUtil.getLong(RECORD_START_TIME);
             long nowCurrentTime = System.currentTimeMillis();
+<<<<<<< Updated upstream
             tvTabDate.setText(ZXTimeUtil.getTime(lastCurrentTime) + " " + ZXTimeUtil.dateToWeek(lastCurrentTime).replace("周", "星期"));
+=======
+            tvTabDate.setText(ZXTimeUtil.getTime(lastCurrentTime) + " " + ZXTimeUtil.dateToWeek(lastCurrentTime));
+>>>>>>> Stashed changes
             countTime = (int) ((nowCurrentTime - lastCurrentTime) / 1000);
             countSize = zxSharedPrefUtil.getFloat(RECORD_COUNT_SIZE);
             mPoints = zxSharedPrefUtil.getList(RECORD_POINTS);

@@ -19,12 +19,16 @@ public class ApiParamUtil {
     //登录
     public static Map<String, String> getLoginDataInfo(String userName, String userPwd) {
         Map<String, String> map = new HashMap<>();
-        map.put("method", "login");
-        map.put("os", ConstStrings.DEVICE_TYPE);
-        map.put("code", ZXMD5Util.getMD5(ZXUniqueIdUtil.getUniqueId()));
-        map.put("e", ZXMD5Util.getMD5(UUID.randomUUID().toString()));
+//        map.put("method", "login");
+//        map.put("os", ConstStrings.DEVICE_TYPE);
+//        map.put("code", ZXMD5Util.getMD5(ZXUniqueIdUtil.getUniqueId()));
+//        map.put("e", ZXMD5Util.getMD5(UUID.randomUUID().toString()));
+//        map.put("name", userName);
+//        map.put("password", userPwd);
+//        map.put("password", ZXMD5Util.getMD5(userPwd));
+
         map.put("name", userName);
-        map.put("password", ZXMD5Util.getMD5(userPwd));
+        map.put("password", userPwd);
         return map;
     }
 
@@ -39,4 +43,21 @@ public class ApiParamUtil {
         return map;
     }
 
+    //发送验证码
+    public static Map<String, String> getPhoneDataInfo(String phNumer) {
+        Map<String, String> map = new HashMap<>();
+        map.put("number", phNumer);
+        return map;
+    }
+
+    //用户注册
+    public static Map<String, String> getRegisterDataInfo(String Name,String Password,String Nickname,String Phone,String VerificationCode) {
+        Map<String, String> map = new HashMap<>();
+        map.put("Name", Name);
+        map.put("Password", Password);
+        map.put("Nickname", Nickname);
+        map.put("Phone", Phone);
+        map.put("VerificationCode", VerificationCode);
+        return map;
+    }
 }
