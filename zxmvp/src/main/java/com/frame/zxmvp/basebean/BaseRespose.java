@@ -13,29 +13,23 @@ public class BaseRespose<T> implements Serializable {
     public String Message;
     public String Exception;
 
-    public T data;
-    public T list;
+    public T Data;
 
 //    public boolean success() {
 //        return "200000".equals(Code);
 //    }
     public boolean success() {
         Log.i(TAG,"code is " +Code);
-        Log.i(TAG,"data is " +data);
+        Log.i(TAG,"data is " +Data);
         return (200000 == Code);
     }
 
     @Override
     public String toString() {
-        Log.i(TAG,"message is " +"BaseRespose{" +
-                "code='" + Code + '\'' +
-                ", msg='" + Message == null ? Exception : Message + '\'' +
-                ", data=" + (data == null ? list : data) +
-                '}');
         return "BaseRespose{" +
                 "code='" + Code + '\'' +
                 ", msg='" + Message == null ? Exception : Message + '\'' +
-                ", data=" + (data == null ? list : data) +
+                ", data=" + Data +
                 '}';
     }
 }

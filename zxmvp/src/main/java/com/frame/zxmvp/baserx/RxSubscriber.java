@@ -36,9 +36,9 @@ public abstract class RxSubscriber<T> extends Subscriber<T> {
 
     @Override
     public void onCompleted() {
-            if (iView != null) {
-                iView.dismissLoading();
-            }
+        if (iView != null) {
+            iView.dismissLoading();
+        }
     }
 
     @Override
@@ -69,21 +69,23 @@ public abstract class RxSubscriber<T> extends Subscriber<T> {
             iView.dismissLoading();
         }
         e.printStackTrace();
-        String message = "";
-        //网络
-        if (!NetWorkUtils.isNetConnected(BaseApplication.getAppContext())) {
-            message = "网络未连接，请检查后再试";
-        }
-        //服务器
-        else if (e instanceof ServerException) {
-            message = e.getMessage();
-        } else if (e instanceof JsonSyntaxException) {
-            Log.e("error", "未对结果进行正确封装，请检查");
-            message = "请求出错，请稍后再试";
-        }
-        //其它
-        else {
-            message = "网络访问错误，请稍后再试";
+        String message = e.getMessage();
+        if (message == null || message.trim().length() == 0) {
+            //网络
+            if (!NetWorkUtils.isNetConnected(BaseApplication.getAppContext())) {
+                message = "网络未连接，请检查后再试";
+            }
+            //服务器
+            else if (e instanceof ServerException) {
+                message = e.getMessage();
+            } else if (e instanceof JsonSyntaxException) {
+                Log.e("error", "未对结果进行正确封装，请检查");
+                message = "请求出错，请稍后再试";
+            }
+            //其它
+            else {
+                message = "网络访问错误，请稍后再试";
+            }
         }
         _onError(message);
     }

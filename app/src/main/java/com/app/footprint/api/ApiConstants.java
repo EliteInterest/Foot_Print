@@ -20,7 +20,7 @@ public class ApiConstants {
 
     public static boolean ISRELEASE = true;// 是否正式环境
     //    public static final String RELEASE_URL = ISRELEASE ? "http://zhsq.digitalcq.com/zckgpro/" : "http://192.168.21.37/zckg/";
-    public static final String RELEASE_URL = ISRELEASE ? "http://www.didiaosuo.com:8080":"http://47.92.150.231:8080/";
+    public static final String RELEASE_URL = ISRELEASE ? "http://www.didiaosuo.com:8080/":"http://47.92.150.231:8080/";
 //        public static final String SERVER_URL = "api_v3.php";
     public static final String SERVER_URL = "api_v1.do";
     public static final String LOGIN_URL = "/fsms/user/logon";

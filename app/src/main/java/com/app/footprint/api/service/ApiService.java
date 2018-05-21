@@ -1,6 +1,5 @@
 package com.app.footprint.api.service;
 
-import com.app.footprint.api.ApiConstants;
 import com.app.footprint.module.system.bean.LoginEntity;
 import com.app.footprint.module.system.bean.VersionEntity;
 import com.frame.zxmvp.basebean.BaseRespose;
@@ -18,17 +17,16 @@ import rx.Observable;
  */
 public interface ApiService {
 
-    @GET(ApiConstants.LOGIN_URL)
+    @GET("fsms/user/logon")
     Observable<BaseRespose<LoginEntity>> login(@QueryMap Map<String, String> map);
 
-
-    @GET(ApiConstants.SERVER_URL)
+    @GET("fsms/user/logon")
     Observable<BaseRespose<VersionEntity>> getVersionInfo(@QueryMap Map<String, String> map);
 
-    @POST(ApiConstants.REGISTER_URL)
+    @POST("/fsms/user/register")
     Observable<BaseRespose<LoginEntity>> register(@QueryMap Map<String, String> map);
 
-    @GET(ApiConstants.SEND_PHONE_URL)
+    @GET("fsms/user/register/phone/code")
     Observable<BaseRespose<LoginEntity>> sendPhoneNum(@QueryMap Map<String, String> map);
 
 }

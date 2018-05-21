@@ -36,9 +36,9 @@ public class RxHelper {
             @Override
             public Observable<T> call(BaseRespose<T> result) {
                 if (result.success()) {
-                    return createData(result.data == null ? result.list : result.data);
+                    return createData(result.Data);
                 } else {
-                    return Observable.error(new ServerException(result.Message == null ? result.Message : result.Exception));
+                    return Observable.error(new ServerException(result.Message));
                 }
             }
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
