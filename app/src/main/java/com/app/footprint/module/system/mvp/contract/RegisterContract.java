@@ -2,11 +2,12 @@ package com.app.footprint.module.system.mvp.contract;
 
 import com.app.footprint.module.system.bean.LoginEntity;
 import com.frame.zxmvp.base.BasePresenter;
-import com.frame.zxmvp.base.IView;
 import com.frame.zxmvp.base.IModel;
+import com.frame.zxmvp.base.IView;
 
 import java.util.Map;
 
+import okhttp3.RequestBody;
 import rx.Observable;
 
 /**
@@ -23,7 +24,7 @@ public interface RegisterContract {
     //Model层定义接口,外部只需关心Model返回的数据,无需关心内部细节,即是否使用缓存
     interface Model extends IModel {
         public Observable<LoginEntity> sendPhoneData(Map<String, String> map);
-        public Observable<LoginEntity> registerData(Map<String, String> map);
+        public Observable<LoginEntity> registerData(RequestBody param);
     }
 
     //方法

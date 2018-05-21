@@ -5,7 +5,12 @@ import com.app.footprint.module.system.mvp.contract.RegisterContract;
 import com.frame.zxmvp.baserx.RxHelper;
 import com.frame.zxmvp.baserx.RxSubscriber;
 
+import org.json.JSONObject;
+
 import java.util.Map;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 
 /**
@@ -16,7 +21,9 @@ public class RegisterPresenter extends RegisterContract.Presenter {
 
     @Override
     public void doRegister(Map<String, String> map) {
-        mModel.registerData(map)
+        RequestBody requestBody = RequestBody.create(MediaType.parse("Content-Type, application/json"),
+                new JSONObject(map).toString());
+        mModel.registerData(requestBody)
                 .compose(RxHelper.bindToLifecycle(mView))
                 .subscribe(new RxSubscriber<LoginEntity>() {
                     @Override
