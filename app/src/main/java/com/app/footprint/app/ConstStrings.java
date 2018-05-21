@@ -1,6 +1,9 @@
 package com.app.footprint.app;
 
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class ConstStrings {
     public static boolean ISRELEASE = false;
     public static String code = "";
@@ -49,6 +52,14 @@ public class ConstStrings {
         return LOCAL_PATH + "/" +APPNAME;
     }
 
+    public static boolean isNumeric(String str){
+        Pattern pattern = Pattern.compile("[0-9]*");
+        Matcher isNum = pattern.matcher(str);
+        if( !isNum.matches() ){
+            return false;
+        }
+        return true;
+    }
 }
 
 
