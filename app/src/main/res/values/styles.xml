@@ -3,9 +3,12 @@
     <!-- Base application theme. -->
     <style name="MyAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/load_bg</item>
-        <item name="colorPrimaryDark">@color/load_bg</item>
-        <item name="colorAccent">@color/load_bg</item>
+        <!--<item name="colorPrimary">@color/load_bg</item>-->
+        <!--<item name="colorPrimaryDark">@color/load_bg</item>-->
+        <!--<item name="colorAccent">@color/load_bg</item>-->
+        <item name="colorPrimary">#CFCFCF</item>
+        <item name="colorPrimaryDark">#CFCFCF</item>
+        <item name="colorAccent">#CFCFCF</item>
         <item name="android:activityOpenEnterAnimation">@anim/fade_in</item>
         <item name="android:activityOpenExitAnimation">@anim/fade_out</item>
         <item name="android:activityCloseEnterAnimation">@anim/fade_in</item>

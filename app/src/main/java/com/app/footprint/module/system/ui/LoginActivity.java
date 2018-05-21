@@ -135,7 +135,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginModel> impl
 //        mSharedPrefUtil.putString("code", ConstStrings.code);
 //        mSharedPrefUtil.putString("e", ConstStrings.e);
 //        mSharedPrefUtil.putString("adrApikey", ConstStrings.adrApikey);
-        MainActivity.startAction(this, false);
+        MainActivity.startAction(this, true);
     }
 
     @Override
