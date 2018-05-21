@@ -15,7 +15,7 @@ public class LoginPresenter extends LoginContract.Presenter {
     public void doLogin(Map<String, String> map) {
         mModel.loginData(map)
                 .compose(RxHelper.bindToLifecycle(mView))
-                .subscribe(new RxSubscriber<LoginEntity>() {
+                .subscribe(new RxSubscriber<LoginEntity>(mView) {
                     @Override
                     protected void _onNext(LoginEntity loginEntity) {
                         mView.onLoginResult(loginEntity);

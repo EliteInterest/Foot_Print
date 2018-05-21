@@ -32,6 +32,7 @@ public class MyApplication extends BaseApplication {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
             StrictMode.setVmPolicy(builder.build());
+            builder.detectFileUriExposure();
         }
 //        AndFixUtil.init(this);
     }
