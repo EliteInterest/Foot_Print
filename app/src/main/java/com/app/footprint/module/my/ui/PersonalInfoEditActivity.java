@@ -14,10 +14,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.app.footprint.R;
+import com.app.footprint.api.ApiParamUtil;
+import com.app.footprint.app.ConstStrings;
 import com.app.footprint.base.BaseActivity;
+import com.app.footprint.module.my.bean.UserInfoEntity;
 import com.app.footprint.module.my.mvp.contract.PersonalInfoEditContract;
 import com.app.footprint.module.my.mvp.model.PersonalInfoEditModel;
 import com.app.footprint.module.my.mvp.presenter.PersonalInfoEditPresenter;
+import com.app.footprint.module.system.bean.LoginEntity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -85,6 +89,7 @@ public class PersonalInfoEditActivity extends BaseActivity<PersonalInfoEditPrese
         if(!TextUtils.isEmpty(content))
         {
             mEdit.setText(content);
+            mEdit.setSelection(content.length());
         }
     }
 
@@ -96,12 +101,51 @@ public class PersonalInfoEditActivity extends BaseActivity<PersonalInfoEditPrese
                 break;
 
             case R.id.btn_user_edit_send_phone:
+                //输入验证码
+                String phoneNumber = mEdit.getText().toString();
+                if(TextUtils.isEmpty(phoneNumber)&& !ConstStrings.isNumeric(phoneNumber))
+                {
+                    showToast("请输入正确的电话号码！");
+                    return;
+                }
 
+                if(phoneNumber.equals(mSharedPrefUtil.getString("phone","")))
+                {
+                    showToast("设置的电话号码与目前的一样，请输入其他电话号码！");
+                    return;
+                }
+
+                mPresenter.doSendPhoneNum(ApiParamUtil.getPhoneDataInfo(phoneNumber));
                 break;
 
             case R.id.btn_user_edit_commit_logout:
+                phoneNumber = mEdit.getText().toString();
+                String checkNum = mEditCheckNum.getText().toString();
+                if(TextUtils.isEmpty(phoneNumber) || ((mPhoneEditLayout.getVisibility() == View.VISIBLE) && TextUtils.isEmpty(checkNum)))
+                {
+                    showToast("请输入更新的数据！");
+                    return;
+                }
+                if(tab == 1)
+                {
+                    mPresenter.doUploadName(ApiParamUtil.getUserNickNameIfo(mSharedPrefUtil.getString("userId"),phoneNumber));
+                }else if(tab == 2)
+                {
+                    mPresenter.doUploadName(ApiParamUtil.getUserNameInfo(mSharedPrefUtil.getString("userId"),phoneNumber));
+                }else{
+                    mPresenter.doUploadName(ApiParamUtil.getUserPhoneInfo(mSharedPrefUtil.getString("userId"),phoneNumber,checkNum));
+                }
                 break;
         }
     }
 
+    @Override
+    public void onUploadResult(UserInfoEntity userInfoEntity) {
+        showToast("更新成功！");
+    }
+
+    @Override
+    public void onSendPhoneNUmResult(LoginEntity loginResult) {
+        showToast("发送成功！");
+    }
 }

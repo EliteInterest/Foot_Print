@@ -4,6 +4,7 @@ import com.app.footprint.app.ConstStrings;
 import com.zx.zxutils.util.ZXMD5Util;
 import com.zx.zxutils.util.ZXUniqueIdUtil;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -65,6 +66,39 @@ public class ApiParamUtil {
     public static Map<String, String> getUserDataInfo(String userId) {
         Map<String, String> map = new HashMap<>();
         map.put("userId", userId);
+        return map;
+    }
+
+    //更新用户名称
+    public static Map<String, String> getUserNameInfo(String userId,String userName) {
+        Map<String, String> map = new HashMap<>();
+        map.put("UserId", userId);
+        map.put("UserName", userName);
+        return map;
+    }
+
+    //更新用户昵称
+    public static Map<String, String> getUserNickNameIfo(String userId,String nickName) {
+        Map<String, String> map = new HashMap<>();
+        map.put("UserId", userId);
+        map.put("Nickname", nickName);
+        return map;
+    }
+
+    //更新手机号
+    public static Map<String, String> getUserPhoneInfo(String userId,String phone,String checkNum) {
+        Map<String, String> map = new HashMap<>();
+        map.put("UserId", userId);
+        map.put("Number", phone);
+        map.put("Code", checkNum);
+        return map;
+    }
+
+    //更新头像
+    public static Map<String, String> getHeadPortraitsInfo(String userId, File file) {
+        Map<String, String> map = new HashMap<>();
+        map.put("UserId", userId);
+//        map.put("file", file);
         return map;
     }
 }

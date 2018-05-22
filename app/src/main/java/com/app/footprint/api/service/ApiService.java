@@ -32,21 +32,21 @@ public interface ApiService {
 //    Observable<BaseRespose<LoginEntity>> register(@QueryMap Map<String, String> map);
     Observable<BaseRespose<LoginEntity>> register(@Body RequestBody param);
 
-    @GET("fsms/user/register/phone/code")
+    @GET("/fsms/user/register/phone/code")
     Observable<BaseRespose<LoginEntity>> sendPhoneNum(@QueryMap Map<String, String> map);
 
     @GET("/fsms/footprint/details/relation/info")
     Observable<BaseRespose<UserInfoEntity>> requestUserInfo(@QueryMap Map<String, String> map);
 
-    @POST("/user/headPortraits/upload")
+    @Headers({"Content-type:application/json;charset=UTF-8"})
+    @POST("/fsms/user/headPortraits/upload")
     Observable<BaseRespose<UserInfoEntity>> uploadHead(@Body RequestBody param);
 
-    @POST("/user/info/upload")
-    Observable<BaseRespose<UserInfoEntity>> updateNickName(@QueryMap Map<String, String> map);
+    @Headers({"Content-type:application/json;charset=UTF-8"})
+    @POST("/fsms/user/info/upload")
+    Observable<BaseRespose<UserInfoEntity>> uploadName(@Body RequestBody param);
 
-    @POST("/user/info/upload")
-    Observable<BaseRespose<UserInfoEntity>> updateAccount(@QueryMap Map<String, String> map);
-
-    @POST("/user/phone/upload")
-    Observable<BaseRespose<UserInfoEntity>> updatePhone(@QueryMap Map<String, String> map);
+    @Headers({"Content-type:application/json;charset=UTF-8"})
+    @POST("/fsms/user/phone/upload")
+    Observable<BaseRespose<UserInfoEntity>> uploadPhone(@Body RequestBody param);
 }
