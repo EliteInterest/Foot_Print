@@ -4,5 +4,6 @@
     <string name="app_version">1.0.0</string>
     <string name="app_new_version">1.0.1</string>
     <string name="arcgiskey">5SKIXc21JlankElJ</string>
+    <string name="logout_submit">退      出</string>
 
 </resources>

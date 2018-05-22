@@ -1,5 +1,6 @@
 package com.app.footprint.api.service;
 
+import com.app.footprint.module.my.bean.UserInfoEntity;
 import com.app.footprint.module.system.bean.LoginEntity;
 import com.app.footprint.module.system.bean.VersionEntity;
 import com.frame.zxmvp.basebean.BaseRespose;
@@ -34,4 +35,18 @@ public interface ApiService {
     @GET("fsms/user/register/phone/code")
     Observable<BaseRespose<LoginEntity>> sendPhoneNum(@QueryMap Map<String, String> map);
 
+    @GET("/fsms/footprint/details/relation/info")
+    Observable<BaseRespose<UserInfoEntity>> requestUserInfo(@QueryMap Map<String, String> map);
+
+    @POST("/user/headPortraits/upload")
+    Observable<BaseRespose<UserInfoEntity>> uploadHead(@Body RequestBody param);
+
+    @POST("/user/info/upload")
+    Observable<BaseRespose<UserInfoEntity>> updateNickName(@QueryMap Map<String, String> map);
+
+    @POST("/user/info/upload")
+    Observable<BaseRespose<UserInfoEntity>> updateAccount(@QueryMap Map<String, String> map);
+
+    @POST("/user/phone/upload")
+    Observable<BaseRespose<UserInfoEntity>> updatePhone(@QueryMap Map<String, String> map);
 }

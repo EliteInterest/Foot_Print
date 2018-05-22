@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/gray_tab"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/personal_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px80"
+        android:gravity="center_vertical"
+        android:paddingTop="@dimen/px30"
+        android:background="@color/trandarkgrey"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/personal_edit_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:text="取消"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:textSize="@dimen/px20"/>
+
+        <TextView
+            android:id="@+id/personal_edit_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/personal_back"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="个人信息"
+            android:textColor="@color/white"
+            android:textSize="@dimen/px30"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_edit"
+        android:layout_below="@+id/personal_title"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/px50"
+        android:layout_marginTop="@dimen/px30"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:visibility="visible">
+
+        <EditText
+            android:id="@+id/personal_edit"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px50"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
+            android:layout_marginLeft="@dimen/px30"
+            android:textSize="@dimen/px20" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_phone_edit"
+        android:layout_below="@+id/layout_edit"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/px50"
+        android:gravity="center_vertical"
+        android:layout_marginTop="@dimen/px30"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:visibility="gone">
+
+        <EditText
+            android:id="@+id/user_edit_phone_checknum"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:hint="请输入验证码"
+            android:layout_alignParentLeft="true"
+            android:singleLine="true"
+            android:layout_marginLeft="@dimen/px30"
+            android:textSize="@dimen/px20" />
+
+        <Button
+            android:id="@+id/btn_user_edit_send_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/px50"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="#00000000"
+            android:text="获取验证码"
+            android:textColor="@color/dp_blue"
+            android:textSize="@dimen/px20"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/px30"
+            android:gravity="center" />
+    </RelativeLayout>
+
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_user_edit_commit_logout"
+        style="@style/MyButtonStyle"
+        android:layout_marginBottom="10dp"
+        android:textStyle="bold"
+        android:textSize="@dimen/px20"
+        android:text="提交" />
+</RelativeLayout>

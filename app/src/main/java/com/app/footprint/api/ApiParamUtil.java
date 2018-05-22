@@ -60,4 +60,11 @@ public class ApiParamUtil {
         map.put("VerificationCode", VerificationCode);
         return map;
     }
+
+    //得到用户信息
+    public static Map<String, String> getUserDataInfo(String userId) {
+        Map<String, String> map = new HashMap<>();
+        map.put("userId", userId);
+        return map;
+    }
 }

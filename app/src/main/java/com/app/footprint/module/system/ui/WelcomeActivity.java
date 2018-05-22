@@ -3,6 +3,7 @@ package com.app.footprint.module.system.ui;
 import android.Manifest;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.app.footprint.R;
 import com.app.footprint.api.ApiParamUtil;
@@ -23,7 +24,7 @@ import com.zx.zxutils.util.ZXSystemUtil;
  * 功能：欢迎页
  */
 public class WelcomeActivity extends BaseActivity<WelcomePresenter, WelcomeModel> implements WelcomeContract.View {
-
+    private static final String TAG = "WelcomeActivity";
     private String[] permissions = new String[]{
             Manifest.permission.INTERNET,
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -86,6 +87,12 @@ public class WelcomeActivity extends BaseActivity<WelcomePresenter, WelcomeModel
         if (loginEntity == null) {
             LoginActivity.startAction(this, true);
         } else {
+            Log.i(TAG,"loginEntity.getUserName() is " +loginEntity.getUserName());
+            mSharedPrefUtil.putString("userName", loginEntity.getUserName());
+            mSharedPrefUtil.putString("userId", loginEntity.getUserId());
+            mSharedPrefUtil.putString("headPortraits", loginEntity.getHeadPortraits());
+            mSharedPrefUtil.putString("nickName", loginEntity.getNickname());
+            mSharedPrefUtil.putString("phone", loginEntity.getPhone());
             goToMain();
         }
     }

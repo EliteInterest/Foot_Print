@@ -17,7 +17,9 @@
     <color name="purple">#800080</color>
     <color name="transparent">#00000000</color>
     <color name="darkgrey">#545454</color>
+    <color name="trandarkgrey">#AA545454</color>
     <color name="gray">#8a8a8a</color>
+    <color name="gray_tab">#CFCFCF</color>
     <color name="light_gray">#E6E6E6</color>
     <color name="list_on">#f9f9f9</color>
     <color name="titleBlue">#298eea</color>
