@@ -78,7 +78,7 @@
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity android:name=".module.system.ui.RegisterActivity" />
         <activity android:name=".module.foot.ui.CameraActivity" />
-		<activity android:name=".module.foot.ui.EditInfoActivity">
+		<activity android:name=".module.foot.ui.EditInfoActivity"/>
         <activity android:name=".module.my.ui.PersonalInfoActivity" />
         <activity android:name=".module.my.ui.PersonalInfoEditActivity" />
     </application>
