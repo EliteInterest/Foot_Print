@@ -67,4 +67,6 @@
     <dimen name="text_size_small">12sp</dimen>
     <dimen name="text_size_smaller">10sp</dimen>
 
+    <dimen name="title_height">45dp</dimen>
+
 </resources>

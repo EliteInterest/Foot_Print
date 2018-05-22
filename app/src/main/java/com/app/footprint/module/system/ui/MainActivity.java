@@ -5,9 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
-import android.widget.TextView;
 
 import com.app.footprint.R;
 import com.app.footprint.app.MyApplication;
@@ -18,8 +16,8 @@ import com.app.footprint.module.system.bean.VersionEntity;
 import com.app.footprint.module.system.mvp.contract.MainContract;
 import com.app.footprint.module.system.mvp.model.MainModel;
 import com.app.footprint.module.system.mvp.presenter.MainPresenter;
-import com.app.footprint.module.task.ui.TaskFragment;
 import com.zx.zxutils.util.ZXDialogUtil;
+import com.zx.zxutils.util.ZXSystemUtil;
 import com.zx.zxutils.views.TabViewPager.ZXTabViewPager;
 
 import java.io.File;
@@ -53,51 +51,16 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
         tvpMain.setManager(getSupportFragmentManager())
                 .setTabLayoutGravity(ZXTabViewPager.TabGravity.GRAVITY_BOTTOM)
                 .addTab(FootFragment.newInstance(), "足迹", R.drawable.foot_tab)
-                .addTab(TaskFragment.newInstance(), "任务", R.mipmap.ic_launcher)
-                .addTab(MyFragment.newInstance(), "我的", R.drawable.mine_tab)
-                .setTitleColor(ContextCompat.getColor(this, R.color.white), ContextCompat.getColor(this, R.color.red))
-                .setIndicatorColor(ContextCompat.getColor(this, R.color.wheat))
+//                .addTab(TaskFragment.newInstance(), "任务", R.mipmap.ic_launcher)
+                .addTab(MyFragment.newInstance(), "个人中心", R.drawable.mine_tab)
+                .setTitleColor(ContextCompat.getColor(this, R.color.gray_8f), ContextCompat.getColor(this, R.color.colorPrimary))
+                .setIndicatorColor(ContextCompat.getColor(this, R.color.white))
                 .setIndicatorHeight(3)
                 .setSelectOn(1)
                 .setViewpagerCanScroll(false)
                 .build();
-
-        tvpMain.getTabLayout().addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            public void onTabSelected(TabLayout.Tab tab) {
-//                tab.getCustomView().findViewById(com.zx.zxutils.R.id.iv_item_tab).setSelected(true);
-//                tab.getCustomView().findViewById(com.zx.zxutils.R.id.tv_item_tab).setSelected(true);
-//                if (ZXTabViewPager.this.selectTextColor != 0) {
-//                    ((TextView)tab.getCustomView().findViewById(com.zx.zxutils.R.id.tv_item_tab)).setTextColor(ZXTabViewPager.this.selectTextColor);
-//                }
-                String selectText = tab.getText().toString();
-                if(selectText.equals("足迹"))
-                {
-                    tab.setIcon(R.mipmap.foot_tab_select);
-                }else if(selectText.equals("我的"))
-                {
-                    tab.setIcon(R.mipmap.mine_tab_select);
-                }
-            }
-
-            public void onTabUnselected(TabLayout.Tab tab) {
-//                tab.getCustomView().findViewById(com.zx.zxutils.R.id.iv_item_tab).setSelected(false);
-//                tab.getCustomView().findViewById(com.zx.zxutils.R.id.tv_item_tab).setSelected(false);
-//                if (ZXTabViewPager.this.normalTextColor != 0) {
-//                    ((TextView)tab.getCustomView().findViewById(com.zx.zxutils.R.id.tv_item_tab)).setTextColor(ZXTabViewPager.this.normalTextColor);
-//                }
-                String selectText = tab.getText().toString();
-                if(selectText.equals("足迹"))
-                {
-                    tab.setIcon(R.mipmap.foot_tab);
-                }else if(selectText.equals("我的"))
-                {
-                    tab.setIcon(R.mipmap.mine_tab);
-                }
-            }
-
-            public void onTabReselected(TabLayout.Tab tab) {
-            }
-        });
+        tvpMain.getTabLayout().setMinimumHeight(ZXSystemUtil.dp2px(50));
+        tvpMain.getTabLayout().setBackgroundColor(ContextCompat.getColor(this, R.color.whitesmoke));
     }
 
     @Override

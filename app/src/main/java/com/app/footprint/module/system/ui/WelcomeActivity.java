@@ -31,7 +31,8 @@ public class WelcomeActivity extends BaseActivity<WelcomePresenter, WelcomeModel
             Manifest.permission.READ_PHONE_STATE,
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.CAMERA
+            Manifest.permission.CAMERA,
+            Manifest.permission.RECORD_AUDIO
     };
 
     @Override

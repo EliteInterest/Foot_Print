@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_height"
+        android:background="@color/colorPrimaryDark">
+
+        <ImageView
+            android:id="@+id/iv_title_back"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:background="@mipmap/title_back"/>
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="详情"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_large"/>
+
+        <TextView
+            android:id="@+id/iv_title_save"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="保存"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_normal"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_location_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="位置信息"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/text_size_large"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(106.49,29.60)"
+            android:textColor="@color/gray_8f"
+            android:textSize="@dimen/text_size_normal"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/btn_location_change"
+            android:layout_width="60dp"
+            android:layout_height="30dp"
+            android:background="@drawable/shape_change_location"
+            android:gravity="center"
+            android:text="修正"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/text_size_normal"/>
+    </LinearLayout>
+
+    <view
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/colorPrimaryDark"/>
+
+</LinearLayout>

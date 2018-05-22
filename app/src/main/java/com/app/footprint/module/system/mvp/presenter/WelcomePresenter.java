@@ -24,7 +24,7 @@ public class WelcomePresenter extends WelcomeContract.Presenter {
                     protected void _onNext(LoginEntity loginEntity) {
 //                        ConstStrings.code = loginEntity.getCode();
 //                        ConstStrings.adrApikey = loginEntity.getAdrApikey();
-                        ZXSharedPrefUtil zxSharedPrefUtil = new ZXSharedPrefUtil("maincity");
+                        ZXSharedPrefUtil zxSharedPrefUtil = new ZXSharedPrefUtil("footprint");
                         zxSharedPrefUtil.putString("code", ConstStrings.code);
 //                        zxSharedPrefUtil.putString("adrApikey", ConstStrings.adrApikey);
                         mView.onLoginResult(loginEntity);

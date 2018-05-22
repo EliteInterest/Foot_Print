@@ -10,7 +10,6 @@ import com.frame.zxmvp.base.RxBaseActivity;
 import com.zx.zxutils.util.ZXDialogUtil;
 import com.zx.zxutils.util.ZXSharedPrefUtil;
 import com.zx.zxutils.util.ZXToastUtil;
-import com.zx.zxutils.views.ZXStatusBarCompat;
 
 /**
  * Created by Xiangb on 2017/6/29.
@@ -25,7 +24,6 @@ public abstract class BaseActivity<T extends BasePresenter, E extends BaseModel>
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MyApplication.getInstance().addActivity(this);
-        ZXStatusBarCompat.translucent(this);
     }
 
     @Override

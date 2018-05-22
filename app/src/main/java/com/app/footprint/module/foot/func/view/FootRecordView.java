@@ -1,5 +1,6 @@
 package com.app.footprint.module.foot.func.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.location.Location;
@@ -15,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.app.footprint.R;
+import com.app.footprint.module.foot.ui.CameraActivity;
 import com.app.footprint.module.map.func.util.GpsUtil;
 import com.esri.android.map.GraphicsLayer;
 import com.esri.android.map.MapView;
@@ -66,7 +68,6 @@ public class FootRecordView extends RelativeLayout implements View.OnClickListen
     private static final String RECORD_START_TIME = "record_start_time";
     private static final String RECORD_POINTS = "record_points";
     private static final String RECORD_STATUS = "record_status";
-    private static final String RECORD_COUNT_SIZE = "record_count_size";
 
     public FootRecordView(Context context) {
         super(context);
@@ -135,8 +136,7 @@ public class FootRecordView extends RelativeLayout implements View.OnClickListen
 
         if (zxSharedPrefUtil.getBool(RECORD_STATUS)
                 && zxSharedPrefUtil.getLong(RECORD_START_TIME) > 0
-                && zxSharedPrefUtil.getList(RECORD_POINTS).size() > 1
-                && zxSharedPrefUtil.getFloat(RECORD_COUNT_SIZE) > 0) {//之前处于绘制状态
+                && zxSharedPrefUtil.getList(RECORD_POINTS).size() > 1) {//之前处于绘制状态
             ZXDialogUtil.showYesNoDialog(context, "提示", "检测到之前处于绘制状态，是否继续之前的绘制？", "继续", "放弃",
                     (dialog, which) -> {//继续
                         cvRecordTab.setVisibility(VISIBLE);
@@ -179,10 +179,10 @@ public class FootRecordView extends RelativeLayout implements View.OnClickListen
 
                 break;
             case R.id.iv_record_tab_camera:
-
+                CameraActivity.startAction((Activity) context, false, CameraActivity.MAPCODE);
                 break;
             case R.id.iv_record_tab_vedio:
-
+                CameraActivity.startAction((Activity) context, false, CameraActivity.MAPCODE);
                 break;
             case R.id.iv_record_tab_text:
 
@@ -204,9 +204,8 @@ public class FootRecordView extends RelativeLayout implements View.OnClickListen
             long nowCurrentTime = System.currentTimeMillis();
             tvTabDate.setText(ZXTimeUtil.getTime(lastCurrentTime) + " " + ZXTimeUtil.dateToWeek(lastCurrentTime).replace("周", "星期"));
             countTime = (int) ((nowCurrentTime - lastCurrentTime) / 1000);
-            countSize = zxSharedPrefUtil.getFloat(RECORD_COUNT_SIZE);
             mPoints = zxSharedPrefUtil.getList(RECORD_POINTS);
-            for (int i = 0; i > mPoints.size() - 1; i++) {
+            for (int i = 0; i < mPoints.size() - 1; i++) {
                 Line line = new Line();
                 line.setStart(mPoints.get(i));
                 line.setEnd(mPoints.get(i + 1));
@@ -215,12 +214,17 @@ public class FootRecordView extends RelativeLayout implements View.OnClickListen
                 Graphic lineGraphic = new Graphic(polyline, lineSymbol);
                 mGraphicList.add(lineGraphic);
                 routeLayer.addGraphic(lineGraphic);
+                double length = GeometryEngine.geodesicLength(polyline, mapView.getSpatialReference(), null);
+                countSize += length / 1000;
             }
+            DecimalFormat df = new DecimalFormat("#.00");
+            tvTabCountSize.setText(df.format(countSize).startsWith(".") ? "0" + df.format(countSize) : df.format(countSize));
         } else {
             countTime = 0;
             countSize = 0;
             mPoints.clear();
             mGraphicList.clear();
+            tvTabCountSize.setText("0.00");
         }
         //开启定时器
         timeTimer = new Timer();
@@ -280,7 +284,6 @@ public class FootRecordView extends RelativeLayout implements View.OnClickListen
             if (mGraphicList.size() > 0) {
                 zxSharedPrefUtil.putLong(RECORD_START_TIME, lastCurrentTime);//保存开始时间
                 zxSharedPrefUtil.putList(RECORD_POINTS, mPoints);//保存点集
-                zxSharedPrefUtil.putFloat(RECORD_COUNT_SIZE, (float) countSize);
             }
         }
     };

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorPrimary">#545557</color>
+    <color name="colorPrimary">#4288c5</color>
     <color name="colorPrimaryDark">#545557</color>
-    <color name="colorAccent">#545557</color>
+    <color name="colorAccent">#4288c5</color>
 
     <!-- 基础颜色 -->
     <color name="white">#FFFFFF</color>

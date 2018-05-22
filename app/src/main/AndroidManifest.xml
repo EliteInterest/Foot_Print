@@ -32,6 +32,13 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT"/>
     <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.FLASHLIGHT"/>
+
+    <uses-feature android:name="android.hardware.camera"/>
+    <uses-feature android:name="android.hardware.camera.autofocus"/>
+
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
     <application
         android:name=".app.MyApplication"
@@ -39,8 +46,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/MyAppTheme">
-
-        <service android:name="com.amap.api.location.APSService"></service>
+        <service android:name="com.amap.api.location.APSService"/>
 
         <meta-data
             android:name="com.amap.api.v2.apikey"
@@ -71,8 +77,10 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden">
         </activity>
-        <activity android:name=".module.system.ui.RegisterActivity"></activity>
+        <activity android:name=".module.system.ui.RegisterActivity"/>
         <activity android:name=".module.foot.ui.CameraActivity"/>
+        <activity android:name=".module.foot.ui.EditInfoActivity">
+        </activity>
     </application>
 
 </manifest>

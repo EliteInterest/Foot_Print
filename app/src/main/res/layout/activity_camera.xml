@@ -1,8 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-</LinearLayout>
+    <com.zx.zxutils.views.CameraView.ZXCameraView
+        android:id="@+id/jcameraview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <EditText
+        android:id="@+id/et_camera_remark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLength="100"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        android:hint="请输入描述..."
+        android:padding="5dp"
+        android:textColorHint="@color/white"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_normal"/>
+</RelativeLayout>
