@@ -1,5 +1,6 @@
 package com.app.footprint.module.my.mvp.presenter;
 
+import com.app.footprint.module.my.bean.IntegralEntity;
 import com.app.footprint.module.my.bean.UserInfoEntity;
 import com.app.footprint.module.my.mvp.contract.MyContract;
 import com.app.footprint.module.system.bean.LoginEntity;
@@ -30,4 +31,19 @@ public class MyPresenter extends MyContract.Presenter {
                 });
     }
 
+    public void doRequestintegralInfo(Map<String, String> map) {
+        mModel.RequestintegralInfo(map)
+                .compose(RxHelper.bindToLifecycle(mView))
+                .subscribe(new RxSubscriber<IntegralEntity>(mView) {
+                    @Override
+                    protected void _onNext(IntegralEntity integralEntity) {
+                        mView.onRequestIntergralInfoResult(integralEntity);
+                    }
+
+                    @Override
+                    protected void _onError(String message) {
+                        mView.showToast(message);
+                    }
+                });
+    }
 }

@@ -95,6 +95,9 @@
         <activity android:name=".module.foot.ui.PicPreviewActivity"
             android:screenOrientation="portrait">
         </activity>
+		<activity 
+			android:name=".module.my.ui.ContactActivity">
+		</activity>
     </application>
 
 </manifest>

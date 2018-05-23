@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/gray_tab"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/contact_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px80"
+        android:background="@color/trandarkgrey"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/px30">
+
+        <TextView
+            android:id="@+id/contact_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:text="返回"
+            android:textColor="@color/white"
+            android:textSize="@dimen/px20" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/personal_back"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="联系方式"
+            android:textColor="@color/white"
+            android:textSize="@dimen/px30" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/contact_layout_info"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/px50"
+        android:layout_below="@+id/contact_title"
+        android:layout_marginTop="@dimen/px30"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center_vertical"
+            android:text="联系电话"
+            android:textColor="@color/black"
+            android:textSize="@dimen/px20" />
+
+        <TextView
+            android:id="@+id/contact_phone_num"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center_vertical"
+            android:text="13923232323"
+            android:textColor="@color/dp_blue"
+            android:textSize="@dimen/px20" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/contact_layout_edit"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/contact_layout_info"
+        android:layout_marginTop="@dimen/px30"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/contact_title_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center_vertical"
+            android:text="意见反馈:"
+            android:textColor="@color/black"
+            android:textSize="@dimen/px20" />
+
+        <EditText
+            android:id="@+id/contact_edit_area"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px200"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/contact_title_edit"
+            android:layout_marginLeft="@dimen/px30"
+            android:layout_marginRight="@dimen/px30"
+            android:background="@color/gray_tab"
+            android:inputType="textMultiLine"
+            android:gravity="top"
+            android:singleLine="true"
+            android:textSize="@dimen/text_size_large" />
+
+        <Button
+            android:id="@+id/btn_submission"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px50"
+            android:layout_below="@+id/contact_edit_area"
+            android:layout_marginBottom="10dp"
+            android:text="提交"
+            android:textSize="@dimen/px20"
+            android:layout_marginLeft="@dimen/px150"
+            android:layout_marginRight="@dimen/px150"
+            android:layout_marginTop="@dimen/px10"
+            android:layout_gravity="center_horizontal"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

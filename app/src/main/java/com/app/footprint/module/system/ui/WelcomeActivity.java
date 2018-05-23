@@ -65,6 +65,7 @@ public class WelcomeActivity extends BaseActivity<WelcomePresenter, WelcomeModel
             ConstStrings.code = mSharedPrefUtil.getString("code");
             ConstStrings.e = mSharedPrefUtil.getString("e");
             ConstStrings.usename = mSharedPrefUtil.getString("userName");
+            showLoading("正在登陆中...");
             mPresenter.doLogin(ApiParamUtil.getLoginDataInfo(userName, userPwd));
         } else {
             LoginActivity.startAction(this, true);
@@ -84,6 +85,7 @@ public class WelcomeActivity extends BaseActivity<WelcomePresenter, WelcomeModel
 
     @Override
     public void onLoginResult(LoginEntity loginEntity) {
+        dismissLoading();
         if (loginEntity == null) {
             LoginActivity.startAction(this, true);
         } else {
@@ -101,9 +103,9 @@ public class WelcomeActivity extends BaseActivity<WelcomePresenter, WelcomeModel
      * 根据登录状态判断是否直接进入主界面
      */
     private void goToMain() {
-        handler.postDelayed(() -> {
+        handler.post(() -> {
             MainActivity.startAction(this, true);
-        }, 1000);
+        });
     }
 
     @Override

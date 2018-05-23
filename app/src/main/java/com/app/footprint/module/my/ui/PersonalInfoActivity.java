@@ -2,13 +2,22 @@ package com.app.footprint.module.my.ui;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v7.widget.AppCompatButton;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.app.footprint.R;
+import com.app.footprint.app.ConstStrings;
 import com.app.footprint.base.BaseActivity;
 import com.app.footprint.module.my.mvp.contract.PersonalInfoContract;
 import com.app.footprint.module.my.mvp.model.PersonalInfoModel;
@@ -23,6 +32,7 @@ import butterknife.OnClick;
  * Create By admin On 2017/7/11
  * 功能：
  */
+@SuppressWarnings("ALL")
 public class PersonalInfoActivity extends BaseActivity<PersonalInfoPresenter, PersonalInfoModel> implements PersonalInfoContract.View {
 
     @BindView(R.id.personal_back)
@@ -46,6 +56,9 @@ public class PersonalInfoActivity extends BaseActivity<PersonalInfoPresenter, Pe
     @BindView(R.id.layout_phone)
     RelativeLayout mPhoneLayout;
 
+    @BindView(R.id.personal_image)
+    ImageView mHeadImage;
+
     public static void startAction(Activity activity, boolean isFinish) {
         Intent intent = new Intent(activity, PersonalInfoActivity.class);
         activity.startActivity(intent);
@@ -59,6 +72,11 @@ public class PersonalInfoActivity extends BaseActivity<PersonalInfoPresenter, Pe
 
     @Override
     public void initView(Bundle savedInstanceState) {
+    }
+
+    @Override
+    protected void onResume()
+    {
         String userName = mSharedPrefUtil.getString("userName");
         String nickName = mSharedPrefUtil.getString("nickName");
         String phone = mSharedPrefUtil.getString("phone");
@@ -74,13 +92,21 @@ public class PersonalInfoActivity extends BaseActivity<PersonalInfoPresenter, Pe
         if (!TextUtils.isEmpty(phone)) {
             mPhoneNum.setText(phone);
         }
+        super.onResume();
     }
 
-    @OnClick({R.id.personal_back, R.id.layout_nickName, R.id.layout_account, R.id.layout_phone, R.id.btn_settings_logout})
+    @OnClick({R.id.personal_back, R.id.layout_nickName, R.id.layout_account, R.id.layout_phone, R.id.btn_settings_logout,R.id.layout_head})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.personal_back:
                 finish();
+                break;
+
+            case R.id.layout_head:
+                // 调用android自带的图库
+                Intent intent = new Intent(Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, PersonalInfoContract.ActivityRequestCode.SHOW_MAP_DEPOT);
                 break;
 
             case R.id.layout_nickName:
@@ -113,7 +139,56 @@ public class PersonalInfoActivity extends BaseActivity<PersonalInfoPresenter, Pe
         intent.putExtra("tab", tab);
         intent.putExtra("title", title);
         intent.putExtra("content", content);
-        startActivity(intent);
+//        startActivity(intent);
+
+        this.setIntent(intent);
+        PersonalInfoEditActivity.startAction(this,false);
     }
 
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (data != null) {
+            if (requestCode == PersonalInfoContract.ActivityRequestCode.SHOW_MAP_DEPOT
+                    && resultCode == Activity.RESULT_OK)
+                showPersonalHead(data);
+        }
+    }
+
+    private void showPersonalHead(Intent data)
+    {
+        Uri selectedImage = data.getData();
+        String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+        Cursor cursor = getContentResolver().query(selectedImage,
+                filePathColumn, null, null, null);
+        cursor.moveToFirst();
+
+        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+        String picturePath = cursor.getString(columnIndex);
+        cursor.close();
+
+        if (picturePath.equals(""))
+            return;
+
+        ConstStrings.LOCAL_HEAD_PIC_PATH = picturePath;
+
+        // 缩放图片, width, height 按相同比例缩放图片
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        // options 设为true时，构造出的bitmap没有图片，只有一些长宽等配置信息，但比较快，设为false时，才有图片
+        options.inJustDecodeBounds = true;
+        Bitmap bitmap = BitmapFactory.decodeFile(picturePath, options);
+        int scale = (int) (options.outWidth / (float) 90);
+        if (scale <= 0)
+            scale = 1;
+        options.inSampleSize = scale;
+        options.inJustDecodeBounds = false;
+        bitmap = BitmapFactory.decodeFile(picturePath, options);
+
+        mHeadImage.setMaxHeight(90);
+        mHeadImage.setMaxWidth(90);
+
+//        mHeadImage.setImageBitmap(bitmap);
+        mHeadImage.setBackground(new BitmapDrawable(bitmap));
+    }
 }

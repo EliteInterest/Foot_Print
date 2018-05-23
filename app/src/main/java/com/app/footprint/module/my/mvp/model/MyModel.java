@@ -1,6 +1,7 @@
 package com.app.footprint.module.my.mvp.model;
 
 import com.app.footprint.api.service.ApiService;
+import com.app.footprint.module.my.bean.IntegralEntity;
 import com.app.footprint.module.my.bean.UserInfoEntity;
 import com.frame.zxmvp.base.BaseModel;
 
@@ -22,6 +23,15 @@ public class MyModel extends BaseModel implements MyContract.Model {
     public Observable<UserInfoEntity> requestUserInfo(Map<String, String> map) {
         return mRepositoryManager.obtainRetrofitService(ApiService.class)
                 .requestUserInfo(map)
+                .compose(RxHelper.handleResult())
+                .compose(RxSchedulers.io_main());
+    }
+
+    @Override
+    public Observable<IntegralEntity> RequestintegralInfo(Map<String, String> map)
+    {
+        return mRepositoryManager.obtainRetrofitService(ApiService.class)
+                .getIntegralDetail(map)
                 .compose(RxHelper.handleResult())
                 .compose(RxSchedulers.io_main());
     }

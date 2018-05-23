@@ -23,6 +23,8 @@ import com.app.footprint.module.my.mvp.model.PersonalInfoEditModel;
 import com.app.footprint.module.my.mvp.presenter.PersonalInfoEditPresenter;
 import com.app.footprint.module.system.bean.LoginEntity;
 
+import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -35,7 +37,7 @@ public class PersonalInfoEditActivity extends BaseActivity<PersonalInfoEditPrese
     private static final String TAG = "PersonalInfoEditActivity";
     private int tab = 0;
     private String title = "";
-    private String content ="";
+    private String content = "";
 
     @BindView(R.id.layout_phone_edit)
     RelativeLayout mPhoneEditLayout;
@@ -59,7 +61,7 @@ public class PersonalInfoEditActivity extends BaseActivity<PersonalInfoEditPrese
     AppCompatButton mCommitButton;
 
     public static void startAction(Activity activity, boolean isFinish) {
-        Intent intent = new Intent(activity, PersonalInfoEditActivity.class);
+        Intent intent = activity.getIntent();
         activity.startActivity(intent);
         if (isFinish) activity.finish();
     }
@@ -79,15 +81,13 @@ public class PersonalInfoEditActivity extends BaseActivity<PersonalInfoEditPrese
 
     @Override
     public void initView(Bundle savedInstanceState) {
-        if (tab == 3)
-        {
+        if (tab == 3) {
             mPhoneEditLayout.setVisibility(View.VISIBLE);
         }
 
         mTitle.setText(title);
 
-        if(!TextUtils.isEmpty(content))
-        {
+        if (!TextUtils.isEmpty(content)) {
             mEdit.setText(content);
             mEdit.setSelection(content.length());
         }
@@ -103,14 +103,12 @@ public class PersonalInfoEditActivity extends BaseActivity<PersonalInfoEditPrese
             case R.id.btn_user_edit_send_phone:
                 //输入验证码
                 String phoneNumber = mEdit.getText().toString();
-                if(TextUtils.isEmpty(phoneNumber)&& !ConstStrings.isNumeric(phoneNumber))
-                {
+                if (TextUtils.isEmpty(phoneNumber) && !ConstStrings.isNumeric(phoneNumber)) {
                     showToast("请输入正确的电话号码！");
                     return;
                 }
 
-                if(phoneNumber.equals(mSharedPrefUtil.getString("phone","")))
-                {
+                if (phoneNumber.equals(mSharedPrefUtil.getString("phone", ""))) {
                     showToast("设置的电话号码与目前的一样，请输入其他电话号码！");
                     return;
                 }
@@ -121,19 +119,16 @@ public class PersonalInfoEditActivity extends BaseActivity<PersonalInfoEditPrese
             case R.id.btn_user_edit_commit_logout:
                 phoneNumber = mEdit.getText().toString();
                 String checkNum = mEditCheckNum.getText().toString();
-                if(TextUtils.isEmpty(phoneNumber) || ((mPhoneEditLayout.getVisibility() == View.VISIBLE) && TextUtils.isEmpty(checkNum)))
-                {
+                if (TextUtils.isEmpty(phoneNumber) || ((mPhoneEditLayout.getVisibility() == View.VISIBLE) && TextUtils.isEmpty(checkNum))) {
                     showToast("请输入更新的数据！");
                     return;
                 }
-                if(tab == 1)
-                {
-                    mPresenter.doUploadName(ApiParamUtil.getUserNickNameIfo(mSharedPrefUtil.getString("userId"),phoneNumber));
-                }else if(tab == 2)
-                {
-                    mPresenter.doUploadName(ApiParamUtil.getUserNameInfo(mSharedPrefUtil.getString("userId"),phoneNumber));
-                }else{
-                    mPresenter.doUploadName(ApiParamUtil.getUserPhoneInfo(mSharedPrefUtil.getString("userId"),phoneNumber,checkNum));
+                if (tab == 1) {
+                    mPresenter.doUploadName(ApiParamUtil.getUserNickNameIfo(mSharedPrefUtil.getString("userId"), phoneNumber));
+                } else if (tab == 2) {
+                    mPresenter.doUploadName(ApiParamUtil.getUserNameInfo(mSharedPrefUtil.getString("userId"), phoneNumber));
+                } else {
+                    mPresenter.doUploadName(ApiParamUtil.getUserPhoneInfo(mSharedPrefUtil.getString("userId"), phoneNumber, checkNum));
                 }
                 break;
         }
@@ -142,6 +137,11 @@ public class PersonalInfoEditActivity extends BaseActivity<PersonalInfoEditPrese
     @Override
     public void onUploadResult(UserInfoEntity userInfoEntity) {
         showToast("更新成功！");
+        if(tab == 1)
+            mSharedPrefUtil.putString("nickName",mEdit.getText().toString());
+        else  if(tab == 2)
+            mSharedPrefUtil.putString("userName",mEdit.getText().toString());
+        finish();
     }
 
     @Override

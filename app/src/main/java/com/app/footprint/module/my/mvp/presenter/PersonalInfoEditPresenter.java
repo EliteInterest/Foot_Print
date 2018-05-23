@@ -1,6 +1,7 @@
 package com.app.footprint.module.my.mvp.presenter;
 
 import com.app.footprint.module.my.bean.UserInfoEntity;
+import com.app.footprint.module.my.mvp.contract.PersonalInfoEditContract;
 import com.app.footprint.module.my.mvp.contract.PersonalInfoEditContract.Presenter;
 import com.app.footprint.module.system.bean.LoginEntity;
 import com.frame.zxmvp.baserx.RxHelper;
@@ -27,7 +28,7 @@ public class PersonalInfoEditPresenter extends Presenter {
 
         mModel.uploadName(requestBody)
                 .compose(RxHelper.bindToLifecycle(mView))
-                .subscribe(new RxSubscriber<UserInfoEntity>(mView) {
+                .subscribe(new RxSubscriber<UserInfoEntity>() {
                     @Override
                     protected void _onNext(UserInfoEntity userInfoEntity) {
                         mView.onUploadResult(userInfoEntity);

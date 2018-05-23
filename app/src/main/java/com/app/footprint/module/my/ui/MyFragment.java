@@ -1,5 +1,6 @@
 package com.app.footprint.module.my.ui;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -10,10 +11,14 @@ import android.widget.TextView;
 import com.app.footprint.R;
 import com.app.footprint.api.ApiParamUtil;
 import com.app.footprint.base.BaseFragment;
+import com.app.footprint.module.my.bean.IntegralEntity;
 import com.app.footprint.module.my.bean.UserInfoEntity;
 import com.app.footprint.module.my.mvp.contract.MyContract;
 import com.app.footprint.module.my.mvp.model.MyModel;
 import com.app.footprint.module.my.mvp.presenter.MyPresenter;
+import com.zx.zxutils.util.ZXDialogUtil;
+import com.zx.zxutils.views.BottomSheet.SheetData;
+import com.zx.zxutils.views.BottomSheet.ZXBottomSheet;
 
 import butterknife.BindBool;
 import butterknife.BindView;
@@ -52,6 +57,9 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
     @BindView(R.id.layout_contact)
     RelativeLayout mContactLayout;
 
+    @BindView(R.id.person_account_content)
+    TextView mSettingsView;
+
 
     public static MyFragment newInstance() {
         MyFragment fragment = new MyFragment();
@@ -65,11 +73,21 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+        refreshUI();
+        doUserData();
+    }
+
+    @Override
+    public void onResume() {
+        refreshUI();
+        super.onResume();
+    }
+
+    private void refreshUI() {
         String userName = mSharedPrefUtil.getString("userName");
         String nickName = mSharedPrefUtil.getString("nickName");
-        Log.i(TAG,"username is " +userName);
-//        String phone = mSharedPrefUtil.getString("phone");
-//        String headPortraits = mSharedPrefUtil.getString("headPortraits");
+        int footPeriod = mSharedPrefUtil.getInt("footPeriod", 0);
+        Log.i(TAG, "username is " + userName);
         if (!TextUtils.isEmpty(userName)) {
             mUserName.setText(userName);
         }
@@ -78,7 +96,20 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
             mNickName.setText(nickName);
         }
 
-        doUserData();
+        String period = "10秒";
+        if (footPeriod != 0) {
+            int merchant = footPeriod / 60;
+            int remainder = footPeriod % 60;
+            if (merchant > 0) {
+                period = String.valueOf(merchant);
+                period += "分钟";
+            } else {
+                period = String.valueOf(remainder);
+                period += "秒";
+            }
+        }
+
+        mSettingsView.setText(period);
     }
 
     private void doUserData() {
@@ -86,7 +117,8 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
         mPresenter.doRequestUserInfo(ApiParamUtil.getUserDataInfo(userId));
     }
 
-    @OnClick({R.id.layout_head, R.id.layout_settings, R.id.layout_contact})
+    @OnClick({R.id.layout_head, R.id.layout_settings, R.id.layout_contact,
+                R.id.RouteCount_layout,R.id.FootmarkCount_layout,R.id.Integral_layout,R.id.VisitVolume_layout})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout_head:
@@ -94,9 +126,64 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
                 break;
 
             case R.id.layout_settings:
+                ZXBottomSheet.initList(getActivity())
+                        .addItem("10秒")
+                        .addItem("30秒")
+                        .addItem("1分钟")
+                        .addItem("2分钟")
+                        .addItem("3分钟")
+                        .setOnItemClickListener(new ZXBottomSheet.OnSheetItemClickListener() {
+                            @Override
+                            public void onSheetItemClick(SheetData sheetData, int i) {
+                                String name = sheetData.getName();
+                                mSettingsView.setText(name);
+
+                                switch (i) {
+                                    case 0:
+                                        mSharedPrefUtil.putInt("footPeriod", 10);
+                                        break;
+                                    case 1:
+                                        mSharedPrefUtil.putInt("footPeriod", 30);
+                                        break;
+                                    case 2:
+                                        mSharedPrefUtil.putInt("footPeriod", 60);
+                                        break;
+                                    case 3:
+                                        mSharedPrefUtil.putInt("footPeriod", 120);
+                                        break;
+                                    case 4:
+                                        mSharedPrefUtil.putInt("footPeriod", 180);
+                                        break;
+                                    default:
+                                        mSharedPrefUtil.putInt("footPeriod", 10);
+                                        break;
+                                }
+                            }
+                        })
+                        .showCheckMark(true)
+                        .setCheckIndex(0)
+                        .showCloseView(false)
+                        .build()
+                        .show();
                 break;
 
             case R.id.layout_contact:
+                ContactActivity.startAction(getActivity(), false);
+                break;
+
+            case R.id.RouteCount_layout://路线
+                break;
+
+            case R.id.FootmarkCount_layout://脚印
+                break;
+
+            case R.id.Integral_layout://积分
+                showLoading("正在获取积分");
+                String userId = mSharedPrefUtil.getString("userId");
+                mPresenter.doRequestintegralInfo(ApiParamUtil.getUserDataInfo(userId));
+                break;
+
+            case R.id.VisitVolume_layout://访问
                 break;
 
 
@@ -116,5 +203,11 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
         mFootmarkCount.setText(String.valueOf(FootmarkCount));
         mIntegral.setText(String.valueOf(Integral));
         mVisitVolume.setText(String.valueOf(VisitVolume));
+    }
+
+    @Override
+    public void onRequestIntergralInfoResult(IntegralEntity integralEntity) {
+        dismissLoading();
+        showLoading("获取成功");
     }
 }

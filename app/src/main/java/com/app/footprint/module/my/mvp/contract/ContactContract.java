@@ -8,7 +8,7 @@ import com.frame.zxmvp.base.IModel;
  * Create By admin On 2017/7/11
  * 功能：
  */
-public interface PersonalInfoContract {
+public interface ContactContract {
     //对于经常使用的关于UI的方法可以定义到IView中,如显示隐藏进度条,和显示文字消息
     interface View extends IView {
 
@@ -22,8 +22,5 @@ public interface PersonalInfoContract {
     //方法
     abstract class Presenter extends BasePresenter<View, Model> {
 
-    }
-
-    public interface ActivityRequestCode { int SHOW_MAP_DEPOT = 1;
     }
 }

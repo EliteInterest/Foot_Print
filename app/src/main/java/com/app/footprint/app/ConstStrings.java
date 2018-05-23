@@ -18,6 +18,7 @@ public class ConstStrings {
     public static final String RESPONSE_SUCCESS = "1"; // 请求成功
     public static final String arcgisKey = "5SKIXc21JlankElJ";
     public static String LOCAL_PATH;
+    public static String LOCAL_HEAD_PIC_PATH = "";
     public static final String ZHSQ_FILE_720MAP_DATA_SAMPLE_URL = "http://222.178.118.101:6084/arcgis/rest/services/GHDW/JZFP720/MapServer";
 
     public static String getDatabasePath(){

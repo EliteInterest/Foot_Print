@@ -34,7 +34,6 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
     @BindView(R.id.tvp_main)
     ZXTabViewPager tvpMain;
 
-
     public static void startAction(Activity activity, boolean isFinish) {
         Intent intent = new Intent(activity, MainActivity.class);
         activity.startActivity(intent);
@@ -107,5 +106,4 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
             showToast("请再点击一次, 确认退出...");
         }
     }
-
 }

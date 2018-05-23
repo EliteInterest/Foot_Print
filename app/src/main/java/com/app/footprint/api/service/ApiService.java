@@ -1,5 +1,6 @@
 package com.app.footprint.api.service;
 
+import com.app.footprint.module.my.bean.IntegralEntity;
 import com.app.footprint.module.my.bean.UserInfoEntity;
 import com.app.footprint.module.system.bean.LoginEntity;
 import com.app.footprint.module.system.bean.VersionEntity;
@@ -49,4 +50,7 @@ public interface ApiService {
     @Headers({"Content-type:application/json;charset=UTF-8"})
     @POST("/fsms/user/phone/upload")
     Observable<BaseRespose<UserInfoEntity>> uploadPhone(@Body RequestBody param);
+
+    @GET("/fsms/integral/details/info")
+    Observable<BaseRespose<IntegralEntity>> getIntegralDetail(@QueryMap Map<String, String> map);
 }
