@@ -1,16 +1,19 @@
 package com.app.footprint.module.map.ui;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationClient;
-import com.amap.api.location.AMapLocationClientOption;
-import com.amap.api.location.AMapLocationListener;
+import com.amap.api.services.core.LatLonPoint;
+import com.amap.api.services.geocoder.GeocodeResult;
+import com.amap.api.services.geocoder.GeocodeSearch;
+import com.amap.api.services.geocoder.RegeocodeQuery;
+import com.amap.api.services.geocoder.RegeocodeResult;
 import com.app.footprint.R;
 import com.app.footprint.app.ConstStrings;
 import com.app.footprint.base.BaseFragment;
@@ -34,9 +37,12 @@ import com.esri.core.io.UserCredentials;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import rx.functions.Action1;
 
 /**
  * Create By admin On 2017/7/11
@@ -67,13 +73,8 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
     private GraphicsLayer mMarkersGLayer = new GraphicsLayer();// 用于展示主体或任务结果注记
     private GraphicsLayer idenLayer = new GraphicsLayer();
 
-    //声明AMapLocationClient类对象
-    private AMapLocationClient mLocationClient = null;
-    //声明定位回调监听器
-    private AMapLocationListener mLocationListener;
-    //声明AMapLocationClientOption对象
-    private AMapLocationClientOption mLocationOption = null;
-
+    private GeocodeSearch geocodeSearch;
+    private Timer timer = new Timer();
 
     public static MapFragment newInstance() {
         MapFragment fragment = new MapFragment();
@@ -94,39 +95,33 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
         initMap();
         initGaoDe();
         footRecordView.setMapView(mMapView);
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                handler.sendEmptyMessage(0);
+            }
+        }, 100, 2000);
+        mRxManager.on("refreshPoint", (Action1<Boolean>) bool -> footRecordView.refreshPoints());
     }
 
     /**
      * 初始化高德定位
      */
     private void initGaoDe() {
-        mLocationOption = new AMapLocationClientOption();
-        mLocationClient = new AMapLocationClient(getActivity().getApplicationContext());
-        mLocationListener = new AMapLocationListener() {
+        geocodeSearch = new GeocodeSearch(getActivity());
+        geocodeSearch.setOnGeocodeSearchListener(new GeocodeSearch.OnGeocodeSearchListener() {
             @Override
-            public void onLocationChanged(AMapLocation aMapLocation) {
-                if (aMapLocation != null) {
-                    if (aMapLocation.getErrorCode() == 0) {
-                        tvAddress.setText(aMapLocation.getAddress());
-                    }
+            public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
+                if (regeocodeResult != null && regeocodeResult.getRegeocodeAddress() != null) {
+                    String address = regeocodeResult.getRegeocodeAddress().getFormatAddress();
+                    tvAddress.setText(address);
                 }
             }
-        };
-        mLocationClient.setLocationListener(mLocationListener);
-        /**
-         * 设置定位场景，目前支持三种场景（签到、出行、运动，默认无场景）
-         */
-        mLocationOption.setLocationPurpose(AMapLocationClientOption.AMapLocationPurpose.Sport);
-        if (null != mLocationClient) {
-            mLocationClient.setLocationOption(mLocationOption);
-            //设置场景模式后最好调用一次stop，再调用start以保证场景模式生效
-            mLocationClient.stopLocation();
-            mLocationClient.startLocation();
-        }
-        //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
-        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-        //设置是否返回地址信息（默认返回地址信息）
-        mLocationOption.setNeedAddress(true);
+
+            @Override
+            public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
+            }
+        });
     }
 
     /**
@@ -209,6 +204,21 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
         }
     };
 
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 0) {
+                Location location = GpsUtil.getLocation(getActivity());
+                LatLonPoint latLonPoint = new LatLonPoint(location.getLatitude(), location.getLongitude());
+                // 第一个参数表示一个Latlng，第二参数表示范围多少米，第三个参数表示是火系坐标系还是GPS原生坐标系
+                RegeocodeQuery query = new RegeocodeQuery(latLonPoint, 200, GeocodeSearch.GPS);
+                geocodeSearch.getFromLocationAsyn(query);
+            }
+        }
+    };
+
     @Override
     public void onPause() {
         super.onPause();
@@ -225,7 +235,7 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mLocationClient.onDestroy();//销毁定位客户端，同时销毁本地定位服务。
+        timer.cancel();
         footRecordView.onDestory();
     }
 }

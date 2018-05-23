@@ -1,5 +1,6 @@
 package com.app.footprint.base;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -22,6 +23,7 @@ public abstract class BaseActivity<T extends BasePresenter, E extends BaseModel>
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         MyApplication.getInstance().addActivity(this);
     }

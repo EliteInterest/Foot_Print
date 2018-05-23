@@ -8,34 +8,25 @@
     <RelativeLayout
         android:id="@+id/personal_title"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/px80"
-        android:gravity="center_vertical"
-        android:paddingTop="@dimen/px30"
-        android:background="@color/trandarkgrey"
-        android:orientation="horizontal">
+        android:layout_height="@dimen/title_height"
+        android:background="@color/colorPrimaryDark">
 
         <TextView
             android:id="@+id/personal_back"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_alignParentLeft="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:text="返回"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:textSize="@dimen/px20"/>
+            android:layout_centerVertical="true"
+            android:background="@mipmap/title_back"/>
 
         <TextView
-            android:layout_width="match_parent"
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/personal_back"
-            android:gravity="center"
-            android:singleLine="true"
+            android:layout_centerInParent="true"
             android:text="个人信息"
             android:textColor="@color/white"
-            android:textSize="@dimen/px30"/>
+            android:textSize="@dimen/text_size_large"/>
 
     </RelativeLayout>
 

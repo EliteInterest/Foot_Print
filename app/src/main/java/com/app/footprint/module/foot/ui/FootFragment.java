@@ -4,12 +4,17 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.app.footprint.R;
+import com.app.footprint.app.ConstStrings;
 import com.app.footprint.base.BaseFragment;
+import com.app.footprint.module.foot.bean.FootFileBean;
 import com.app.footprint.module.foot.mvp.contract.FootContract;
 import com.app.footprint.module.foot.mvp.model.FootModel;
 import com.app.footprint.module.foot.mvp.presenter.FootPresenter;
 import com.app.footprint.module.map.ui.MapFragment;
 import com.zx.zxutils.util.ZXFragmentUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Create By admin On 2017/7/11
@@ -31,6 +36,11 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
     @Override
     protected void initView(Bundle savedInstanceState) {
         ZXFragmentUtil.addFragment(getFragmentManager(), MapFragment.newInstance(), R.id.fm_map);
+
+        if (!mSharedPrefUtil.contains(ConstStrings.FootFiles) || mSharedPrefUtil.getList(ConstStrings.FootFiles) == null) {
+            List<FootFileBean> footFiles = new ArrayList<>();
+            mSharedPrefUtil.putList(ConstStrings.FootFiles, footFiles);
+        }
     }
 
     public void onViewClicked(View view) {

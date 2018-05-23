@@ -10,53 +10,49 @@ import java.util.List;
 
 public class FootFileBean implements Serializable {
 
-    private PictureBean pictureBean;
-
-    private VedioBean vedioBean;
-
-    private TextBean textBean;
-
-    public PictureBean getPictureBean() {
-        return pictureBean;
-    }
-
-    public void setPictureBean(PictureBean pictureBean) {
-        this.pictureBean = pictureBean;
-    }
-
-    public VedioBean getVedioBean() {
-        return vedioBean;
-    }
-
-    public void setVedioBean(VedioBean vedioBean) {
-        this.vedioBean = vedioBean;
-    }
-
-    public TextBean getTextBean() {
-        return textBean;
-    }
-
-    public void setTextBean(TextBean textBean) {
-        this.textBean = textBean;
-    }
-
-    public static class PictureBean implements Serializable {
-        private String description;
         private String point;
-        private List<PicChildBean> paths;
+        private String description;
+        private List<PicBean> picPaths;
+        private String vedioShootPath;
+        private String vedioPath;
+        private String textName;
 
-        public PictureBean(String description, String point, List<PicChildBean> paths) {
-            this.description = description;
+        public enum Type {
+            Camera,
+            Vedio,
+            Text
+        }
+
+        private Type type = Type.Camera;
+
+        public FootFileBean(String point, String description, List<PicBean> picPaths) {
             this.point = point;
-            this.paths = paths;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public void setDescription(String description) {
             this.description = description;
+            this.picPaths = picPaths;
+            this.type = Type.Camera;
+        }
+
+        public FootFileBean(String point, String description, String vedioShootPath, String vedioPath) {
+            this.point = point;
+            this.description = description;
+            this.vedioShootPath = vedioShootPath;
+            this.vedioPath = vedioPath;
+            this.type = Type.Vedio;
+        }
+
+        public FootFileBean(String point, String description, String textName) {
+            this.point = point;
+            this.description = description;
+            this.textName = textName;
+            this.type = Type.Text;
+        }
+
+        public Type getType() {
+            return type;
+        }
+
+        public void setType(Type type) {
+            this.type = type;
         }
 
         public String getPoint() {
@@ -67,19 +63,51 @@ public class FootFileBean implements Serializable {
             this.point = point;
         }
 
-        public List<PicChildBean> getPaths() {
-            return paths;
+        public String getVedioShootPath() {
+            return vedioShootPath;
         }
 
-        public void setPaths(List<PicChildBean> paths) {
-            this.paths = paths;
+        public void setVedioShootPath(String vedioShootPath) {
+            this.vedioShootPath = vedioShootPath;
         }
 
-        public static class PicChildBean implements Serializable {
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+        public List<PicBean> getPicPaths() {
+            return picPaths;
+        }
+
+        public void setPicPaths(List<PicBean> picPaths) {
+            this.picPaths = picPaths;
+        }
+
+        public String getVedioPath() {
+            return vedioPath;
+        }
+
+        public void setVedioPath(String vedioPath) {
+            this.vedioPath = vedioPath;
+        }
+
+        public String getTextName() {
+            return textName;
+        }
+
+        public void setTextName(String textName) {
+            this.textName = textName;
+        }
+
+        public static class PicBean implements Serializable {
             private String path;
             private String remark;
 
-            public PicChildBean(String path, String remark) {
+            public PicBean(String path, String remark) {
                 this.path = path;
                 this.remark = remark;
             }
@@ -100,87 +128,4 @@ public class FootFileBean implements Serializable {
                 this.remark = remark;
             }
         }
-    }
-
-    public static class VedioBean implements Serializable {
-        private String description;
-        private String point;
-        private String path;
-        private String picShootPath;
-
-        public VedioBean(String description, String point, String path, String picShootPath) {
-            this.description = description;
-            this.point = point;
-            this.path = path;
-            this.picShootPath = picShootPath;
-        }
-
-        public String getPicShootPath() {
-            return picShootPath;
-        }
-
-        public void setPicShootPath(String picShootPath) {
-            this.picShootPath = picShootPath;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public void setDescription(String description) {
-            this.description = description;
-        }
-
-        public String getPoint() {
-            return point;
-        }
-
-        public void setPoint(String point) {
-            this.point = point;
-        }
-
-        public String getPath() {
-            return path;
-        }
-
-        public void setPath(String path) {
-            this.path = path;
-        }
-    }
-
-    public static class TextBean implements Serializable {
-        private String name;
-        private String description;
-        private String point;
-
-        public TextBean(String name, String description, String point) {
-            this.name = name;
-            this.description = description;
-            this.point = point;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public void setDescription(String description) {
-            this.description = description;
-        }
-
-        public String getPoint() {
-            return point;
-        }
-
-        public void setPoint(String point) {
-            this.point = point;
-        }
-    }
 }

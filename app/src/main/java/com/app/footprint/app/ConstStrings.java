@@ -14,6 +14,7 @@ public class ConstStrings {
     public static String APP_NAME = "ZHSQ";
     public static String DEVICE_TYPE = "android_phone";
     private static final String APPNAME = "MaincityMap";
+    public static final String FootFiles = "footFiles";
     public static final String RESPONSE_SUCCESS = "1"; // 请求成功
     public static final String arcgisKey = "5SKIXc21JlankElJ";
     public static String LOCAL_PATH;

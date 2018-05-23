@@ -92,7 +92,8 @@ dependencies {
     })
     compile 'com.esri.arcgis.android:arcgis-android:10.2.8'
     compile project(':zxmvp')
-    compile 'com.amap.api:location:4.0.1'
+    compile 'com.amap.api:search:5.0.0'
+//    compile 'com.amap.api:location:4.0.1'
     compile 'com.github.StannyBing:ZXUtils:2.1.0'
     compile 'com.android.support:multidex:1.0.2'
 //    implementation files('lib/AMap_Location_V4.0.1_20180426.jar')

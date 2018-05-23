@@ -16,7 +16,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.app.footprint.R;
-import com.app.footprint.module.foot.ui.CameraActivity;
+import com.app.footprint.app.ConstStrings;
+import com.app.footprint.module.foot.bean.FootFileBean;
+import com.app.footprint.module.foot.ui.EditInfoActivity;
 import com.app.footprint.module.map.func.util.GpsUtil;
 import com.esri.android.map.GraphicsLayer;
 import com.esri.android.map.MapView;
@@ -26,6 +28,7 @@ import com.esri.core.geometry.Point;
 import com.esri.core.geometry.Polyline;
 import com.esri.core.map.Graphic;
 import com.esri.core.symbol.SimpleLineSymbol;
+import com.esri.core.symbol.SimpleMarkerSymbol;
 import com.zx.zxutils.util.ZXDialogUtil;
 import com.zx.zxutils.util.ZXSharedPrefUtil;
 import com.zx.zxutils.util.ZXTimeUtil;
@@ -60,6 +63,7 @@ public class FootRecordView extends RelativeLayout implements View.OnClickListen
     private List<Graphic> mGraphicList = new ArrayList<>();
     private List<Point> mPoints = new ArrayList<>();
     private SimpleLineSymbol lineSymbol;
+    private SimpleMarkerSymbol markerSymbol;
 
     private int countTime = 0;//计时
     private double countSize = 0;//里程
@@ -118,6 +122,7 @@ public class FootRecordView extends RelativeLayout implements View.OnClickListen
         lastCurrentTime = System.currentTimeMillis();
         zxSharedPrefUtil = new ZXSharedPrefUtil();
         tvTabDate.setText(ZXTimeUtil.getTime(lastCurrentTime) + " " + ZXTimeUtil.dateToWeek(lastCurrentTime));
+
     }
 
     /**
@@ -132,6 +137,7 @@ public class FootRecordView extends RelativeLayout implements View.OnClickListen
         }
         routeLayer = new GraphicsLayer();
         lineSymbol = new SimpleLineSymbol(Color.RED, 2, SimpleLineSymbol.STYLE.SOLID);
+        markerSymbol = new SimpleMarkerSymbol(Color.RED, 8, SimpleMarkerSymbol.STYLE.CIRCLE);
         mapView.addLayer(routeLayer);
 
         if (zxSharedPrefUtil.getBool(RECORD_STATUS)
@@ -146,6 +152,7 @@ public class FootRecordView extends RelativeLayout implements View.OnClickListen
                         zxSharedPrefUtil.remove(RECORD_POINTS);
                         zxSharedPrefUtil.remove(RECORD_START_TIME);
                         zxSharedPrefUtil.putBool(RECORD_STATUS, false);
+                        zxSharedPrefUtil.putList(ConstStrings.FootFiles, new ArrayList<>());
                     });
         }
     }
@@ -179,13 +186,13 @@ public class FootRecordView extends RelativeLayout implements View.OnClickListen
 
                 break;
             case R.id.iv_record_tab_camera:
-                CameraActivity.startAction((Activity) context, false, CameraActivity.MAPCODE);
+                EditInfoActivity.startAction((Activity) context, false, EditInfoActivity.EditType.MapRoutePic);
                 break;
             case R.id.iv_record_tab_vedio:
-                CameraActivity.startAction((Activity) context, false, CameraActivity.MAPCODE);
+                EditInfoActivity.startAction((Activity) context, false, EditInfoActivity.EditType.MapRouteVedio);
                 break;
             case R.id.iv_record_tab_text:
-
+                EditInfoActivity.startAction((Activity) context, false, EditInfoActivity.EditType.MapRouteText);
                 break;
             default:
                 break;
@@ -293,5 +300,23 @@ public class FootRecordView extends RelativeLayout implements View.OnClickListen
         routeTimer.cancel();
         handler.removeMessages(0);
         handler.removeMessages(1);
+    }
+
+    /**
+     * 地图绘制点集合
+     */
+    public void refreshPoints() {
+        List<FootFileBean> footFiles = zxSharedPrefUtil.getList(ConstStrings.FootFiles);
+        if (footFiles == null || footFiles.size() == 0) {
+            return;
+        }
+        for (FootFileBean footFile : footFiles) {
+            String[] pointArray = footFile.getPoint().split(",");
+            if (pointArray.length == 2) {
+                Point point = new Point(Double.parseDouble(pointArray[0]), Double.parseDouble(pointArray[1]));
+                Graphic graphic = new Graphic(point, markerSymbol);
+                routeLayer.addGraphic(graphic);
+            }
+        }
     }
 }

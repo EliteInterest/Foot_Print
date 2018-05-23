@@ -50,11 +50,13 @@
             android:id="@+id/tv_location_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:maxWidth="160dp"
             android:text="位置信息"
             android:textColor="@color/colorAccent"
-            android:textSize="@dimen/text_size_large"/>
+            android:textSize="@dimen/text_size_normal"/>
 
         <TextView
+            android:id="@+id/tv_location_point"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="(106.49,29.60)"
@@ -77,12 +79,54 @@
             android:textSize="@dimen/text_size_normal"/>
     </LinearLayout>
 
-    <view
+    <EditText
+        android:id="@+id/et_edit_text_name"
         android:layout_width="match_parent"
-        android:layout_height="1px"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:visibility="gone"
+        android:singleLine="true"
+        android:layout_margin="10dp"
+        android:textSize="@dimen/text_size_normal"
+        android:hint="事件名称(必填)"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1.5px"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:background="@color/colorPrimaryDark"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_edit_picture"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <VideoView
+            android:id="@+id/vedio_edit_view"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_margin="10dp"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/et_edit_remark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:maxLength="200"
+        android:background="@null"
+        android:textSize="@dimen/text_size_normal"
+        android:hint="照片描述"/>
 
 </LinearLayout>

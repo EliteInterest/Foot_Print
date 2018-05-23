@@ -37,14 +37,14 @@ public class CameraActivity extends BaseActivity<CameraPresenter, CameraModel> i
     EditText etRemark;
 
     private FootFileBean footFileBean;
-    public static final int MAPCODE = 1;
-    public static final int COMMITCODE = 2;
-    private int requestCode = MAPCODE;
+    private boolean isFromMap = true;
+    private int cameraType = 0;
 
-    public static void startAction(Activity activity, boolean isFinish, int requestCode) {
+    public static void startAction(Activity activity, boolean isFinish, boolean isFromMap, int cameraType) {
         Intent intent = new Intent(activity, CameraActivity.class);
-        intent.putExtra("requestCode", requestCode);
-        activity.startActivityForResult(intent, requestCode);
+        intent.putExtra("isFromMap", isFromMap);
+        intent.putExtra("cameraType", cameraType);
+        activity.startActivityForResult(intent, 0);
         if (isFinish) activity.finish();
     }
 
@@ -56,14 +56,8 @@ public class CameraActivity extends BaseActivity<CameraPresenter, CameraModel> i
     @Override
     public void initView(Bundle savedInstanceState) {
         ZXStatusBarCompat.translucent(this);
-        requestCode = getIntent().getIntExtra("requestCode", requestCode);
-        if (mSharedPrefUtil.contains("footFileBean")) {
-            footFileBean = mSharedPrefUtil.getObject("footFileBean");
-        } else {
-            footFileBean = new FootFileBean();
-            mSharedPrefUtil.putObject("footFileBean", footFileBean);
-        }
-
+        isFromMap = getIntent().getBooleanExtra("isFromMap", true);
+        cameraType = getIntent().getIntExtra("cameraType", 0);
         File file = new File(ConstStrings.getCachePath());
         if (!file.exists()) {
             file.mkdirs();
@@ -71,7 +65,7 @@ public class CameraActivity extends BaseActivity<CameraPresenter, CameraModel> i
 
         //设置视频保存路径
         jCameraView.setSaveVideoPath(ConstStrings.getCachePath())
-                .setCameraMode(ZXCameraView.BUTTON_STATE_BOTH)
+                .setCameraMode(cameraType == 0 ? ZXCameraView.BUTTON_STATE_ONLY_CAPTURE : ZXCameraView.BUTTON_STATE_ONLY_RECORDER)
                 .setMaxVedioDuration(30)
                 .setMediaQuality(ZXCameraView.MEDIA_QUALITY_MIDDLE)
                 .setJCameraLisenter(new CameraListener() {
@@ -115,18 +109,29 @@ public class CameraActivity extends BaseActivity<CameraPresenter, CameraModel> i
                     public void onError(ErrorType errorType) {
 
                     }
-                });
+                })
+                .setTip(cameraType == 0 ? "点击拍照" : "长按录像");
+        jCameraView.setLeftClickListener(() -> {
+            if (isFromMap) {
+                setResult(-1);
+            }
+            finish();
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isFromMap) {
+            setResult(-1);
+        }
+        finish();
     }
 
     private void onDataBack(Bundle bundle) {
-        if (requestCode == MAPCODE) {
-            EditInfoActivity.startAction(this, true,bundle);
-        } else if (requestCode == COMMITCODE) {
-            Intent intent = new Intent();
-            intent.putExtras(bundle);
-            setResult(100, intent);
-            finish();
-        }
+        Intent intent = new Intent();
+        intent.putExtras(bundle);
+        setResult(0x02, intent);
+        finish();
     }
 
     public void onViewClicked(View view) {

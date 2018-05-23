@@ -295,21 +295,18 @@
     <RelativeLayout
         android:id="@+id/personal_title"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/px50"
-        android:layout_alignParentTop="true"
-        android:background="@color/trandarkgrey"
-        android:gravity="center_vertical"
-        android:visibility="visible">
+        android:layout_height="@dimen/title_height"
+        android:background="@color/colorPrimaryDark">
+
 
         <TextView
-            android:layout_width="match_parent"
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:gravity="center"
-            android:singleLine="true"
+            android:layout_centerInParent="true"
             android:text="个人中心"
             android:textColor="@color/white"
-            android:textSize="@dimen/px25" />
+            android:textSize="@dimen/text_size_large"/>
 
     </RelativeLayout>
 </RelativeLayout>

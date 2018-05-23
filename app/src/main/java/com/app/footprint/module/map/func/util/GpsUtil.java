@@ -13,7 +13,6 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.widget.Toast;
 
-import com.app.footprint.module.system.ui.MainActivity;
 import com.esri.android.map.LocationDisplayManager;
 import com.esri.android.map.MapView;
 import com.esri.core.geometry.Point;
@@ -25,7 +24,7 @@ public class GpsUtil {
 
     private static double EARTH_RADIUS = 6378.137;
     private static MapView mapView;
-    private static MainActivity mAtivity;
+    private static Activity mAtivity;
     private static boolean isLocationChanged = false;
     private static final double GPS_SCALE = 30000;
     private static LocationDisplayManager locationDisplayManager;
@@ -49,9 +48,9 @@ public class GpsUtil {
     }
 
 
-    public static void location(MapView mMapView, MainActivity mainActivity) {
+    public static void location(MapView mMapView, Activity activity) {
         mapView = mMapView;
-        mAtivity = mainActivity;
+        mAtivity = activity;
         isLocationChanged = true;
         if (mMapView.isLoaded()) {
             locationDisplayManager = mMapView.getLocationDisplayManager();
