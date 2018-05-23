@@ -91,13 +91,13 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name=".module.map.ui.MapChangeLocationActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".module.foot.ui.PicPreviewActivity"
-            android:screenOrientation="portrait">
-        </activity>
-		<activity 
-			android:name=".module.my.ui.ContactActivity">
-		</activity>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".module.foot.ui.PicPreviewActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".module.my.ui.ContactActivity" />
+        <activity android:name=".module.my.ui.IntegralActivity" />
+        <activity android:name=".module.my.MyFootPointActivity"></activity>
     </application>
 
 </manifest>

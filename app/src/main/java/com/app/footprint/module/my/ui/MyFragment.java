@@ -178,9 +178,7 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
                 break;
 
             case R.id.Integral_layout://积分
-                showLoading("正在获取积分");
-                String userId = mSharedPrefUtil.getString("userId");
-                mPresenter.doRequestintegralInfo(ApiParamUtil.getUserDataInfo(userId));
+                IntegralActivity.startAction(getActivity(),false);
                 break;
 
             case R.id.VisitVolume_layout://访问
@@ -203,11 +201,5 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
         mFootmarkCount.setText(String.valueOf(FootmarkCount));
         mIntegral.setText(String.valueOf(Integral));
         mVisitVolume.setText(String.valueOf(VisitVolume));
-    }
-
-    @Override
-    public void onRequestIntergralInfoResult(IntegralEntity integralEntity) {
-        dismissLoading();
-        showLoading("获取成功");
     }
 }
