@@ -26,35 +26,43 @@
 
         <ImageView
             android:id="@+id/personal_image"
-            android:layout_width="@dimen/px90"
-            android:layout_height="@dimen/px90"
+            android:layout_width="@dimen/px70"
+            android:layout_height="@dimen/px70"
             android:layout_alignParentLeft="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/personal_nickname_textview"
+            android:layout_marginLeft="50dp"
+            android:layout_marginStart="50dp"
             android:background="@mipmap/head_image" />
 
         <TextView
             android:id="@+id/personal_nickname_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/view1"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@+id/personal_image"
             android:layout_toRightOf="@+id/personal_image"
             android:gravity="center_vertical"
             android:padding="5dp"
             android:text="NickName"
             android:textColor="@color/black"
-            android:textSize="@dimen/px20" />
+            android:textSize="@dimen/px20"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/personal_username_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/personal_nickname_textview"
+            android:layout_alignStart="@+id/personal_nickname_textview"
             android:layout_below="@+id/personal_nickname_textview"
-            android:layout_toRightOf="@+id/personal_image"
             android:gravity="center_vertical"
             android:padding="5dp"
             android:text="UserName"
             android:textColor="@color/black"
-            android:textSize="@dimen/px20" />
+            android:textSize="@dimen/px15" />
 
         <View
             android:id="@+id/view1"
@@ -67,11 +75,12 @@
             android:layout_width="@dimen/px18"
             android:layout_height="@dimen/px20"
             android:layout_below="@+id/view1"
-            android:layout_alignParentRight="true"
-            android:paddingTop="@dimen/px40"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:background="@mipmap/arrow_right_blue" />
+            android:layout_marginLeft="35dp"
+            android:layout_marginStart="35dp"
+            android:layout_toEndOf="@+id/personal_nickname_textview"
+            android:layout_toRightOf="@+id/personal_nickname_textview"
+            android:background="@mipmap/arrow_right_blue"
+            android:paddingTop="@dimen/px40" />
 
     </RelativeLayout>
 
@@ -93,8 +102,10 @@
             android:id="@+id/RouteCount_layout"
             android:background="#ffffff"
             android:layout_margin="1dp"
-            android:layout_marginTop="@dimen/px10"
-            android:layout_marginLeft="@dimen/px10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/px5"
+            android:layout_marginBottom="@dimen/px5"
             android:orientation="vertical"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
@@ -103,12 +114,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:textSize="@dimen/px20"
+                android:textSize="@dimen/px18"
                 android:textStyle="bold"
                 android:text="路线"/>
             <View
                 android:layout_width="fill_parent"
-                android:layout_height="@dimen/px20"/>
+                android:layout_height="@dimen/px10"/>
             <TextView
                 android:id="@+id/RouteCount"
                 android:layout_width="wrap_content"
@@ -121,7 +132,10 @@
             android:id="@+id/FootmarkCount_layout"
             android:orientation="vertical"
             android:layout_margin="1dp"
-            android:layout_marginTop="@dimen/px10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/px5"
+            android:layout_marginBottom="@dimen/px5"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:gravity="center"
@@ -130,12 +144,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:textSize="@dimen/px20"
+                android:textSize="@dimen/px18"
                 android:textStyle="bold"
                 android:text="脚印"/>
             <View
                 android:layout_width="fill_parent"
-                android:layout_height="@dimen/px20"/>
+                android:layout_height="@dimen/px10"/>
             <TextView
                 android:id="@+id/FootmarkCount"
                 android:layout_width="wrap_content"
@@ -151,7 +165,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="@dimen/px10"
+            android:layout_marginTop="@dimen/px5"
+            android:layout_marginBottom="@dimen/px5"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:gravity="center">
@@ -159,12 +174,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:textSize="@dimen/px20"
+                android:textSize="@dimen/px18"
                 android:textStyle="bold"
                 android:text="积分"/>
             <View
                 android:layout_width="fill_parent"
-                android:layout_height="@dimen/px20"/>
+                android:layout_height="@dimen/px10"/>
             <TextView
                 android:id="@+id/Integral"
                 android:layout_width="wrap_content"
@@ -182,18 +197,19 @@
             android:orientation="vertical"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
-            android:layout_marginTop="@dimen/px10"
+            android:layout_marginTop="@dimen/px5"
+            android:layout_marginBottom="@dimen/px5"
             android:gravity="center">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:textSize="@dimen/px20"
+                android:textSize="@dimen/px18"
                 android:textStyle="bold"
                 android:text="访问"/>
             <View
                 android:layout_width="fill_parent"
-                android:layout_height="@dimen/px20"/>
+                android:layout_height="@dimen/px10"/>
             <TextView
                 android:id="@+id/VisitVolume"
                 android:layout_width="wrap_content"
@@ -217,11 +233,13 @@
 
         <ImageView
             android:id="@+id/personal_settings_icon"
-            android:layout_width="@dimen/px40"
-            android:layout_height="@dimen/px40"
+            android:layout_width="@dimen/px30"
+            android:layout_height="@dimen/px30"
             android:layout_alignParentLeft="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginStart="30dp"
             android:background="@mipmap/setting"
             android:gravity="center_vertical" />
 
@@ -229,23 +247,33 @@
             android:id="@+id/person_account_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@+id/personal_settings_icon"
+            android:layout_toLeftOf="@+id/person_account_content"
             android:layout_toRightOf="@+id/personal_settings_icon"
+            android:layout_toStartOf="@+id/person_account_content"
             android:gravity="center_vertical"
             android:padding="5dp"
             android:text="设置"
             android:textColor="@color/black"
-            android:textSize="@dimen/px20" />
+            android:textSize="@dimen/px18" />
 
         <TextView
             android:id="@+id/person_account_content"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="18dp"
+            android:layout_marginRight="18dp"
             android:gravity="center_vertical"
             android:padding="5dp"
             android:text="10秒"
             android:textColor="@color/dp_blue"
-            android:textSize="@dimen/px20" />
+            android:textSize="@dimen/px18" />
 
     </RelativeLayout>
 
@@ -268,11 +296,13 @@
 
         <ImageView
             android:id="@+id/personal_message_icon"
-            android:layout_width="@dimen/px40"
-            android:layout_height="@dimen/px40"
+            android:layout_width="@dimen/px30"
+            android:layout_height="@dimen/px30"
             android:layout_alignParentLeft="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginStart="30dp"
             android:background="@mipmap/contact"
             android:gravity="center_vertical" />
 
@@ -280,20 +310,26 @@
             android:id="@+id/person_message_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@+id/personal_message_icon"
             android:layout_toRightOf="@+id/personal_message_icon"
             android:gravity="center_vertical"
             android:padding="5dp"
             android:text="联系"
             android:textColor="@color/black"
-            android:textSize="@dimen/px20" />
+            android:textSize="@dimen/px18" />
 
         <ImageView
             android:id="@+id/message_right_arrow"
-            android:layout_width="@dimen/px40"
-            android:layout_height="@dimen/px40"
+            android:layout_width="@dimen/px30"
+            android:layout_height="@dimen/px30"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_alignTop="@+id/personal_message_icon"
+            android:layout_marginEnd="25dp"
+            android:layout_marginRight="25dp"
             android:background="@mipmap/right_extend2" />
     </RelativeLayout>
 
