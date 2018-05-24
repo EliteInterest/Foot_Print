@@ -13,7 +13,54 @@ public class IntegralEntity {
     public RowsBean Footmark;
     public RowsBean Visit;
     public RowsBean Login;
-    public List<RowsBean1> DetailsInfo;
+    public List<DetailsBean> DetailsInfo;
+
+    public RowsBean getRoute() {
+        return this.Route;
+    }
+
+    public void setRoute(RowsBean route) {
+        this.Route = Route;
+    }
+
+    public RowsBean getFootmark() {
+        return this.Footmark;
+    }
+
+    public void setFootmark(RowsBean Footmark) {
+        this.Footmark = Footmark;
+    }
+
+
+    public RowsBean getVisit() {
+        return this.Visit;
+    }
+
+    public void setVisit(RowsBean Visit) {
+        this.Visit = Visit;
+    }
+
+
+    public RowsBean getLogin() {
+        return this.Login;
+    }
+
+    public void setLogin(RowsBean Login) {
+        this.Login = Login;
+    }
+
+    public List<DetailsBean> getDetailsInfo() {
+        return DetailsInfo;
+    }
+
+    public void setDetailsInfo(List<DetailsBean> DetailsInfo) {
+        this.DetailsInfo = DetailsInfo;
+    }
+
+    @Override
+    public String toString() {
+        return Route.toString() + Footmark.toString() + Visit.toString() + Login.toString();
+    }
 
     public static class RowsBean implements Serializable {
         private String Name;
@@ -44,12 +91,17 @@ public class IntegralEntity {
             this.Sum = Sum;
         }
 
+        @Override
+        public String toString() {
+            return "Name is " + Name + ";Count is " + Count + ";Sum is " + Sum;
         }
+    }
 
-    public static class RowsBean1 implements Serializable {
+    public static class DetailsBean implements Serializable {
         private String RecodeTime;
         private String RecodeName;
         private int Integral;
+        private int IntegralType;
 
         public String getRecodeTime() {
             return RecodeTime;
@@ -73,6 +125,19 @@ public class IntegralEntity {
 
         public void setIntegral(int Integral) {
             this.Integral = Integral;
+        }
+
+        public int getIntegralType() {
+            return IntegralType;
+        }
+
+        public void setIntegralType(int IntegralType) {
+            this.IntegralType = IntegralType;
+        }
+
+        @Override
+        public String toString() {
+            return "RecodeTime is " + RecodeTime + ";RecodeName is " + RecodeName + ";Integral is " + Integral + ";IntegralType is " + IntegralType;
         }
 
     }

@@ -18,6 +18,22 @@
         <item name="android:windowBackground">@mipmap/bg</item>
     </style>
 
+    <style name="MyAppTheme1" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <!--<item name="colorPrimary">@color/load_bg</item>-->
+        <!--<item name="colorPrimaryDark">@color/load_bg</item>-->
+        <!--<item name="colorAccent">@color/load_bg</item>-->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:configChanges">orientation|keyboardHidden</item>
+        <item name="android:screenOrientation">portrait</item>
+        <item name="android:activityOpenEnterAnimation">@anim/fade_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/fade_out</item>
+        <item name="android:activityCloseEnterAnimation">@anim/fade_in</item>
+        <item name="android:activityCloseExitAnimation">@anim/fade_out</item>
+    </style>
+
     <style name="fullDialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">true</item>

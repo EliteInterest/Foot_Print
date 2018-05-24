@@ -68,6 +68,7 @@ public class WelcomeActivity extends BaseActivity<WelcomePresenter, WelcomeModel
             showLoading("正在登陆中...");
             mPresenter.doLogin(ApiParamUtil.getLoginDataInfo(userName, userPwd));
         } else {
+            this.setTheme(R.style.MyAppTheme1);
             LoginActivity.startAction(this, true);
         }
     }
@@ -86,6 +87,7 @@ public class WelcomeActivity extends BaseActivity<WelcomePresenter, WelcomeModel
     @Override
     public void onLoginResult(LoginEntity loginEntity) {
         dismissLoading();
+        this.setTheme(R.style.MyAppTheme1);
         if (loginEntity == null) {
             LoginActivity.startAction(this, true);
         } else {

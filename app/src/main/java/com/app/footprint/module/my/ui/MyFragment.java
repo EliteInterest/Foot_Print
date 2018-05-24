@@ -172,9 +172,11 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
                 break;
 
             case R.id.RouteCount_layout://路线
+                MyFootPointActivity.startAction(getActivity(),false,0);
                 break;
 
             case R.id.FootmarkCount_layout://脚印
+                MyFootPointActivity.startAction(getActivity(),false,1);
                 break;
 
             case R.id.Integral_layout://积分
