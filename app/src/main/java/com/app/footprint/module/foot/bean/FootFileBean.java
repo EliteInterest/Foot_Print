@@ -1,7 +1,11 @@
 package com.app.footprint.module.foot.bean;
 
+
+import com.esri.core.geometry.Point;
+
 import java.io.Serializable;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Xiangb on 2018/5/22.
@@ -10,122 +14,163 @@ import java.util.List;
 
 public class FootFileBean implements Serializable {
 
-        private String point;
-        private String description;
-        private List<PicBean> picPaths;
-        private String vedioShootPath;
-        private String vedioPath;
-        private String textName;
+    private String id;
+    private String point;
+    private String description;
+    private String locationName;
+    private List<PicBean> picPaths;
+    private String vedioShootPath;
+    private String vedioPath;
+    private String textName;
 
-        public enum Type {
-            Camera,
-            Vedio,
-            Text
-        }
+    public enum Type {
+        Camera,
+        Vedio,
+        Text
+    }
 
-        private Type type = Type.Camera;
+    private Type type = Type.Camera;
 
-        public FootFileBean(String point, String description, List<PicBean> picPaths) {
-            this.point = point;
-            this.description = description;
-            this.picPaths = picPaths;
-            this.type = Type.Camera;
-        }
+    public FootFileBean(){
+        this.id = UUID.randomUUID().toString().substring(0, 10);
+    }
 
-        public FootFileBean(String point, String description, String vedioShootPath, String vedioPath) {
-            this.point = point;
-            this.description = description;
-            this.vedioShootPath = vedioShootPath;
-            this.vedioPath = vedioPath;
-            this.type = Type.Vedio;
-        }
+    public FootFileBean(String point, String description, String locationName, List<PicBean> picPaths) {
+        this.point = point;
+        this.description = description;
+        this.picPaths = picPaths;
+        this.locationName = locationName;
+        this.type = Type.Camera;
+        this.id = UUID.randomUUID().toString().substring(0, 10);
+    }
 
-        public FootFileBean(String point, String description, String textName) {
-            this.point = point;
-            this.description = description;
-            this.textName = textName;
-            this.type = Type.Text;
-        }
+    public FootFileBean(String point, String description, String locationName, String vedioShootPath, String vedioPath) {
+        this.point = point;
+        this.description = description;
+        this.vedioShootPath = vedioShootPath;
+        this.vedioPath = vedioPath;
+        this.locationName = locationName;
+        this.type = Type.Vedio;
+        this.id = UUID.randomUUID().toString().substring(0, 10);
+    }
 
-        public Type getType() {
-            return type;
-        }
+    public FootFileBean(String point, String description, String locationName, String textName) {
+        this.point = point;
+        this.description = description;
+        this.textName = textName;
+        this.locationName = locationName;
+        this.type = Type.Text;
+        this.id = UUID.randomUUID().toString().substring(0, 10);
+    }
 
-        public void setType(Type type) {
-            this.type = type;
-        }
+    public String getId() {
+        return id;
+    }
 
-        public String getPoint() {
-            return point;
-        }
+    public void setId(String id) {
+        this.id = id;
+    }
 
-        public void setPoint(String point) {
-            this.point = point;
-        }
+    public String getLocationName() {
+        return locationName;
+    }
 
-        public String getVedioShootPath() {
-            return vedioShootPath;
-        }
+    public void setLocationName(String locationName) {
+        this.locationName = locationName;
+    }
 
-        public void setVedioShootPath(String vedioShootPath) {
-            this.vedioShootPath = vedioShootPath;
-        }
+    public Type getType() {
+        return type;
+    }
 
-        public String getDescription() {
-            return description;
-        }
+    public void setType(Type type) {
+        this.type = type;
+    }
 
-        public void setDescription(String description) {
-            this.description = description;
-        }
+    public String getPoint() {
+        return point;
+    }
 
-        public List<PicBean> getPicPaths() {
-            return picPaths;
-        }
-
-        public void setPicPaths(List<PicBean> picPaths) {
-            this.picPaths = picPaths;
-        }
-
-        public String getVedioPath() {
-            return vedioPath;
-        }
-
-        public void setVedioPath(String vedioPath) {
-            this.vedioPath = vedioPath;
-        }
-
-        public String getTextName() {
-            return textName;
-        }
-
-        public void setTextName(String textName) {
-            this.textName = textName;
-        }
-
-        public static class PicBean implements Serializable {
-            private String path;
-            private String remark;
-
-            public PicBean(String path, String remark) {
-                this.path = path;
-                this.remark = remark;
+    public Point getMapPoint() {
+        Point mapPoint = null;
+        try {
+            String[] pointArray = point.split(",");
+            if (pointArray.length == 2) {
+                mapPoint = new Point(Double.parseDouble(pointArray[0]), Double.parseDouble(pointArray[1]));
             }
-
-            public String getPath() {
-                return path;
-            }
-
-            public void setPath(String path) {
-                this.path = path;
-            }
-
-            public String getRemark() {
-                return remark;
-            }
-
-            public void setRemark(String remark) {
-                this.remark = remark;
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return mapPoint;
+    }
+
+    public void setPoint(String point) {
+        this.point = point;
+    }
+
+    public String getVedioShootPath() {
+        return vedioShootPath;
+    }
+
+    public void setVedioShootPath(String vedioShootPath) {
+        this.vedioShootPath = vedioShootPath;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public List<PicBean> getPicPaths() {
+        return picPaths;
+    }
+
+    public void setPicPaths(List<PicBean> picPaths) {
+        this.picPaths = picPaths;
+    }
+
+    public String getVedioPath() {
+        return vedioPath;
+    }
+
+    public void setVedioPath(String vedioPath) {
+        this.vedioPath = vedioPath;
+    }
+
+    public String getTextName() {
+        return textName;
+    }
+
+    public void setTextName(String textName) {
+        this.textName = textName;
+    }
+
+    public static class PicBean implements Serializable {
+        private String path;
+        private String remark;
+
+        public PicBean(String path, String remark) {
+            this.path = path;
+            this.remark = remark;
+        }
+
+        public String getPath() {
+            return path;
+        }
+
+        public void setPath(String path) {
+            this.path = path;
+        }
+
+        public String getRemark() {
+            return remark;
+        }
+
+        public void setRemark(String remark) {
+            this.remark = remark;
+        }
+    }
 }

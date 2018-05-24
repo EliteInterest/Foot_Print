@@ -3,6 +3,7 @@ package com.app.footprint.module.foot.func.view;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Handler;
 import android.os.Message;
@@ -10,7 +11,6 @@ import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -18,42 +18,59 @@ import android.widget.TextView;
 import com.app.footprint.R;
 import com.app.footprint.app.ConstStrings;
 import com.app.footprint.module.foot.bean.FootFileBean;
+import com.app.footprint.module.foot.func.tool.FootUtil;
 import com.app.footprint.module.foot.ui.EditInfoActivity;
 import com.app.footprint.module.map.func.util.GpsUtil;
 import com.esri.android.map.GraphicsLayer;
+import com.esri.android.map.Layer;
 import com.esri.android.map.MapView;
+import com.esri.android.map.event.OnSingleTapListener;
 import com.esri.core.geometry.GeometryEngine;
 import com.esri.core.geometry.Line;
 import com.esri.core.geometry.Point;
 import com.esri.core.geometry.Polyline;
 import com.esri.core.map.Graphic;
+import com.esri.core.symbol.PictureMarkerSymbol;
 import com.esri.core.symbol.SimpleLineSymbol;
 import com.esri.core.symbol.SimpleMarkerSymbol;
 import com.zx.zxutils.util.ZXDialogUtil;
+import com.zx.zxutils.util.ZXFileUtil;
 import com.zx.zxutils.util.ZXSharedPrefUtil;
 import com.zx.zxutils.util.ZXTimeUtil;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Xiangb on 2018/5/17.
  * 功能：
  */
 
-public class FootRecordView extends RelativeLayout implements View.OnClickListener {
+public class FootRecordView extends RelativeLayout {
+
+    @BindView(R.id.ll_record_mode_route)
+    LinearLayout llModeRoute;
+    @BindView(R.id.ll_record_mode_foot)
+    LinearLayout llModeFoot;
+    @BindView(R.id.tv_record_tab_date)
+    TextView tvTabDate;//日期
+    @BindView(R.id.tv_record_tab_time)
+    TextView tvTabCountTime;//时长
+    @BindView(R.id.tv_record_tab_mileage)
+    TextView tvTabCountSize;//距离
+    @BindView(R.id.cv_record_tab)
+    CardView cvRecordTab;
 
     private Context context;
-    private ImageView ivModeRoute, ivModeFoot;//轨迹和足迹切换按钮
-    private LinearLayout llModeRoute, llModeFoot;//轨迹足迹界面
-    private LinearLayout llStartRecord;//开始录制
-    private ImageView ivTabCancel;//取消录制
-    private CardView cvRecordTab;//录制界面
-    private TextView tvTabDate, tvTabCountTime, tvTabCountSize;//日期  时长  距离
-    private ImageView ivStartCamera, ivStartRecord, ivStartText;
 
     private Timer timeTimer, routeTimer;//计时器
     private ZXSharedPrefUtil zxSharedPrefUtil;
@@ -92,36 +109,11 @@ public class FootRecordView extends RelativeLayout implements View.OnClickListen
     private void init(Context context) {
         this.context = context;
         LayoutInflater.from(context).inflate(R.layout.layout_map_foot_record, this, true);
-        ivModeRoute = findViewById(R.id.iv_record_mode_route);
-        ivModeFoot = findViewById(R.id.iv_record_mode_foot);
-        llModeRoute = findViewById(R.id.ll_record_mode_route);
-        llModeFoot = findViewById(R.id.ll_record_mode_foot);
-        llStartRecord = findViewById(R.id.ll_record_foot_start);
-        ivTabCancel = findViewById(R.id.iv_record_tab_cancel);
-        cvRecordTab = findViewById(R.id.cv_record_tab);
-        tvTabDate = findViewById(R.id.tv_record_tab_date);
-        tvTabCountTime = findViewById(R.id.tv_record_tab_time);
-        tvTabCountSize = findViewById(R.id.tv_record_tab_mileage);
-        ivStartCamera = findViewById(R.id.iv_record_tab_camera);
-        ivStartRecord = findViewById(R.id.iv_record_tab_vedio);
-        ivStartText = findViewById(R.id.iv_record_tab_text);
-
-        ivModeRoute.setOnClickListener(this);
-        ivModeFoot.setOnClickListener(this);
-        llStartRecord.setOnClickListener(this);
-        ivTabCancel.setOnClickListener(this);
-        cvRecordTab.setOnClickListener(this);
-        ivStartCamera.setOnClickListener(this);
-        ivStartRecord.setOnClickListener(this);
-        ivStartText.setOnClickListener(this);
+        ButterKnife.bind(this);
 
         lastCurrentTime = System.currentTimeMillis();
         zxSharedPrefUtil = new ZXSharedPrefUtil();
         tvTabDate.setText(ZXTimeUtil.getTime(lastCurrentTime) + " " + ZXTimeUtil.dateToWeek(lastCurrentTime).replace("周", "星期"));
-
-        lastCurrentTime = System.currentTimeMillis();
-        zxSharedPrefUtil = new ZXSharedPrefUtil();
-        tvTabDate.setText(ZXTimeUtil.getTime(lastCurrentTime) + " " + ZXTimeUtil.dateToWeek(lastCurrentTime));
 
     }
 
@@ -137,28 +129,59 @@ public class FootRecordView extends RelativeLayout implements View.OnClickListen
         }
         routeLayer = new GraphicsLayer();
         lineSymbol = new SimpleLineSymbol(Color.RED, 2, SimpleLineSymbol.STYLE.SOLID);
-        markerSymbol = new SimpleMarkerSymbol(Color.RED, 8, SimpleMarkerSymbol.STYLE.CIRCLE);
+        markerSymbol = new SimpleMarkerSymbol(Color.BLUE, 8, SimpleMarkerSymbol.STYLE.CIRCLE);
+        routeLayer.setName("footRouteLayer");
         mapView.addLayer(routeLayer);
 
         if (zxSharedPrefUtil.getBool(RECORD_STATUS)
-                && zxSharedPrefUtil.getLong(RECORD_START_TIME) > 0
-                && zxSharedPrefUtil.getList(RECORD_POINTS).size() > 1) {//之前处于绘制状态
+                && zxSharedPrefUtil.getLong(RECORD_START_TIME) > 0) {//之前处于绘制状态
             ZXDialogUtil.showYesNoDialog(context, "提示", "检测到之前处于绘制状态，是否继续之前的绘制？", "继续", "放弃",
                     (dialog, which) -> {//继续
                         cvRecordTab.setVisibility(VISIBLE);
                         startTimer(true);
                     },
                     (dialog, which) -> {//放弃
-                        zxSharedPrefUtil.remove(RECORD_POINTS);
-                        zxSharedPrefUtil.remove(RECORD_START_TIME);
-                        zxSharedPrefUtil.putBool(RECORD_STATUS, false);
-                        zxSharedPrefUtil.putList(ConstStrings.FootFiles, new ArrayList<>());
+                        clearSharedPref();
                     });
         }
+
+        mapView.setOnSingleTapListener(new OnSingleTapListener() {
+            @Override
+            public void onSingleTap(float x, float y) {
+                Layer[] layers = mapView.getLayers();
+                if (layers != null && layers.length > 0) {
+                    for (Layer layer : layers) {
+                        if (layer instanceof GraphicsLayer && "footRouteLayer".equals(layer.getName())) {
+                            int[] graphicIds = ((GraphicsLayer) layer).getGraphicIDs(x, y, 20, 1);
+                            for (int graphicId : graphicIds) {
+                                Graphic graphic = ((GraphicsLayer) layer).getGraphic(graphicId);
+                                if (graphic.getAttributes() != null && graphic.getAttributes().containsKey("footId")) {
+                                    String footId = (String) graphic.getAttributes().get("footId");
+                                    EditInfoActivity.startAction((Activity) context, false, footId);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
     }
 
-    @Override
-    public void onClick(View v) {
+    /**
+     * 清除sharepref
+     */
+    private void clearSharedPref() {
+        zxSharedPrefUtil.remove(RECORD_POINTS);
+        zxSharedPrefUtil.remove(RECORD_START_TIME);
+        zxSharedPrefUtil.putBool(RECORD_STATUS, false);
+        zxSharedPrefUtil.putList(ConstStrings.FootFiles, new ArrayList<>());
+        ZXFileUtil.deleteFiles(ConstStrings.getCachePath());
+    }
+
+    @OnClick({R.id.iv_record_foot_text, R.id.iv_record_mode_route, R.id.iv_record_mode_foot, R.id.ll_record_foot_start, R.id.iv_record_tab_cancel,
+            R.id.cv_record_tab, R.id.iv_record_tab_camera, R.id.iv_record_tab_vedio, R.id.iv_record_tab_text, R.id.iv_record_foot_camera, R.id.iv_record_foot_vedio})
+    public void onViewClicked(View v) {
         switch (v.getId()) {
             case R.id.iv_record_mode_route://路径
                 llModeRoute.setVisibility(GONE);
@@ -169,6 +192,7 @@ public class FootRecordView extends RelativeLayout implements View.OnClickListen
                 llModeFoot.setVisibility(GONE);
                 break;
             case R.id.ll_record_foot_start://开始录制
+                clearSharedPref();
                 cvRecordTab.setVisibility(VISIBLE);
                 startTimer(false);
                 break;
@@ -179,20 +203,29 @@ public class FootRecordView extends RelativeLayout implements View.OnClickListen
                     mPoints.clear();
                     mGraphicList.clear();
                     routeLayer.removeAll();
-                    zxSharedPrefUtil.putBool(RECORD_STATUS, false);
+                    clearSharedPref();
                 });
                 break;
             case R.id.cv_record_tab:
 
                 break;
-            case R.id.iv_record_tab_camera:
+            case R.id.iv_record_tab_camera://轨迹-相机
                 EditInfoActivity.startAction((Activity) context, false, EditInfoActivity.EditType.MapRoutePic);
                 break;
-            case R.id.iv_record_tab_vedio:
+            case R.id.iv_record_tab_vedio://轨迹-录像
                 EditInfoActivity.startAction((Activity) context, false, EditInfoActivity.EditType.MapRouteVedio);
                 break;
-            case R.id.iv_record_tab_text:
+            case R.id.iv_record_tab_text://轨迹-文本
                 EditInfoActivity.startAction((Activity) context, false, EditInfoActivity.EditType.MapRouteText);
+                break;
+            case R.id.iv_record_foot_camera://足迹-相机
+                EditInfoActivity.startAction((Activity) context, false, EditInfoActivity.EditType.MapFootPic);
+                break;
+            case R.id.iv_record_foot_vedio://足迹-录像
+                EditInfoActivity.startAction((Activity) context, false, EditInfoActivity.EditType.MapFootVedio);
+                break;
+            case R.id.iv_record_foot_text://足迹-文本
+                EditInfoActivity.startAction((Activity) context, false, EditInfoActivity.EditType.MapFootText);
                 break;
             default:
                 break;
@@ -226,6 +259,7 @@ public class FootRecordView extends RelativeLayout implements View.OnClickListen
             }
             DecimalFormat df = new DecimalFormat("#.00");
             tvTabCountSize.setText(df.format(countSize).startsWith(".") ? "0" + df.format(countSize) : df.format(countSize));
+            refreshPoints();
         } else {
             countTime = 0;
             countSize = 0;
@@ -273,7 +307,7 @@ public class FootRecordView extends RelativeLayout implements View.OnClickListen
                         polyline.addSegment(line, true);
                         // 计算距离
                         double length = GeometryEngine.geodesicLength(polyline, mapView.getSpatialReference(), null);
-                        if (length > 3) {//但单次移动超过3米才添加进去
+                        if (length > 0) {//产生了移动才加入
                             Graphic lineGraphic = new Graphic(polyline, lineSymbol);
                             mGraphicList.add(lineGraphic);
                             routeLayer.addGraphic(lineGraphic);
@@ -288,10 +322,8 @@ public class FootRecordView extends RelativeLayout implements View.OnClickListen
                 }
             }
             //信息保存
-            if (mGraphicList.size() > 0) {
-                zxSharedPrefUtil.putLong(RECORD_START_TIME, lastCurrentTime);//保存开始时间
-                zxSharedPrefUtil.putList(RECORD_POINTS, mPoints);//保存点集
-            }
+            zxSharedPrefUtil.putLong(RECORD_START_TIME, lastCurrentTime);//保存开始时间
+            zxSharedPrefUtil.putList(RECORD_POINTS, mPoints);//保存点集
         }
     };
 
@@ -310,13 +342,27 @@ public class FootRecordView extends RelativeLayout implements View.OnClickListen
         if (footFiles == null || footFiles.size() == 0) {
             return;
         }
+        int[] graphicIds = routeLayer.getGraphicIDs();
+        for (int graphicId : graphicIds) {
+            if (routeLayer.getGraphic(graphicId).getAttributes() != null && routeLayer.getGraphic(graphicId).getAttributes().containsKey("footId")) {
+                routeLayer.removeGraphic(graphicId);
+            }
+        }
         for (FootFileBean footFile : footFiles) {
-            String[] pointArray = footFile.getPoint().split(",");
-            if (pointArray.length == 2) {
-                Point point = new Point(Double.parseDouble(pointArray[0]), Double.parseDouble(pointArray[1]));
-                Graphic graphic = new Graphic(point, markerSymbol);
+            Drawable drawable = FootUtil.drawTextToDrawable(context, R.mipmap.foot_pop_bg, footFile.getLocationName());
+            if (drawable == null) {
+                continue;
+            }
+            PictureMarkerSymbol pictureMarkerSymbol = new PictureMarkerSymbol(drawable);
+            pictureMarkerSymbol.setOffsetY(20);
+            Point point = footFile.getMapPoint();
+            if (point != null) {
+                Map<String, Object> attr = new HashMap<>();
+                attr.put("footId", footFile.getId());
+                Graphic graphic = new Graphic(point, pictureMarkerSymbol, attr);
                 routeLayer.addGraphic(graphic);
             }
         }
     }
+
 }

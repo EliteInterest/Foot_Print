@@ -43,7 +43,7 @@
     <application
         android:name=".app.MyApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/foot_route"
         android:label="@string/app_name"
         android:theme="@style/MyAppTheme">
         <meta-data
@@ -91,13 +91,19 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name=".module.map.ui.MapChangeLocationActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".module.foot.ui.PicPreviewActivity"
-            android:screenOrientation="portrait" />
-        <activity android:name=".module.my.ui.ContactActivity" />
-        <activity android:name=".module.my.ui.IntegralActivity" />
-        <activity android:name=".module.my.ui.MyFootPointActivity" />
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".module.my.ui.ContactActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".module.my.ui.IntegralActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".module.my.ui.MyFootPointActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

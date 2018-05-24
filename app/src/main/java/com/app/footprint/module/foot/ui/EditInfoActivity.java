@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.VideoView;
 import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.geocoder.GeocodeResult;
 import com.amap.api.services.geocoder.GeocodeSearch;
+import com.amap.api.services.geocoder.RegeocodeAddress;
 import com.amap.api.services.geocoder.RegeocodeQuery;
 import com.amap.api.services.geocoder.RegeocodeResult;
 import com.app.footprint.R;
@@ -30,6 +32,7 @@ import com.app.footprint.module.map.func.util.GpsUtil;
 import com.app.footprint.module.map.ui.MapChangeLocationActivity;
 import com.esri.core.geometry.Point;
 import com.zx.zxutils.other.ZXItemClickSupport;
+import com.zx.zxutils.util.ZXSystemUtil;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
@@ -68,10 +71,13 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
     private EditType editType;
     private FootPicAdapter picAdapter;
     private List<FootFileBean> footFiles;
+    private FootFileBean itemBean;
     private FootFileBean.PicBean previewPicBean;
 
     private List<FootFileBean.PicBean> picChildBeans = new ArrayList<>();
     private String vedioShootPath, vedioPath;
+
+    private String footId = "";
 
     public enum EditType implements Serializable {
         MapRoutePic,
@@ -90,6 +96,14 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
         if (isFinish) activity.finish();
     }
 
+    public static void startAction(Activity activity, boolean isFinish, String footRouteId) {
+        Intent intent = new Intent(activity, EditInfoActivity.class);
+        intent.putExtra("type", EditType.MapDetail);
+        intent.putExtra("footId", footRouteId);
+        activity.startActivity(intent);
+        if (isFinish) activity.finish();
+    }
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_edit_info;
@@ -100,18 +114,17 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
         editType = (EditType) getIntent().getSerializableExtra("type");
         Location location = GpsUtil.getLocation(this);
         initGaoDe();
-        if (location != null) {
-            point = new Point(location.getLongitude(), location.getLatitude());
-            getAddress();
-        }
-        DecimalFormat decimalFormat = new DecimalFormat("#.00");
-        tvLocationPoint.setText("(" + decimalFormat.format(point.getX()) + "," + decimalFormat.format(point.getY()) + ")");
+        itemBean = new FootFileBean();
 
         footFiles = mSharedPrefUtil.getList(ConstStrings.FootFiles);
-//        if (footFileBean != null && footFileBean.getPictureBean() != null && footFileBean.getPictureBean().getPaths() != null) {
-//            picChildBeans.addAll(footFileBean.getPictureBean().getPaths());
-//        }
         actionByType();
+
+        if (point == null && location != null) {
+            point = new Point(location.getLongitude(), location.getLatitude());
+        }
+        getAddress();
+        DecimalFormat decimalFormat = new DecimalFormat("#.00");
+        tvLocationPoint.setText("(" + decimalFormat.format(point.getX()) + "," + decimalFormat.format(point.getY()) + ")");
 
     }
 
@@ -126,41 +139,73 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
         picAdapter.setOnDeleteListener(this);
         ZXItemClickSupport.addTo(rvPicture).setOnItemClickListener(this);
 
-        //media
-
+        if (editType == EditType.MapDetail) {//地图-详情
+            footId = getIntent().getStringExtra("footId");
+            for (FootFileBean footFileBean : footFiles) {
+                if (footId.equals(footFileBean.getId())) {
+                    itemBean = footFileBean;
+                    if (footFileBean.getType() == FootFileBean.Type.Camera) {
+                        editType = EditType.MapRoutePic;
+                        picChildBeans.addAll(footFileBean.getPicPaths());
+                        picAdapter.notifyDataSetChanged();
+                    } else if (footFileBean.getType() == FootFileBean.Type.Vedio) {
+                        editType = EditType.MapRouteVedio;
+                        playVedio(footFileBean.getVedioPath());
+                    } else if (footFileBean.getType() == FootFileBean.Type.Text) {
+                        editType = EditType.MapRouteText;
+                        etName.setText(footFileBean.getTextName());
+                    }
+                    etRemark.setText(footFileBean.getDescription());
+                    point = footFileBean.getMapPoint();
+                    break;
+                }
+            }
+        }
 
         if (editType == EditType.MapRoutePic) {//地图-轨迹-图片
             rvPicture.setVisibility(View.VISIBLE);
             vedioView.setVisibility(View.GONE);
+            itemBean.setType(FootFileBean.Type.Camera);
             etRemark.setHint("照片描述");
-            CameraActivity.startAction(this, false, true, 0);
+            if (footId.length() == 0) {
+                CameraActivity.startAction(this, false, true, 0);
+            }
         } else if (editType == EditType.MapRouteVedio) {//地图-轨迹-视频
             rvPicture.setVisibility(View.GONE);
             vedioView.setVisibility(View.VISIBLE);
+            itemBean.setType(FootFileBean.Type.Vedio);
             etRemark.setHint("视频描述");
-            CameraActivity.startAction(this, false, true, 1);
+            if (footId.length() == 0) {
+                CameraActivity.startAction(this, false, true, 1);
+            }
         } else if (editType == EditType.MapRouteText) {//地图-轨迹-文本
             rvPicture.setVisibility(View.GONE);
             vedioView.setVisibility(View.GONE);
             etName.setVisibility(View.VISIBLE);
+            itemBean.setType(FootFileBean.Type.Text);
             etRemark.setHint("事件简介");
         } else if (editType == EditType.MapFootPic) {//地图-足迹-图片
             rvPicture.setVisibility(View.VISIBLE);
             vedioView.setVisibility(View.GONE);
+            itemBean.setType(FootFileBean.Type.Text);
             etRemark.setHint("照片描述");
-            CameraActivity.startAction(this, false, true, 0);
+            if (footId.length() == 0) {
+                CameraActivity.startAction(this, false, true, 0);
+            }
         } else if (editType == EditType.MapFootVedio) {//地图-足迹-视频
             rvPicture.setVisibility(View.GONE);
             vedioView.setVisibility(View.VISIBLE);
+            itemBean.setType(FootFileBean.Type.Vedio);
             etRemark.setHint("视频描述");
-            CameraActivity.startAction(this, false, true, 1);
+            if (footId.length() == 0) {
+                CameraActivity.startAction(this, false, true, 1);
+            }
         } else if (editType == EditType.MapFootText) {//地图-足迹-文本
             rvPicture.setVisibility(View.GONE);
             vedioView.setVisibility(View.GONE);
             etName.setVisibility(View.VISIBLE);
+            itemBean.setType(FootFileBean.Type.Text);
             etRemark.setHint("事件简介");
-        } else if (editType == EditType.MapDetail) {//地图-详情
-
         }
     }
 
@@ -174,6 +219,10 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
     @Override
     public void onItemClicked(RecyclerView recyclerView, int i, View view) {
         if (i == picChildBeans.size()) {
+            if (picChildBeans.size() >= 9) {
+                showToast("已达最大图片数量！");
+                return;
+            }
             CameraActivity.startAction(this, false, false, 0);
         } else {
             previewPicBean = picChildBeans.get(i);
@@ -201,8 +250,30 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             @Override
             public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
                 if (regeocodeResult != null && regeocodeResult.getRegeocodeAddress() != null) {
-                    String address = regeocodeResult.getRegeocodeAddress().getFormatAddress();
+                    String city = "", district = "", roadName = "";
+                    String address = "";
+                    try {
+                        RegeocodeAddress regeocodeAddress = regeocodeResult.getRegeocodeAddress();
+                        city = regeocodeAddress.getCity();
+                        district = regeocodeAddress.getDistrict();
+                        if (regeocodeAddress.getCrossroads() != null && regeocodeAddress.getCrossroads().size() > 0) {
+                            roadName = regeocodeAddress.getCrossroads().get(0).getFirstRoadName().length() == 0 ? regeocodeAddress.getCrossroads().get(0).getSecondRoadName() : regeocodeAddress.getCrossroads().get(0).getFirstRoadName();
+                            address = district + roadName;
+                        } else if (regeocodeAddress.getTownship() != null && regeocodeAddress.getTownship().length() > 0) {
+                            roadName = regeocodeAddress.getTownship();
+                            address = district + roadName;
+                        } else {
+                            address = regeocodeAddress.getFormatAddress().replace(regeocodeAddress.getCity(), "");
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        address = regeocodeResult.getRegeocodeAddress().getFormatAddress();
+                    }
                     tvLocationAddress.setText(address);
+                    itemBean.setLocationName(address);
+                    DecimalFormat decimalFormat = new DecimalFormat("#.00");
+                    tvLocationPoint.setText("(" + decimalFormat.format(point.getX()) + "," + decimalFormat.format(point.getY()) + ")");
+                    itemBean.setPoint(point.getX() + "," + point.getY());
                 }
             }
 
@@ -231,7 +302,11 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
                 finish();
                 break;
             case R.id.iv_title_save:
-                saveByType();
+                if (etName.getVisibility() == View.VISIBLE && etName.getText().toString().length() == 0) {
+                    showToast("请填写事件名称");
+                } else {
+                    saveByType();
+                }
                 break;
             case R.id.btn_location_change:
                 MapChangeLocationActivity.startAction(this, false, point);
@@ -244,32 +319,49 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
      */
     private void saveByType() {
         String pointString = point.getX() + "," + point.getY();
+        itemBean.setPoint(pointString);
+        itemBean.setDescription(etRemark.getText().toString());
         if (editType == EditType.MapRoutePic) {//地图-轨迹-图片
-            //TODO 要放到上传成功的回调中
-            FootFileBean footFile = new FootFileBean(pointString, etRemark.getText().toString(), picChildBeans);
-            footFiles.add(footFile);
-            mSharedPrefUtil.putList("footFileBean", footFiles);
+            itemBean.setPicPaths(picChildBeans);
+            addFootBean();
         } else if (editType == EditType.MapRouteVedio) {//地图-轨迹-视频
-            //TODO 要放到上传成功的回调中
-            FootFileBean footFile = new FootFileBean(pointString, etRemark.getText().toString(), vedioShootPath, vedioPath);
-            footFiles.add(footFile);
-            mSharedPrefUtil.putList("footFileBean", footFiles);
+            itemBean.setVedioPath(vedioPath);
+            itemBean.setVedioShootPath(vedioShootPath);
+            addFootBean();
         } else if (editType == EditType.MapRouteText) {//地图-轨迹-文本
-            //TODO 要放到上传成功的回调中
-            FootFileBean footFile = new FootFileBean(pointString, etRemark.getText().toString(), etName.getText().toString());
-            footFiles.add(footFile);
-            mSharedPrefUtil.putList("footFileBean", footFiles);
+            itemBean.setTextName(etName.getText().toString());
+            addFootBean();
         } else if (editType == EditType.MapFootPic) {//地图-足迹-图片
+            itemBean.setPicPaths(picChildBeans);
             //TODO 直接提交
         } else if (editType == EditType.MapFootVedio) {//地图-足迹-视频
+            itemBean.setVedioPath(vedioPath);
+            itemBean.setVedioShootPath(vedioShootPath);
             //TODO 直接提交
         } else if (editType == EditType.MapFootText) {//地图-足迹-文本
+            itemBean.setTextName(etName.getText().toString());
             //TODO 直接提交
-        } else if (editType == EditType.MapDetail) {//地图-详情
-
         }
+        ZXSystemUtil.closeKeybord(this);
+    }
+
+    /**
+     * 判断是否存在进行添加
+     */
+    private void addFootBean() {
+        if (footId.length() > 0) {
+            for (int i = 0; i < footFiles.size(); i++) {
+                if (itemBean.getId().equals(footFiles.get(i).getId())) {
+                    footFiles.set(i, itemBean);
+                    break;
+                }
+            }
+        } else {
+            footFiles.add(itemBean);
+        }
+        mSharedPrefUtil.putList(ConstStrings.FootFiles, footFiles);
         mRxManager.post("refreshPoint", true);
-        finish();
+        new Handler().postDelayed(() -> finish(), 50);
     }
 
     @Override
@@ -290,12 +382,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
                     picAdapter.notifyDataSetChanged();
                 } else if ("vedio".equals(data.getStringExtra("type"))) {
                     String name = data.getStringExtra("vedioName");
-                    MediaController mediaController = new MediaController(this);
-                    vedioView.setMediaController(mediaController);
-                    mediaController.setMediaPlayer(vedioView);
-                    vedioView.setOnCompletionListener(mp -> vedioView.start());
-                    vedioView.setOnPreparedListener(mp -> vedioView.start());
-                    vedioView.setVideoURI(Uri.parse(ConstStrings.getCachePath() + name));
+                    playVedio(name);
 
                     vedioShootPath = data.getStringExtra("vedioShoot");
                     vedioPath = data.getStringExtra("vedioName");
@@ -306,5 +393,14 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
                 previewPicBean.setRemark(data.getStringExtra("remark"));
             }
         }
+    }
+
+    private void playVedio(String name) {
+        MediaController mediaController = new MediaController(this);
+        vedioView.setMediaController(mediaController);
+        mediaController.setMediaPlayer(vedioView);
+        vedioView.setOnCompletionListener(mp -> vedioView.start());
+        vedioView.setOnPreparedListener(mp -> vedioView.start());
+        vedioView.setVideoURI(Uri.parse(ConstStrings.getCachePath() + name));
     }
 }

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.geocoder.GeocodeResult;
 import com.amap.api.services.geocoder.GeocodeSearch;
+import com.amap.api.services.geocoder.RegeocodeAddress;
 import com.amap.api.services.geocoder.RegeocodeQuery;
 import com.amap.api.services.geocoder.RegeocodeResult;
 import com.app.footprint.R;
@@ -113,7 +114,20 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
             @Override
             public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
                 if (regeocodeResult != null && regeocodeResult.getRegeocodeAddress() != null) {
-                    String address = regeocodeResult.getRegeocodeAddress().getFormatAddress();
+                    String city = "", district = "", roadName = "";
+                    String address = "";
+                    try {
+                        RegeocodeAddress regeocodeAddress = regeocodeResult.getRegeocodeAddress();
+                        city = regeocodeAddress.getCity();
+                        district = regeocodeAddress.getDistrict();
+                        if (regeocodeAddress.getCrossroads() != null && regeocodeAddress.getCrossroads().size() > 0) {
+                            roadName = regeocodeAddress.getCrossroads().get(0).getFirstRoadName().length() == 0 ? regeocodeAddress.getCrossroads().get(0).getSecondRoadName() : regeocodeAddress.getCrossroads().get(0).getFirstRoadName();
+                        }
+                        address = city + district + roadName;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        address = regeocodeResult.getRegeocodeAddress().getFormatAddress();
+                    }
                     tvAddress.setText(address);
                 }
             }

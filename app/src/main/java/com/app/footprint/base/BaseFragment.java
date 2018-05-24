@@ -16,7 +16,7 @@ import com.zx.zxutils.util.ZXToastUtil;
 
 public abstract class BaseFragment<T extends BasePresenter, E extends BaseModel> extends RxBaseFragment<T, E> {
 
-    public ZXSharedPrefUtil mSharedPrefUtil = new ZXSharedPrefUtil("footprint");
+    public ZXSharedPrefUtil mSharedPrefUtil = new ZXSharedPrefUtil();
     public Handler handler = new Handler();
 
     @Override
