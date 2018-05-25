@@ -105,25 +105,6 @@ public class IntegralActivity extends BaseActivity<IntegralPresenter, IntegralMo
             public List<?> onItemList() {
                 return adapterList;
             }
-
-//            @Override
-//            public int onCreateViewLayoutID(int i) {
-//                return R.layout.item_integral;
-//            }
-
-
-//            @Override
-//            public void onBindHolder(ZxRvHolder zxRvHolder, Object o, int i) {
-//                IntegralEntity.DetailsBean info = (IntegralEntity.DetailsBean) o;
-//                TextView loginTime = zxRvHolder.getTextView(R.id.item_integral_time);
-//                TextView loginCount = zxRvHolder.getTextView(R.id.item_integral_count);
-//
-//                String time = info.getRecodeTime() == null ? "" : info.getRecodeTime();
-//                int count = info.getIntegral();
-//
-//                loginTime.setText(time);
-//                loginCount.setText("+" + count);
-//            }
         };
 
         swipeRecyler.setSimpleAdapter(recyclerAdapter)
@@ -193,7 +174,6 @@ public class IntegralActivity extends BaseActivity<IntegralPresenter, IntegralMo
         adapterList.addAll(integralEntity.getDetailsInfo());
         swipeRecyler.stopRefresh();
         swipeRecyler.notifyDataSetChanged();
-        ;
         swipeRecyler.setLoadInfo(50);//total size
     }
 }

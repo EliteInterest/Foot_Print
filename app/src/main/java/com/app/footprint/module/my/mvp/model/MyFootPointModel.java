@@ -1,8 +1,17 @@
 package com.app.footprint.module.my.mvp.model;
 
+import com.app.footprint.api.service.ApiService;
+import com.app.footprint.module.my.bean.MyfootMarkEntity;
 import com.frame.zxmvp.base.BaseModel;
 
 import com.app.footprint.module.my.mvp.contract.MyFootPointContract;
+import com.frame.zxmvp.baserx.RxHelper;
+import com.frame.zxmvp.baserx.RxSchedulers;
+
+import java.util.List;
+import java.util.Map;
+
+import rx.Observable;
 
 /**
  * Create By admin On 2017/7/11
@@ -11,4 +20,11 @@ import com.app.footprint.module.my.mvp.contract.MyFootPointContract;
 public class MyFootPointModel extends BaseModel implements MyFootPointContract.Model {
 
 
+    @Override
+    public Observable<List<MyfootMarkEntity>> requestMyFootMarkList(Map<String, String> map) {
+        return mRepositoryManager.obtainRetrofitService(ApiService.class)
+                .getMyFootMarkList(map)
+                .compose(RxHelper.handleResult())
+                .compose(RxSchedulers.io_main());
+    }
 }

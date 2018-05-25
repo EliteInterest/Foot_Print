@@ -1,11 +1,13 @@
 package com.app.footprint.api.service;
 
 import com.app.footprint.module.my.bean.IntegralEntity;
+import com.app.footprint.module.my.bean.MyfootMarkEntity;
 import com.app.footprint.module.my.bean.UserInfoEntity;
 import com.app.footprint.module.system.bean.LoginEntity;
 import com.app.footprint.module.system.bean.VersionEntity;
 import com.frame.zxmvp.basebean.BaseRespose;
 
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.RequestBody;
@@ -53,4 +55,7 @@ public interface ApiService {
 
     @GET("/fsms/integral/details/info")
     Observable<BaseRespose<IntegralEntity>> getIntegralDetail(@QueryMap Map<String, String> map);
+
+    @GET("/fsms/footprint/footmark/list/info")
+    Observable<BaseRespose<List<MyfootMarkEntity>>> getMyFootMarkList(@QueryMap Map<String, String> map);
 }

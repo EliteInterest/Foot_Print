@@ -40,17 +40,33 @@
         android:orientation="horizontal"
         android:visibility="visible">
 
+        <ImageView
+            android:id="@+id/my_foot_route"
+            android:layout_width="@dimen/px20"
+            android:layout_height="@dimen/px20"
+            android:layout_centerInParent="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/px100"
+            android:background="@mipmap/foot_line"/>
+
         <TextView
             android:id="@+id/mine_foot_point"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"
-            android:layout_marginLeft="@dimen/px100"
-            android:drawableLeft="@mipmap/foot_line"
+            android:layout_toRightOf="@+id/my_foot_route"
             android:text="线路"
             android:textColor="@drawable/my_text_color"
             android:textSize="@dimen/text_size_large" />
+
+
+        <ImageView
+            android:id="@+id/my_foot_mark"
+            android:layout_width="@dimen/px20"
+            android:layout_height="@dimen/px20"
+            android:layout_centerInParent="true"
+            android:layout_toLeftOf="@+id/mine_foot_print"
+            android:background="@mipmap/foot_tab"/>
 
         <TextView
             android:id="@+id/mine_foot_print"
@@ -58,8 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
-            android:layout_marginRight="@dimen/px150"
-            android:drawableLeft="@mipmap/foot_tab"
+            android:layout_marginRight="@dimen/px100"
             android:text="脚印"
             android:textColor="@drawable/my_text_color"
             android:textSize="@dimen/text_size_large" />
