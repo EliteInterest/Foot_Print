@@ -102,7 +102,16 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
                 handler.sendEmptyMessage(0);
             }
         }, 100, 2000);
+        //刷新点集
         mRxManager.on("refreshPoint", (Action1<Boolean>) bool -> footRecordView.refreshPoints());
+        //足印-预览
+        mRxManager.on("footPreview", new Action1<Object>() {
+
+            @Override
+            public void call(Object o) {
+                
+            }
+        });
     }
 
     /**

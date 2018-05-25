@@ -284,6 +284,13 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
         });
     }
 
+    /**
+     * 上传成功
+     */
+    @Override
+    public void onFileCommitResult() {
+        mRxManager.post("footPreview", itemBean);
+    }
 
     /**
      * 获取地理位置信息
