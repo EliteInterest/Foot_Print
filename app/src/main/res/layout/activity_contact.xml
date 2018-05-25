@@ -24,7 +24,7 @@
             android:gravity="center"
             android:text="返回"
             android:textColor="@color/white"
-            android:textSize="@dimen/px20" />
+            android:textSize="14dp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -35,7 +35,7 @@
             android:singleLine="true"
             android:text="联系方式"
             android:textColor="@color/white"
-            android:textSize="@dimen/px30" />
+            android:textSize="20dp" />
 
     </RelativeLayout>
 
@@ -59,7 +59,7 @@
             android:gravity="center_vertical"
             android:text="联系电话"
             android:textColor="@color/black"
-            android:textSize="@dimen/px20" />
+            android:textSize="16dp" />
 
         <TextView
             android:id="@+id/contact_phone_num"
@@ -71,7 +71,7 @@
             android:gravity="center_vertical"
             android:text="13923232323"
             android:textColor="@color/dp_blue"
-            android:textSize="@dimen/px20" />
+            android:textSize="16dp" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -95,7 +95,7 @@
             android:gravity="center_vertical"
             android:text="意见反馈:"
             android:textColor="@color/black"
-            android:textSize="@dimen/px20" />
+            android:textSize="16dp" />
 
         <EditText
             android:id="@+id/contact_edit_area"
@@ -103,8 +103,9 @@
             android:layout_height="@dimen/px200"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/contact_title_edit"
-            android:layout_marginLeft="@dimen/px30"
-            android:layout_marginRight="@dimen/px30"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="20dp"
             android:background="@color/gray_tab"
             android:inputType="textMultiLine"
             android:gravity="top"
@@ -117,11 +118,11 @@
             android:layout_height="@dimen/px50"
             android:layout_below="@+id/contact_edit_area"
             android:layout_marginBottom="10dp"
-            android:text="提交"
-            android:textSize="@dimen/px20"
-            android:layout_marginLeft="@dimen/px150"
-            android:layout_marginRight="@dimen/px150"
-            android:layout_marginTop="@dimen/px10"
+            android:text="提  交"
+            android:textSize="16dp"
+            android:layout_marginLeft="140dp"
+            android:layout_marginRight="140dp"
+            android:layout_marginTop="10dp"
             android:layout_gravity="center_horizontal"
             android:textStyle="bold" />
 

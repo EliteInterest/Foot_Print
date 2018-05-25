@@ -26,7 +26,7 @@
             android:layout_centerInParent="true"
             android:text="个人信息"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_size_large"/>
+            android:textSize="18dp"/>
 
     </RelativeLayout>
 
@@ -52,7 +52,7 @@
             android:layout_marginLeft="10dp"
             android:text="头像"
             android:textColor="@color/black"
-            android:textSize="@dimen/px20" />
+            android:textSize="18dp" />
 
         <ImageView
             android:id="@+id/personal_image"
@@ -93,7 +93,7 @@
             android:textColor="@color/black"
             android:text="昵称"
             android:gravity="center_vertical"
-            android:textSize="@dimen/px20"/>
+            android:textSize="18dp"/>
 
         <TextView
             android:id="@+id/person_nickName_content"
@@ -108,8 +108,8 @@
 
         <ImageView
             android:id="@+id/nickName_right_arrow"
-            android:layout_width="@dimen/px30"
-            android:layout_height="@dimen/px30"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
@@ -145,7 +145,7 @@
             android:textColor="@color/black"
             android:text="账号"
             android:gravity="center_vertical"
-            android:textSize="@dimen/px20"/>
+            android:textSize="18dp"/>
 
         <TextView
             android:id="@+id/personal_username_textview"
@@ -160,8 +160,8 @@
 
         <ImageView
             android:id="@+id/account_right_arrow"
-            android:layout_width="@dimen/px30"
-            android:layout_height="@dimen/px30"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
@@ -197,7 +197,7 @@
             android:textColor="@color/black"
             android:text="手机"
             android:gravity="center_vertical"
-            android:textSize="@dimen/px20"/>
+            android:textSize="18dp"/>
 
         <TextView
             android:id="@+id/person_phone_content"
@@ -212,8 +212,8 @@
 
         <ImageView
             android:id="@+id/phone_right_arrow"
-            android:layout_width="@dimen/px30"
-            android:layout_height="@dimen/px30"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
@@ -226,10 +226,10 @@
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/btn_settings_logout"
         style="@style/MyButtonStyle"
-        android:layout_marginBottom="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginBottom="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
         android:textStyle="bold"
-        android:textSize="@dimen/px20"
+        android:textSize="18dp"
         android:text="退    出" />
 </RelativeLayout>

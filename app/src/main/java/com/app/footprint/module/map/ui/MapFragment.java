@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -234,10 +235,13 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
             super.handleMessage(msg);
             if (msg.what == 0) {
                 Location location = GpsUtil.getLocation(getActivity());
-                LatLonPoint latLonPoint = new LatLonPoint(location.getLatitude(), location.getLongitude());
-                // 第一个参数表示一个Latlng，第二参数表示范围多少米，第三个参数表示是火系坐标系还是GPS原生坐标系
-                RegeocodeQuery query = new RegeocodeQuery(latLonPoint, 200, GeocodeSearch.GPS);
-                geocodeSearch.getFromLocationAsyn(query);
+                if (location != null) {
+                    Log.e("MapFragment", "Latitude: " + location.getLatitude() + ", Longtitude: " + location.getLongitude());
+                    LatLonPoint latLonPoint = new LatLonPoint(location.getLatitude(), location.getLongitude());
+                    // 第一个参数表示一个Latlng，第二参数表示范围多少米，第三个参数表示是火系坐标系还是GPS原生坐标系
+                    RegeocodeQuery query = new RegeocodeQuery(latLonPoint, 200, GeocodeSearch.GPS);
+                    geocodeSearch.getFromLocationAsyn(query);
+                }
             }
         }
     };
