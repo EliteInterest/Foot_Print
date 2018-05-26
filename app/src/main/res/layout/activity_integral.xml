@@ -49,7 +49,7 @@
             android:layout_marginLeft="@dimen/px100"
             android:text="积分"
             android:textColor="@color/black"
-            android:textSize="@dimen/text_size_large" />
+            android:textSize="16dp" />
 
         <TextView
             android:id="@+id/mine_integral_content"
@@ -57,10 +57,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
-            android:layout_marginRight="@dimen/px150"
+            android:layout_marginRight="170dp"
             android:text="0"
             android:textColor="@color/dp_blue"
-            android:textSize="@dimen/px20" />
+            android:textSize="18dp" />
 
     </RelativeLayout>
 
@@ -82,8 +82,8 @@
             android:id="@+id/RouteCount_layout"
             android:layout_columnWeight="1"
             android:layout_margin="1dp"
-            android:layout_marginLeft="@dimen/px10"
-            android:layout_marginTop="@dimen/px10"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:layout_rowWeight="1"
             android:background="#ffffff"
             android:gravity="center"
@@ -94,12 +94,12 @@
                 android:layout_height="wrap_content"
                 android:text="路线"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_size_large"
+                android:textSize="16dp"
                 android:textStyle="bold" />
 
             <View
                 android:layout_width="fill_parent"
-                android:layout_height="@dimen/px20" />
+                android:layout_height="10dp" />
 
             <TextView
                 android:id="@+id/RouteCount"
@@ -107,14 +107,15 @@
                 android:layout_height="wrap_content"
                 android:text="+0"
                 android:textColor="@color/dp_blue"
-                android:textSize="@dimen/px20" />
+                android:textSize="18dp" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/FootmarkCount_layout"
             android:layout_columnWeight="1"
             android:layout_margin="1dp"
-            android:layout_marginTop="@dimen/px10"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:layout_rowWeight="1"
             android:background="#ffffff"
             android:gravity="center"
@@ -125,12 +126,12 @@
                 android:layout_height="wrap_content"
                 android:text="脚印"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_size_large"
+                android:textSize="16dp"
                 android:textStyle="bold" />
 
             <View
                 android:layout_width="fill_parent"
-                android:layout_height="@dimen/px20" />
+                android:layout_height="10dp" />
 
             <TextView
                 android:id="@+id/FootmarkCount"
@@ -138,7 +139,7 @@
                 android:layout_height="wrap_content"
                 android:text="+0"
                 android:textColor="@color/dp_blue"
-                android:textSize="@dimen/px20" />
+                android:textSize="18dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -147,7 +148,8 @@
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
             android:layout_margin="1dp"
-            android:layout_marginTop="@dimen/px10"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:layout_rowWeight="1"
             android:background="#ffffff"
             android:gravity="center"
@@ -158,12 +160,12 @@
                 android:layout_height="wrap_content"
                 android:text="访问"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_size_large"
+                android:textSize="16dp"
                 android:textStyle="bold" />
 
             <View
                 android:layout_width="fill_parent"
-                android:layout_height="@dimen/px20" />
+                android:layout_height="10dp" />
 
             <TextView
                 android:id="@+id/VisitVolumel"
@@ -171,7 +173,7 @@
                 android:layout_height="wrap_content"
                 android:text="+0"
                 android:textColor="@color/dp_blue"
-                android:textSize="@dimen/px20" />
+                android:textSize="18dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -180,7 +182,8 @@
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
             android:layout_margin="1dp"
-            android:layout_marginTop="@dimen/px10"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:layout_rowWeight="1"
             android:background="#ffffff"
             android:gravity="center"
@@ -191,12 +194,12 @@
                 android:layout_height="wrap_content"
                 android:text="登录"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_size_large"
+                android:textSize="16dp"
                 android:textStyle="bold" />
 
             <View
                 android:layout_width="fill_parent"
-                android:layout_height="@dimen/px20" />
+                android:layout_height="10dp" />
 
             <TextView
                 android:id="@+id/IntegralCount"
@@ -204,7 +207,7 @@
                 android:layout_height="wrap_content"
                 android:text="+0"
                 android:textColor="@color/dp_blue"
-                android:textSize="@dimen/px20" />
+                android:textSize="18dp" />
         </LinearLayout>
     </GridLayout>
 
@@ -213,7 +216,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/layout_integalinfo"
-        android:background="@color/white"
+        android:layout_marginTop="10dp"
+        android:background="@color/light_gray"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:visibility="visible">
@@ -221,19 +225,20 @@
         <TextView
             android:id="@+id/mine_integral_detail_tile"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/px40"
+            android:layout_height="30dp"
+            android:layout_marginTop="5dp"
             android:layout_alignParentLeft="true"
             android:background="@color/gray_tab"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/px20"
             android:text="积分明细"
             android:textColor="@color/black"
-            android:textSize="@dimen/px20" />
+            android:textSize="16dp" />
 
         <com.zx.zxutils.views.SwipeRecylerView.ZXSwipeRecyler
             android:id="@+id/mine_integral_detail_content"
             android:layout_below="@+id/mine_integral_detail_tile"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/gray_tab">
         </com.zx.zxutils.views.SwipeRecylerView.ZXSwipeRecyler>
