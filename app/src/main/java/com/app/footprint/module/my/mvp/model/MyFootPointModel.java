@@ -1,6 +1,7 @@
 package com.app.footprint.module.my.mvp.model;
 
 import com.app.footprint.api.service.ApiService;
+import com.app.footprint.module.my.bean.MyFootRouteEntity;
 import com.app.footprint.module.my.bean.MyfootMarkEntity;
 import com.frame.zxmvp.base.BaseModel;
 
@@ -24,6 +25,14 @@ public class MyFootPointModel extends BaseModel implements MyFootPointContract.M
     public Observable<List<MyfootMarkEntity>> requestMyFootMarkList(Map<String, String> map) {
         return mRepositoryManager.obtainRetrofitService(ApiService.class)
                 .getMyFootMarkList(map)
+                .compose(RxHelper.handleResult())
+                .compose(RxSchedulers.io_main());
+    }
+
+    @Override
+    public Observable<List<MyFootRouteEntity>> requestMyFootRouteList(Map<String, String> map) {
+        return mRepositoryManager.obtainRetrofitService(ApiService.class)
+                .getMyFootRouteList(map)
                 .compose(RxHelper.handleResult())
                 .compose(RxSchedulers.io_main());
     }

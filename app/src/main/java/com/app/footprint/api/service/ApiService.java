@@ -1,6 +1,7 @@
 package com.app.footprint.api.service;
 
 import com.app.footprint.module.my.bean.IntegralEntity;
+import com.app.footprint.module.my.bean.MyFootRouteEntity;
 import com.app.footprint.module.my.bean.MyfootMarkEntity;
 import com.app.footprint.module.my.bean.UserInfoEntity;
 import com.app.footprint.module.system.bean.LoginEntity;
@@ -68,4 +69,7 @@ public interface ApiService {
 
     @GET("/fsms/footprint/footmark/list/info")
     Observable<BaseRespose<List<MyfootMarkEntity>>> getMyFootMarkList(@QueryMap Map<String, String> map);
+
+    @GET("/fsms/footprint/route/list/info")
+    Observable<BaseRespose<List<MyFootRouteEntity>>> getMyFootRouteList(@QueryMap Map<String, String> map);
 }

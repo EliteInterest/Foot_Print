@@ -1,5 +1,6 @@
 package com.app.footprint.module.my.mvp.presenter;
 
+import com.app.footprint.module.my.bean.MyFootRouteEntity;
 import com.app.footprint.module.my.bean.MyfootMarkEntity;
 import com.app.footprint.module.my.mvp.contract.MyFootPointContract;
 import com.frame.zxmvp.baserx.RxHelper;
@@ -23,6 +24,23 @@ public class MyFootPointPresenter extends MyFootPointContract.Presenter {
                     @Override
                     protected void _onNext(List<MyfootMarkEntity> list) {
                         mView.onRequestMyFootMarkListResult(list);
+                    }
+
+                    @Override
+                    protected void _onError(String message) {
+                        mView.showToast(message);
+                    }
+                });
+    }
+
+    @Override
+    public void doRequestMyFootRouteList(Map<String, String> map) {
+        mModel.requestMyFootRouteList(map)
+                .compose(RxHelper.bindToLifecycle(mView))
+                .subscribe(new RxSubscriber<List<MyFootRouteEntity>>(mView) {
+                    @Override
+                    protected void _onNext(List<MyFootRouteEntity> list) {
+                        mView.onRequestMyFootRouteListResult(list);
                     }
 
                     @Override

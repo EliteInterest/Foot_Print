@@ -20,6 +20,7 @@ import com.app.footprint.module.my.bean.UserInfoEntity;
 import com.app.footprint.module.my.mvp.contract.MyContract;
 import com.app.footprint.module.my.mvp.model.MyModel;
 import com.app.footprint.module.my.mvp.presenter.MyPresenter;
+import com.app.footprint.module.my.tool.MyTool;
 import com.squareup.okhttp.Request;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.BitmapCallback;
@@ -101,7 +102,7 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
         String headUrl = mSharedPrefUtil.getString("headPortraits");
         if(headUrl!=null &&
                 !TextUtils.isEmpty(headUrl))
-        setIamge(mHeadImage,headUrl);
+        bitmap = MyTool.setIamge(getActivity(),mHeadImage,headUrl,70,70);
         Log.i(TAG, "username is " + userName);
         if (!TextUtils.isEmpty(userName)) {
             mUserName.setText(userName);
@@ -218,26 +219,5 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
         mFootmarkCount.setText(String.valueOf(FootmarkCount));
         mIntegral.setText(String.valueOf(Integral));
         mVisitVolume.setText(String.valueOf(VisitVolume));
-    }
-
-    private void setIamge(ImageView imageView,String url)
-    {
-        OkHttpUtils.get().url(url).tag(this)
-                .build()
-                .connTimeOut(20000).readTimeOut(20000).writeTimeOut(20000)
-                .execute(new BitmapCallback() {
-                    @Override
-                    public void onError(Request request, Exception e) {
-
-                    }
-
-                    @Override
-                    public void onResponse(Bitmap response) {
-                        mHeadImage.setMaxHeight(70);
-                        mHeadImage.setMaxWidth(70);
-                        mHeadImage.setBackground(new BitmapDrawable(MyFragment.bitmap));
-                        bitmap = response;
-                    }
-                });
     }
 }

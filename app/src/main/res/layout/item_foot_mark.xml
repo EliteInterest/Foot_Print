@@ -51,7 +51,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="center"
         android:layout_weight="5"
@@ -60,10 +60,12 @@
 
         <ImageView
             android:id="@+id/my_foot_des_img"
-            android:layout_width="134dp"
-            android:layout_height="88dp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px150"
             android:layout_gravity="center"
             android:background="@mipmap/map_empty"
+            android:layout_marginLeft="@dimen/px20"
+            android:layout_marginRight="@dimen/px20"
             android:scaleType="centerCrop" />
     </LinearLayout>
 </LinearLayout>
