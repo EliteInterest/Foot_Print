@@ -26,7 +26,7 @@
             android:layout_centerInParent="true"
             android:text="个人信息"
             android:textColor="@color/white"
-            android:textSize="18dp"/>
+            android:textSize="@dimen/text_size_large"/>
 
     </RelativeLayout>
 
@@ -52,7 +52,7 @@
             android:layout_marginLeft="10dp"
             android:text="头像"
             android:textColor="@color/black"
-            android:textSize="18dp" />
+            android:textSize="@dimen/text_size_large" />
 
         <ImageView
             android:id="@+id/personal_image"
@@ -93,7 +93,7 @@
             android:textColor="@color/black"
             android:text="昵称"
             android:gravity="center_vertical"
-            android:textSize="18dp"/>
+            android:textSize="@dimen/text_size_large"/>
 
         <TextView
             android:id="@+id/person_nickName_content"
@@ -104,7 +104,7 @@
             android:textColor="@color/darkgray"
             android:text="昵称"
             android:gravity="center_vertical"
-            android:textSize="@dimen/px15"/>
+            android:textSize="@dimen/text_size_normal"/>
 
         <ImageView
             android:id="@+id/nickName_right_arrow"
@@ -145,7 +145,7 @@
             android:textColor="@color/black"
             android:text="账号"
             android:gravity="center_vertical"
-            android:textSize="18dp"/>
+            android:textSize="@dimen/text_size_large"/>
 
         <TextView
             android:id="@+id/personal_username_textview"
@@ -156,7 +156,7 @@
             android:textColor="@color/darkgray"
             android:text="账号"
             android:gravity="center_vertical"
-            android:textSize="@dimen/px15"/>
+            android:textSize="@dimen/text_size_normal"/>
 
         <ImageView
             android:id="@+id/account_right_arrow"
@@ -197,7 +197,7 @@
             android:textColor="@color/black"
             android:text="手机"
             android:gravity="center_vertical"
-            android:textSize="18dp"/>
+            android:textSize="@dimen/text_size_large"/>
 
         <TextView
             android:id="@+id/person_phone_content"
@@ -208,7 +208,7 @@
             android:textColor="@color/darkgray"
             android:text="手机"
             android:gravity="center_vertical"
-            android:textSize="@dimen/px15"/>
+            android:textSize="@dimen/text_size_normal"/>
 
         <ImageView
             android:id="@+id/phone_right_arrow"
@@ -230,6 +230,6 @@
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
         android:textStyle="bold"
-        android:textSize="18dp"
+        android:textSize="@dimen/text_size_large"
         android:text="退    出" />
 </RelativeLayout>

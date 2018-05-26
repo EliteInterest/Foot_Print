@@ -24,7 +24,7 @@
             android:gravity="center"
             android:text="返回"
             android:textColor="@color/white"
-            android:textSize="14dp" />
+            android:textSize="@dimen/text_size_normal" />
 
         <TextView
             android:layout_width="match_parent"
@@ -35,7 +35,7 @@
             android:singleLine="true"
             android:text="联系方式"
             android:textColor="@color/white"
-            android:textSize="20dp" />
+            android:textSize="@dimen/text_size_large" />
 
     </RelativeLayout>
 
@@ -59,7 +59,7 @@
             android:gravity="center_vertical"
             android:text="联系电话"
             android:textColor="@color/black"
-            android:textSize="16dp" />
+            android:textSize="@dimen/text_size_large" />
 
         <TextView
             android:id="@+id/contact_phone_num"
@@ -71,7 +71,7 @@
             android:gravity="center_vertical"
             android:text="13923232323"
             android:textColor="@color/dp_blue"
-            android:textSize="16dp" />
+            android:textSize="@dimen/text_size_large" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -95,7 +95,7 @@
             android:gravity="center_vertical"
             android:text="意见反馈:"
             android:textColor="@color/black"
-            android:textSize="16dp" />
+            android:textSize="@dimen/text_size_large" />
 
         <EditText
             android:id="@+id/contact_edit_area"
@@ -119,7 +119,7 @@
             android:layout_below="@+id/contact_edit_area"
             android:layout_marginBottom="10dp"
             android:text="提  交"
-            android:textSize="16dp"
+            android:textSize="@dimen/text_size_large"
             android:layout_marginLeft="140dp"
             android:layout_marginRight="140dp"
             android:layout_marginTop="10dp"
