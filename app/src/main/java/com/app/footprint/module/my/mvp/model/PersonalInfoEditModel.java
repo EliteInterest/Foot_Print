@@ -29,14 +29,6 @@ public class PersonalInfoEditModel extends BaseModel implements PersonalInfoEdit
     }
 
     @Override
-    public Observable<UserInfoEntity> uploadHeadPortraits(RequestBody requestBody) {
-        return mRepositoryManager.obtainRetrofitService(ApiService.class)
-                .uploadHead(requestBody)
-                .compose(RxHelper.handleResult())
-                .compose(RxSchedulers.io_main());
-    }
-
-    @Override
     public Observable<UserInfoEntity> uploadPhone(RequestBody requestBody) {
         return mRepositoryManager.obtainRetrofitService(ApiService.class)
                 .uploadPhone(requestBody)

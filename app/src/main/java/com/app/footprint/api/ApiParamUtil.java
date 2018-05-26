@@ -95,10 +95,10 @@ public class ApiParamUtil {
     }
 
     //更新头像
-    public static Map<String, String> getHeadPortraitsInfo(String userId, File file) {
+    public static Map<String, String> getHeadPortraitsInfo(String userId,String file) {
         Map<String, String> map = new HashMap<>();
-        map.put("UserId", userId);
-//        map.put("file", file);
+        map.put("userId", userId);
+        map.put("file", file);
         return map;
     }
 }

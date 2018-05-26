@@ -1,10 +1,14 @@
 package com.app.footprint.module.my.ui;
 
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.telecom.Call;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -16,6 +20,9 @@ import com.app.footprint.module.my.bean.UserInfoEntity;
 import com.app.footprint.module.my.mvp.contract.MyContract;
 import com.app.footprint.module.my.mvp.model.MyModel;
 import com.app.footprint.module.my.mvp.presenter.MyPresenter;
+import com.squareup.okhttp.Request;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.BitmapCallback;
 import com.zx.zxutils.util.ZXDialogUtil;
 import com.zx.zxutils.views.BottomSheet.SheetData;
 import com.zx.zxutils.views.BottomSheet.ZXBottomSheet;
@@ -30,6 +37,7 @@ import butterknife.OnClick;
  */
 public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements MyContract.View {
     private static final String TAG = "MyFragment";
+    public static Bitmap bitmap = null;
     @BindView(R.id.layout_head)
     RelativeLayout mHeadLayout;
 
@@ -60,6 +68,9 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
     @BindView(R.id.person_account_content)
     TextView mSettingsView;
 
+    @BindView(R.id.personal_image)
+    ImageView mHeadImage;
+
 
     public static MyFragment newInstance() {
         MyFragment fragment = new MyFragment();
@@ -87,6 +98,10 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
         String userName = mSharedPrefUtil.getString("userName");
         String nickName = mSharedPrefUtil.getString("nickName");
         int footPeriod = mSharedPrefUtil.getInt("footPeriod", 0);
+        String headUrl = mSharedPrefUtil.getString("headPortraits");
+        if(headUrl!=null &&
+                !TextUtils.isEmpty(headUrl))
+        setIamge(mHeadImage,headUrl);
         Log.i(TAG, "username is " + userName);
         if (!TextUtils.isEmpty(userName)) {
             mUserName.setText(userName);
@@ -203,5 +218,26 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
         mFootmarkCount.setText(String.valueOf(FootmarkCount));
         mIntegral.setText(String.valueOf(Integral));
         mVisitVolume.setText(String.valueOf(VisitVolume));
+    }
+
+    private void setIamge(ImageView imageView,String url)
+    {
+        OkHttpUtils.get().url(url).tag(this)
+                .build()
+                .connTimeOut(20000).readTimeOut(20000).writeTimeOut(20000)
+                .execute(new BitmapCallback() {
+                    @Override
+                    public void onError(Request request, Exception e) {
+
+                    }
+
+                    @Override
+                    public void onResponse(Bitmap response) {
+                        mHeadImage.setMaxHeight(70);
+                        mHeadImage.setMaxWidth(70);
+                        mHeadImage.setBackground(new BitmapDrawable(MyFragment.bitmap));
+                        bitmap = response;
+                    }
+                });
     }
 }

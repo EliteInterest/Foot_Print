@@ -11,14 +11,17 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.widget.AppCompatButton;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.app.footprint.R;
+import com.app.footprint.api.ApiParamUtil;
 import com.app.footprint.app.ConstStrings;
 import com.app.footprint.base.BaseActivity;
+import com.app.footprint.module.my.bean.UserInfoEntity;
 import com.app.footprint.module.my.mvp.contract.PersonalInfoContract;
 import com.app.footprint.module.my.mvp.model.PersonalInfoModel;
 import com.app.footprint.module.my.mvp.presenter.PersonalInfoPresenter;
@@ -34,6 +37,7 @@ import butterknife.OnClick;
  */
 @SuppressWarnings("ALL")
 public class PersonalInfoActivity extends BaseActivity<PersonalInfoPresenter, PersonalInfoModel> implements PersonalInfoContract.View {
+private static final String TAG = "PersonalInfoActivity";
 
     @BindView(R.id.personal_back)
     TextView mPersonalBack;
@@ -72,11 +76,16 @@ public class PersonalInfoActivity extends BaseActivity<PersonalInfoPresenter, Pe
 
     @Override
     public void initView(Bundle savedInstanceState) {
+        if(MyFragment.bitmap != null)
+        {
+            mHeadImage.setMaxHeight(70);
+            mHeadImage.setMaxWidth(70);
+            mHeadImage.setBackground(new BitmapDrawable(MyFragment.bitmap));
+        }
     }
 
     @Override
-    protected void onResume()
-    {
+    protected void onResume() {
         String userName = mSharedPrefUtil.getString("userName");
         String nickName = mSharedPrefUtil.getString("nickName");
         String phone = mSharedPrefUtil.getString("phone");
@@ -95,7 +104,7 @@ public class PersonalInfoActivity extends BaseActivity<PersonalInfoPresenter, Pe
         super.onResume();
     }
 
-    @OnClick({R.id.personal_back, R.id.layout_nickName, R.id.layout_account, R.id.layout_phone, R.id.btn_settings_logout,R.id.layout_head})
+    @OnClick({R.id.personal_back, R.id.layout_nickName, R.id.layout_account, R.id.layout_phone, R.id.btn_settings_logout, R.id.layout_head})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.personal_back:
@@ -142,7 +151,7 @@ public class PersonalInfoActivity extends BaseActivity<PersonalInfoPresenter, Pe
 //        startActivity(intent);
 
         this.setIntent(intent);
-        PersonalInfoEditActivity.startAction(this,false);
+        PersonalInfoEditActivity.startAction(this, false);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -153,12 +162,20 @@ public class PersonalInfoActivity extends BaseActivity<PersonalInfoPresenter, Pe
                     && resultCode == Activity.RESULT_OK)
                 showPersonalHead(data);
         }
+
+        showLoading("头像上传中...");
+        //开始上传头像
+//        mPresenter.doUploadHeadPortraits(PersonalInfoContract.ActivityRequestCode.UPLOAD_STEP_USERID,
+//                ApiParamUtil.getUserDataInfo(mSharedPrefUtil.getString("userId")));
+
+        Log.i(TAG," ConstStrings.LOCAL_HEAD_PIC_PATH is " + ConstStrings.LOCAL_HEAD_PIC_PATH);
+        mPresenter.doUploadHeadPortraits(
+                ApiParamUtil.getHeadPortraitsInfo(mSharedPrefUtil.getString("userId"),ConstStrings.LOCAL_HEAD_PIC_PATH));
     }
 
-    private void showPersonalHead(Intent data)
-    {
+    private void showPersonalHead(Intent data) {
         Uri selectedImage = data.getData();
-        String[] filePathColumn = { MediaStore.Images.Media.DATA };
+        String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
         Cursor cursor = getContentResolver().query(selectedImage,
                 filePathColumn, null, null, null);
@@ -190,5 +207,11 @@ public class PersonalInfoActivity extends BaseActivity<PersonalInfoPresenter, Pe
 
 //        mHeadImage.setImageBitmap(bitmap);
         mHeadImage.setBackground(new BitmapDrawable(bitmap));
+    }
+
+    @Override
+    public void onUploadUserHeadFileResult(UserInfoEntity userInfoEntity) {
+        dismissLoading();
+        Log.i(TAG,"user head file load success!");
     }
 }

@@ -11,6 +11,8 @@ import com.frame.zxmvp.baserx.RxSchedulers;
 
 import java.util.Map;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import rx.Observable;
 
 /**
@@ -18,5 +20,19 @@ import rx.Observable;
  * 功能：
  */
 public class PersonalInfoModel extends BaseModel implements PersonalInfoContract.Model {
+//    @Override
+//    public Observable<UserInfoEntity> uploadHeadPortraits(RequestBody userId, MultipartBody.Part file) {
+//        return mRepositoryManager.obtainRetrofitService(ApiService.class)
+//                .uploadHeadFile(userId,file)
+//                .compose(RxHelper.handleResult())
+//                .compose(RxSchedulers.io_main());
+//    }
 
+    @Override
+    public Observable<UserInfoEntity> uploadHeadPortraits(RequestBody requestBody) {
+        return mRepositoryManager.obtainRetrofitService(ApiService.class)
+                .uploadHeadFile(requestBody)
+                .compose(RxHelper.handleResult())
+                .compose(RxSchedulers.io_main());
+    }
 }

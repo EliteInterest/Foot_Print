@@ -10,11 +10,14 @@ import com.frame.zxmvp.basebean.BaseRespose;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.QueryMap;
 import rx.Observable;
 
@@ -43,7 +46,14 @@ public interface ApiService {
 
     @Headers({"Content-type:application/json;charset=UTF-8"})
     @POST("/fsms/user/headPortraits/upload")
-    Observable<BaseRespose<UserInfoEntity>> uploadHead(@Body RequestBody param);
+    Observable<BaseRespose<UserInfoEntity>> uploadHeadUseId(@Body RequestBody param);
+
+//    @Multipart
+//    @POST("/fsms/user/headPortraits/upload")
+//    Observable<BaseRespose<UserInfoEntity>> uploadHeadFile(@Part RequestBody userId, @Part MultipartBody.Part file);
+
+    @POST("/fsms/user/headPortraits/upload")
+    Observable<BaseRespose<UserInfoEntity>> uploadHeadFile(@Body RequestBody userId);
 
     @Headers({"Content-type:application/json;charset=UTF-8"})
     @POST("/fsms/user/info/upload")

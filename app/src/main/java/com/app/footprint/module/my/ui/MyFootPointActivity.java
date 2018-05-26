@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,9 @@ import com.zx.zxutils.util.ZXToastUtil;
 import com.zx.zxutils.views.SwipeRecylerView.ZXSRListener;
 import com.zx.zxutils.views.SwipeRecylerView.ZXSwipeRecyler;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -73,9 +76,9 @@ public class MyFootPointActivity extends BaseActivity<MyFootPointPresenter, MyFo
         recyclerAdapter = new ZXRecycleSimpleAdapter() {
             @Override
             public RecyclerView.ViewHolder onItemHolder(ViewGroup viewGroup, int i) {
-                View view;
-                view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_foot_mark, viewGroup, false);
-                RvHolder holder = new RvHolder(view);
+                    View view;
+                    view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_foot_mark, viewGroup, false);
+                    RvHolder holder = new RvHolder(view);
                 return holder;
             }
 
@@ -93,7 +96,7 @@ public class MyFootPointActivity extends BaseActivity<MyFootPointPresenter, MyFo
 
                     String time = info.getName() == null ? "" : info.getName();
                     myName.setText(time);
-                    String startTime = DateUtil.getDateTimeFromMillis(Long.valueOf(info.getStartTime()));
+                    String startTime = DateUtil.getDateTimeFromMillis(Long.valueOf(info.getStartTime()) * 1000);
                     myTime.setText(startTime);
                     int visitcount = info.getVisitVolume();
                     myVisitCount.setText(visitcount+"次访问");
@@ -169,6 +172,6 @@ public class MyFootPointActivity extends BaseActivity<MyFootPointPresenter, MyFo
         adapterList.addAll(list);
         swipeRecyler.stopRefresh();
         swipeRecyler.notifyDataSetChanged();
-        swipeRecyler.setLoadInfo(50);//total size
+        swipeRecyler.setLoadInfo(list.size());//total size
     }
 }

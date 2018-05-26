@@ -42,26 +42,6 @@ public class PersonalInfoEditPresenter extends Presenter {
     }
 
     @Override
-    public void doUploadHeadPortraits(Map<String, String> map) {
-        RequestBody requestBody = RequestBody.create(MediaType.parse("Content-Type, application/json"),
-                new JSONObject(map).toString());
-
-        mModel.uploadHeadPortraits(requestBody)
-                .compose(RxHelper.bindToLifecycle(mView))
-                .subscribe(new RxSubscriber<UserInfoEntity>() {
-                    @Override
-                    protected void _onNext(UserInfoEntity userInfoEntity) {
-                        mView.onUploadResult(userInfoEntity);
-                    }
-
-                    @Override
-                    protected void _onError(String message) {
-                        mView.showToast(message);
-                    }
-                });
-    }
-
-    @Override
     public void doUploadPhone(Map<String, String> map) {
         RequestBody requestBody = RequestBody.create(MediaType.parse("Content-Type, application/json"),
                 new JSONObject(map).toString());
