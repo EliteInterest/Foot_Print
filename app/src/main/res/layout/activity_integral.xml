@@ -97,8 +97,7 @@
                 android:layout_marginTop="5dp"
                 android:text="路线"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_size_large"
-                android:textStyle="bold" />
+                android:textSize="@dimen/text_size_large" />
 
             <View
                 android:layout_width="fill_parent"
@@ -134,8 +133,7 @@
                 android:layout_marginTop="5dp"
                 android:text="脚印"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_size_large"
-                android:textStyle="bold" />
+                android:textSize="@dimen/text_size_large" />
 
             <View
                 android:layout_width="fill_parent"
@@ -173,8 +171,7 @@
                 android:layout_marginTop="5dp"
                 android:text="访问"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_size_large"
-                android:textStyle="bold" />
+                android:textSize="@dimen/text_size_large" />
 
             <View
                 android:layout_width="fill_parent"
@@ -212,8 +209,7 @@
                 android:layout_marginTop="5dp"
                 android:text="登录"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_size_large"
-                android:textStyle="bold" />
+                android:textSize="@dimen/text_size_large" />
 
             <View
                 android:layout_width="fill_parent"
