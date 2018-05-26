@@ -59,6 +59,18 @@ public class IntegralActivity extends BaseActivity<IntegralPresenter, IntegralMo
     @BindView(R.id.VisitVolumel)
     TextView mVisitVolume;
 
+    @BindView(R.id.TVRoute)
+    TextView tvRoute;
+
+    @BindView(R.id.TVFootprint)
+    TextView tvFootprint;
+
+    @BindView(R.id.TVVisit)
+    TextView tvVisit;
+
+    @BindView(R.id.TVLogin)
+    TextView tvLogin;
+
 
     public static void startAction(Activity activity, boolean isFinish) {
         Intent intent = new Intent(activity, IntegralActivity.class);
@@ -160,16 +172,21 @@ public class IntegralActivity extends BaseActivity<IntegralPresenter, IntegralMo
 
         int count = integralEntity.getRoute().getCount();
         mRouteCount.setText("+" + count);
+        tvRoute.setText("路线 " + String.valueOf(count));
 
         int foot = integralEntity.getFootmark().getCount();
-        mFootmarkCount.setText("+" + foot);
+        mFootmarkCount.setText("+" + (foot * 10));
+        tvFootprint.setText("脚印 " + String.valueOf(foot * 10));
 
         int visit = integralEntity.getVisit().getCount();
         mVisitVolume.setText("+" + visit);
+        tvVisit.setText("访问 " + String.valueOf(visit));
 
         int login = integralEntity.getLogin().getCount();
         mIntegral.setText("+" + login);
-        mineIntegalCount.setText(String.valueOf(login));
+        tvLogin.setText("登录 " + String.valueOf(login));
+
+        mineIntegalCount.setText(String.valueOf(login + count + foot * 10 + visit));//总积分
 
         adapterList.addAll(integralEntity.getDetailsInfo());
         swipeRecyler.stopRefresh();
