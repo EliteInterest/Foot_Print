@@ -93,8 +93,7 @@
                 android:id="@+id/TVRoute"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
+                android:layout_gravity="center"
                 android:text="路线"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_large" />
@@ -107,8 +106,7 @@
                 android:id="@+id/RouteCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
+                android:layout_gravity="center"
                 android:text="+0"
                 android:textColor="@color/dp_blue"
                 android:textSize="@dimen/text_size_large" />
@@ -129,8 +127,7 @@
                 android:id="@+id/TVFootprint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
+                android:layout_gravity="center"
                 android:text="脚印"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_large" />
@@ -143,8 +140,7 @@
                 android:id="@+id/FootmarkCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
+                android:layout_gravity="center"
                 android:text="+0"
                 android:textColor="@color/dp_blue"
                 android:textSize="@dimen/text_size_large" />
@@ -167,8 +163,7 @@
                 android:id="@+id/TVVisit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
+                android:layout_gravity="center"
                 android:text="访问"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_large" />
@@ -181,11 +176,10 @@
                 android:id="@+id/VisitVolumel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
+                android:layout_gravity="center"
                 android:text="+0"
                 android:textColor="@color/dp_blue"
-                android:textSize="18dp" />
+                android:textSize="16sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -205,8 +199,7 @@
                 android:id="@+id/TVLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
+                android:layout_gravity="center"
                 android:text="登录"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_large" />
@@ -219,11 +212,10 @@
                 android:id="@+id/IntegralCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
+                android:layout_gravity="center"
                 android:text="+0"
                 android:textColor="@color/dp_blue"
-                android:textSize="18dp" />
+                android:textSize="16sp" />
         </LinearLayout>
     </GridLayout>
 
@@ -233,7 +225,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/layout_integalinfo"
         android:layout_marginTop="10dp"
-        android:background="@color/light_gray"
+        android:background="@color/white"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:visibility="visible">
@@ -242,14 +234,13 @@
             android:id="@+id/mine_integral_detail_tile"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_marginTop="5dp"
             android:layout_alignParentLeft="true"
-            android:background="@color/gray_tab"
+            android:background="@color/white"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/px20"
             android:text="积分明细"
             android:textColor="@color/black"
-            android:textSize="16dp" />
+            android:textSize="16sp" />
 
         <com.zx.zxutils.views.SwipeRecylerView.ZXSwipeRecyler
             android:id="@+id/mine_integral_detail_content"

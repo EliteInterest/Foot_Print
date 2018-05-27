@@ -113,8 +113,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
+                android:layout_gravity="center"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_large"
                 android:textStyle="bold"
@@ -126,8 +125,7 @@
                 android:id="@+id/RouteCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
+                android:layout_gravity="center"
                 android:textColor="@color/dp_blue"
                 android:textSize="@dimen/text_size_large"
                 android:text="0"/>
@@ -147,8 +145,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
+                android:layout_gravity="center"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_large"
                 android:textStyle="bold"
@@ -160,8 +157,7 @@
                 android:id="@+id/FootmarkCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
+                android:layout_gravity="center"
                 android:textColor="@color/dp_blue"
                 android:textSize="@dimen/text_size_large"
                 android:text="0"/>
@@ -181,8 +177,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
+                android:layout_gravity="center"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_large"
                 android:textStyle="bold"
@@ -194,8 +189,7 @@
                 android:id="@+id/Integral"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
+                android:layout_gravity="center"
                 android:textColor="@color/dp_blue"
                 android:textSize="@dimen/text_size_large"
                 android:text="0"/>
@@ -215,8 +209,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
+                android:layout_gravity="center"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_large"
                 android:textStyle="bold"
@@ -228,8 +221,7 @@
                 android:id="@+id/VisitVolume"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
+                android:layout_gravity="center"
                 android:textColor="@color/dp_blue"
                 android:textSize="@dimen/text_size_large"
                 android:text="0"/>
