@@ -37,7 +37,7 @@ import butterknife.OnClick;
  */
 @SuppressWarnings("ALL")
 public class PersonalInfoActivity extends BaseActivity<PersonalInfoPresenter, PersonalInfoModel> implements PersonalInfoContract.View {
-private static final String TAG = "PersonalInfoActivity";
+    private static final String TAG = "PersonalInfoActivity";
 
     @BindView(R.id.personal_back)
     TextView mPersonalBack;
@@ -203,8 +203,12 @@ private static final String TAG = "PersonalInfoActivity";
         options.inJustDecodeBounds = false;
         bitmap = BitmapFactory.decodeFile(picturePath, options);
 
-        mHeadImage.setMaxHeight(90);
-        mHeadImage.setMaxWidth(90);
+        Matrix matrix = new Matrix();
+        matrix.postRotate(90);
+        Bitmap bmp = Bitmap.createBitmap(bmpt, 0,0,bmpt.getWidth(),  bmpt.getHeight(), matrix, false);
+
+        mHeadImage.setMaxHeight(70);
+        mHeadImage.setMaxWidth(70);
 
 //        mHeadImage.setImageBitmap(bitmap);
         mHeadImage.setBackground(new BitmapDrawable(bitmap));

@@ -100,15 +100,15 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
         String nickName = mSharedPrefUtil.getString("nickName");
         int footPeriod = mSharedPrefUtil.getInt("footPeriod", 0);
         String headUrl = mSharedPrefUtil.getString("headPortraits");
-        if(headUrl!=null &&
-                !TextUtils.isEmpty(headUrl))
-         MyTool.setIamge(getActivity(),mHeadImage,headUrl,70,70);
+        if(headUrl!=null && !TextUtils.isEmpty(headUrl))
+            MyTool.setIamge(getActivity(),mHeadImage,headUrl,70,70);
         if(bitmap != null)
         {
             Log.i(TAG,"bitmap is not NULL!");
         }
         else
             Log.i(TAG,"bitmap is NULL!");
+
         Log.i(TAG, "username is " + userName);
         if (!TextUtils.isEmpty(userName)) {
             mUserName.setText(userName);

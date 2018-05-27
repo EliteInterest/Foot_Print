@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatButton;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -116,19 +117,19 @@ public class PersonalInfoEditActivity extends BaseActivity<PersonalInfoEditPrese
                 mPresenter.doSendPhoneNum(ApiParamUtil.getPhoneDataInfo(phoneNumber));
                 break;
 
-            case R.id.btn_user_edit_commit_logout:
+            case R.id.btn_user_edit_commit_logout://提交按钮，用来更新昵称、用户名或手机号
                 phoneNumber = mEdit.getText().toString();
                 String checkNum = mEditCheckNum.getText().toString();
                 if (TextUtils.isEmpty(phoneNumber) || ((mPhoneEditLayout.getVisibility() == View.VISIBLE) && TextUtils.isEmpty(checkNum))) {
                     showToast("请输入更新的数据！");
                     return;
                 }
-                if (tab == 1) {
+                if (tab == 1) {//更新昵称
                     mPresenter.doUploadName(ApiParamUtil.getUserNickNameIfo(mSharedPrefUtil.getString("userId"), phoneNumber));
-                } else if (tab == 2) {
+                } else if (tab == 2) {//更新用户名
                     mPresenter.doUploadName(ApiParamUtil.getUserNameInfo(mSharedPrefUtil.getString("userId"), phoneNumber));
-                } else {
-                    mPresenter.doUploadName(ApiParamUtil.getUserPhoneInfo(mSharedPrefUtil.getString("userId"), phoneNumber, checkNum));
+                } else {//更新手机号
+                    mPresenter.doUploadPhone(ApiParamUtil.getUserPhoneInfo(mSharedPrefUtil.getString("userId"), phoneNumber, checkNum));
                 }
                 break;
         }
@@ -141,6 +142,10 @@ public class PersonalInfoEditActivity extends BaseActivity<PersonalInfoEditPrese
             mSharedPrefUtil.putString("nickName",mEdit.getText().toString());
         else  if(tab == 2)
             mSharedPrefUtil.putString("userName",mEdit.getText().toString());
+        else {
+            Log.e("fxs", "update phone to: " + mEdit.getText().toString());
+            mSharedPrefUtil.putString("phone", mEdit.getText().toString());
+        }
         finish();
     }
 
