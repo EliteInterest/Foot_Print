@@ -203,10 +203,6 @@ public class PersonalInfoActivity extends BaseActivity<PersonalInfoPresenter, Pe
         options.inJustDecodeBounds = false;
         bitmap = BitmapFactory.decodeFile(picturePath, options);
 
-        Matrix matrix = new Matrix();
-        matrix.postRotate(90);
-        Bitmap bmp = Bitmap.createBitmap(bmpt, 0,0,bmpt.getWidth(),  bmpt.getHeight(), matrix, false);
-
         mHeadImage.setMaxHeight(70);
         mHeadImage.setMaxWidth(70);
 
