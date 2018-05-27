@@ -80,6 +80,7 @@ private static final String TAG = "PersonalInfoActivity";
         {
             mHeadImage.setMaxHeight(70);
             mHeadImage.setMaxWidth(70);
+            Log.i(TAG,"bitmap is " + MyFragment.bitmap.toString());
             mHeadImage.setBackground(new BitmapDrawable(MyFragment.bitmap));
         }
     }

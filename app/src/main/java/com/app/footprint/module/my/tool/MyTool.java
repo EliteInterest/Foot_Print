@@ -12,9 +12,8 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.BitmapCallback;
 
 public class MyTool {
-    public static Bitmap setIamge(FragmentActivity context, ImageView imageView, String url,int width,int height)
+    public static void setIamge(Context context, ImageView imageView, String url,int width,int height)
     {
-        final Bitmap[] bitmap = {null};
         OkHttpUtils.get().url(url).tag(context)
                 .build()
                 .connTimeOut(20000).readTimeOut(20000).writeTimeOut(20000)
@@ -30,10 +29,8 @@ public class MyTool {
                         if(width > 0)
                         imageView.setMaxWidth(width);
                         imageView.setBackground(new BitmapDrawable(response));
-                        bitmap[0] = response;
+                        MyFragment.bitmap = response;
                     }
                 });
-
-        return bitmap[0];
     }
 }

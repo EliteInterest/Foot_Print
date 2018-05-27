@@ -72,4 +72,7 @@ public interface ApiService {
 
     @GET("/fsms/footprint/route/list/info")
     Observable<BaseRespose<List<MyFootRouteEntity>>> getMyFootRouteList(@QueryMap Map<String, String> map);
+
+    @POST("/fsms/footprint/footmark/info/upload")
+    Observable<BaseRespose<String>> commitFile(@Body RequestBody userId);
 }

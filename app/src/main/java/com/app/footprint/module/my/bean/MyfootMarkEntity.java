@@ -17,7 +17,7 @@ public class MyfootMarkEntity implements Serializable {
     public float Longitude;
     public float Latitude;
     public float Altitude;
-
+    public String DetailsUrlPath;
 
     public String getId() {
         return this.Id;
@@ -28,7 +28,7 @@ public class MyfootMarkEntity implements Serializable {
     }
 
     public String getName() {
-        return this.Name;
+        return this.Name == null ? "":this.Name;
     }
 
     public void setName(String Name) {
@@ -91,8 +91,18 @@ public class MyfootMarkEntity implements Serializable {
         this.Altitude = Altitude;
     }
 
+    public String getDetailsUrlPath()
+    {
+        return DetailsUrlPath;
+    }
+
+    public void setDetailsUrlPath(String detailsUrlPath) {
+        DetailsUrlPath = detailsUrlPath;
+    }
+
     @Override
     public String toString() {
-        return Id.toString() + Name.toString() + StartTime.toString() + EndTime.toString();
+//        return Id.toString() + Name == null ?"":Name.toString() + StartTime.toString() + EndTime.toString();
+        return "";
     }
 }

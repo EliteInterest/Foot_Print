@@ -7,7 +7,7 @@ import java.util.List;
  * Create By Xiangb On 2017/7/11
  * 功能：登录结果返回
  */
-public class IntegralEntity {
+public class IntegralEntity implements Serializable{
 
     public RowsBean Route;
     public RowsBean Footmark;

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.MediaController;
@@ -24,20 +25,29 @@ import com.app.footprint.R;
 import com.app.footprint.app.ConstStrings;
 import com.app.footprint.base.BaseActivity;
 import com.app.footprint.module.foot.bean.FootFileBean;
+import com.app.footprint.module.foot.bean.FootMarkTextInfo;
 import com.app.footprint.module.foot.func.adapter.FootPicAdapter;
 import com.app.footprint.module.foot.mvp.contract.EditInfoContract;
 import com.app.footprint.module.foot.mvp.model.EditInfoModel;
 import com.app.footprint.module.foot.mvp.presenter.EditInfoPresenter;
 import com.app.footprint.module.map.func.util.GpsUtil;
 import com.app.footprint.module.map.ui.MapChangeLocationActivity;
+import com.app.footprint.util.DateUtil;
 import com.esri.core.geometry.Point;
+import org.json.JSONObject;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.zx.zxutils.other.ZXItemClickSupport;
 import com.zx.zxutils.util.ZXSystemUtil;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -288,7 +298,8 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
      * 上传成功
      */
     @Override
-    public void onFileCommitResult() {
+    public void onFileCommitResult(String result) {
+
         mRxManager.post("footPreview", itemBean);
     }
 
@@ -348,6 +359,41 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
         } else if (editType == EditType.MapFootText) {//地图-足迹-文本
             itemBean.setTextName(etName.getText().toString());
             //TODO 直接提交
+            //初始化JSON文本
+            FootMarkTextInfo footMarkTextInfo = new FootMarkTextInfo();
+
+            FootMarkTextInfo.FootMarkTextBean footMarkTextBean = new FootMarkTextInfo.FootMarkTextBean();
+            footMarkTextBean.setUserId(mSharedPrefUtil.getString("userId",""));
+//            footMarkTextBean.setName(itemBean.getLocationName() == null ? "":itemBean.getLocationName());
+//            footMarkTextBean.setDesc(itemBean.getDescription() == null ? "":itemBean.getDescription());
+            footMarkTextBean.setName(itemBean.getLocationName());
+            footMarkTextBean.setDesc(itemBean.getDescription());
+            footMarkTextBean.setConsumptionTime("0");
+            footMarkTextBean.setStartTime(String.valueOf(System.currentTimeMillis()));
+            footMarkTextBean.setEndTime(String.valueOf(System.currentTimeMillis()));
+            footMarkTextInfo.setFootprint(footMarkTextBean);
+
+            FootMarkTextInfo.FootMarkTextBean1 footMarkTextBean1 = new FootMarkTextInfo.FootMarkTextBean1();
+            footMarkTextBean1.setPointId(itemBean.getId());
+            footMarkTextBean1.setLatitude(point.getX());
+            footMarkTextBean1.setLongitude(point.getY());
+            footMarkTextBean1.setAltitude(point.getZ());
+            footMarkTextBean1.setAddr(itemBean.getLocationName() == null ? "":itemBean.getLocationName());
+            footMarkTextBean1.setDesc(itemBean.getDescription() == null ? "":itemBean.getDescription());
+            footMarkTextBean1.setPointType(1);
+            footMarkTextInfo.setPointPosition(footMarkTextBean1);
+
+            FootMarkTextInfo.FootMarkTextBean3 footMarkTextBean3 = new FootMarkTextInfo.FootMarkTextBean3();
+            footMarkTextBean3.setTextName(etName.getText().toString());
+            footMarkTextBean3.setTextDesc(etRemark.getText().toString());
+            FootMarkTextInfo.FootMarkTextBean2 footMarkTextBean2 =  new FootMarkTextInfo.FootMarkTextBean2();
+            footMarkTextBean2.setTotalDesc("这是图片集合的描述，MediaInfo的数量和上传的图片和视频数量相同");
+            footMarkTextBean2.setTextInfo(footMarkTextBean3);
+            footMarkTextInfo.setFileInfo(footMarkTextBean2);
+
+            Gson gson = new Gson();
+            String jsonsStr  = gson.toJson(footMarkTextInfo);
+            mPresenter.commitFile(jsonsStr,null);
         }
         ZXSystemUtil.closeKeybord(this);
     }
