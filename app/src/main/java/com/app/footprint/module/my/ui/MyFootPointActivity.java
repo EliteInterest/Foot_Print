@@ -3,7 +3,9 @@ package com.app.footprint.module.my.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +15,10 @@ import android.widget.TextView;
 import com.app.footprint.R;
 import com.app.footprint.api.ApiParamUtil;
 import com.app.footprint.base.BaseActivity;
+import com.app.footprint.module.my.bean.IntegralEntity;
 import com.app.footprint.module.my.bean.MyFootRouteEntity;
 import com.app.footprint.module.my.bean.MyfootMarkEntity;
+import com.app.footprint.module.my.bean.UserInfoEntity;
 import com.app.footprint.module.my.mvp.contract.MyFootPointContract;
 import com.app.footprint.module.my.mvp.model.MyFootPointModel;
 import com.app.footprint.module.my.mvp.presenter.MyFootPointPresenter;
@@ -27,7 +31,9 @@ import com.zx.zxutils.util.ZXToastUtil;
 import com.zx.zxutils.views.SwipeRecylerView.ZXSRListener;
 import com.zx.zxutils.views.SwipeRecylerView.ZXSwipeRecyler;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -171,10 +177,19 @@ public class MyFootPointActivity extends BaseActivity<MyFootPointPresenter, MyFo
                         TextView myTime = zxRvHolder.getTextView(R.id.my_foot_time);
                         TextView myVisitCount = zxRvHolder.getTextView(R.id.my_foot_visitcount);
 
-                        String time = info.getName() == null ? "" : info.getName();
-                        myName.setText(time);
-                        String startTime = DateUtil.getDateTimeFromMillis(Long.valueOf(info.getStartTime()) * 1000);
+                        String name = info.getName() == null ? "" : info.getName();
+                        myName.setText(name);
+                        long time1 = 0;
+//                        boolean isNumber = false;
+                        try {
+                            time1 = Long.parseLong(info.getStartTime());
+                        } catch (NumberFormatException e) {
+                            time1 = 0;
+                        }
+
+                        String startTime = DateUtil.getDateTimeFromMillis(time1 * 1000);
                         myTime.setText(startTime);
+
                         int visitcount = info.getVisitVolume();
                         myVisitCount.setText(visitcount + "次访问");
                     }

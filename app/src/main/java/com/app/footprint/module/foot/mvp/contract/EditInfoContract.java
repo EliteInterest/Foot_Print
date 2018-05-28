@@ -29,7 +29,7 @@ public interface EditInfoContract {
 
     //方法
     abstract class Presenter extends BasePresenter<View, Model> {
-//        public abstract void commitFile(Map<String, String> map);
-        public abstract void commitFile(String FootmarkInfo, List<String> files);
+        public abstract void commitFile(Map<String, Object> map);
+//        public abstract void commitFile(String FootmarkInfo, List<String> files);
     }
 }

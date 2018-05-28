@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.MediaController;
@@ -31,15 +32,22 @@ import com.app.footprint.module.foot.mvp.model.EditInfoModel;
 import com.app.footprint.module.foot.mvp.presenter.EditInfoPresenter;
 import com.app.footprint.module.map.func.util.GpsUtil;
 import com.app.footprint.module.map.ui.MapChangeLocationActivity;
+import com.app.footprint.util.DateUtil;
 import com.esri.core.geometry.Point;
+import org.json.JSONObject;
+
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.zx.zxutils.other.ZXItemClickSupport;
 import com.zx.zxutils.util.ZXSystemUtil;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -128,6 +136,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
         getAddress();
         DecimalFormat decimalFormat = new DecimalFormat("#.00");
         tvLocationPoint.setText("(" + decimalFormat.format(point.getX()) + "," + decimalFormat.format(point.getY()) + ")");
+
     }
 
     /**
@@ -392,7 +401,11 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
 
             Gson gson = new Gson();
             String jsonsStr  = gson.toJson(footMarkTextInfo);
-            mPresenter.commitFile(jsonsStr,null);
+            Map<String, Object> map = new HashMap<>();
+            map.put("FootmarkInfo", jsonsStr);
+            map.put("uploadType", 1);
+            mPresenter.commitFile(map);
+
         }
         ZXSystemUtil.closeKeybord(this);
     }

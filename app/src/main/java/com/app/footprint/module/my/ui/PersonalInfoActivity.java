@@ -76,11 +76,10 @@ public class PersonalInfoActivity extends BaseActivity<PersonalInfoPresenter, Pe
 
     @Override
     public void initView(Bundle savedInstanceState) {
-        if(MyFragment.bitmap != null)
-        {
+        if (MyFragment.bitmap != null) {
             mHeadImage.setMaxHeight(70);
             mHeadImage.setMaxWidth(70);
-            Log.i(TAG,"bitmap is " + MyFragment.bitmap.toString());
+            Log.i(TAG, "bitmap is " + MyFragment.bitmap.toString());
             mHeadImage.setBackground(new BitmapDrawable(MyFragment.bitmap));
         }
     }
@@ -164,14 +163,16 @@ public class PersonalInfoActivity extends BaseActivity<PersonalInfoPresenter, Pe
                 showPersonalHead(data);
         }
 
-        showLoading("头像上传中...");
         //开始上传头像
 //        mPresenter.doUploadHeadPortraits(PersonalInfoContract.ActivityRequestCode.UPLOAD_STEP_USERID,
 //                ApiParamUtil.getUserDataInfo(mSharedPrefUtil.getString("userId")));
 
-        Log.i(TAG," ConstStrings.LOCAL_HEAD_PIC_PATH is " + ConstStrings.LOCAL_HEAD_PIC_PATH);
-        mPresenter.doUploadHeadPortraits(
-                ApiParamUtil.getHeadPortraitsInfo(mSharedPrefUtil.getString("userId"),ConstStrings.LOCAL_HEAD_PIC_PATH));
+        Log.i(TAG, " ConstStrings.LOCAL_HEAD_PIC_PATH is " + ConstStrings.LOCAL_HEAD_PIC_PATH);
+        if (ConstStrings.LOCAL_HEAD_PIC_PATH != null && ConstStrings.LOCAL_HEAD_PIC_PATH.length() != 0) {
+            showLoading("头像上传中...");
+            mPresenter.doUploadHeadPortraits(
+                    ApiParamUtil.getHeadPortraitsInfo(mSharedPrefUtil.getString("userId"), ConstStrings.LOCAL_HEAD_PIC_PATH));
+        }
     }
 
     private void showPersonalHead(Intent data) {
@@ -213,6 +214,6 @@ public class PersonalInfoActivity extends BaseActivity<PersonalInfoPresenter, Pe
     @Override
     public void onUploadUserHeadFileResult(UserInfoEntity userInfoEntity) {
         dismissLoading();
-        Log.i(TAG,"user head file load success!");
+        Log.i(TAG, "user head file load success!");
     }
 }
