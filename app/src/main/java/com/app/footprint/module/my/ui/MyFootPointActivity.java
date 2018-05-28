@@ -3,9 +3,7 @@ package com.app.footprint.module.my.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +13,8 @@ import android.widget.TextView;
 import com.app.footprint.R;
 import com.app.footprint.api.ApiParamUtil;
 import com.app.footprint.base.BaseActivity;
-import com.app.footprint.module.my.bean.IntegralEntity;
 import com.app.footprint.module.my.bean.MyFootRouteEntity;
 import com.app.footprint.module.my.bean.MyfootMarkEntity;
-import com.app.footprint.module.my.bean.UserInfoEntity;
 import com.app.footprint.module.my.mvp.contract.MyFootPointContract;
 import com.app.footprint.module.my.mvp.model.MyFootPointModel;
 import com.app.footprint.module.my.mvp.presenter.MyFootPointPresenter;
@@ -31,9 +27,7 @@ import com.zx.zxutils.util.ZXToastUtil;
 import com.zx.zxutils.views.SwipeRecylerView.ZXSRListener;
 import com.zx.zxutils.views.SwipeRecylerView.ZXSwipeRecyler;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -239,7 +233,6 @@ public class MyFootPointActivity extends BaseActivity<MyFootPointPresenter, MyFo
                     .setSRListener(new ZXSRListener<MyfootMarkEntity>() {
                         @Override
                         public void onItemClick(MyfootMarkEntity o, int i) {
-                            ZXToastUtil.showToast("点击:" + o.toString());
                             PreviewActivity.startAction(MyFootPointActivity.this, false, o);
                         }
 

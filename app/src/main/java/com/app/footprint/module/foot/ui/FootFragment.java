@@ -22,6 +22,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import rx.functions.Action1;
 
 /**
  * Create By admin On 2017/7/11
@@ -60,27 +61,27 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
             mSharedPrefUtil.putList(ConstStrings.FootFiles, footFiles);
         }
 
-//        mRxManager.on("footPreview", (Action1<FootFileBean>) footFileBean -> {
-//            if (footFileBean != null) {
-//                cvPreview.setVisibility(View.VISIBLE);
-//                fmPreview.setVisibility(View.VISIBLE);
-////                webViewFragment = WebViewFragment.newInstance();
-//                ZXFragmentUtil.addFragment(getFragmentManager(), webViewFragment, R.id.fm_map_preview);
-//                rvTitle.setVisibility(View.VISIBLE);
-//                if (footFileBean.isRoute()) {
-//                    tvTitle.setText("路径预览");
-//                } else {
-//                    tvTitle.setText("足印预览");
-//                }
-//                mapFragment.showFootView(false);
-//            } else if (webViewFragment != null) {
-//                cvPreview.setVisibility(View.GONE);
-//                fmPreview.setVisibility(View.GONE);
-//                rvTitle.setVisibility(View.GONE);
-//                ZXFragmentUtil.removeFragment(webViewFragment);
-//                mapFragment.showFootView(true);
-//            }
-//        });
+        mRxManager.on("footPreview", (Action1<FootFileBean>) footFileBean -> {
+            if (footFileBean != null) {
+                cvPreview.setVisibility(View.VISIBLE);
+                fmPreview.setVisibility(View.VISIBLE);
+                webViewFragment = WebViewFragment.newInstance(footFileBean.getUrl());
+                ZXFragmentUtil.addFragment(getFragmentManager(), webViewFragment, R.id.fm_map_preview);
+                rvTitle.setVisibility(View.VISIBLE);
+                if (footFileBean.isRoute()) {
+                    tvTitle.setText("路径预览");
+                } else {
+                    tvTitle.setText("足印预览");
+                }
+                mapFragment.showFootView(false);
+            } else if (webViewFragment != null) {
+                ZXFragmentUtil.removeFragment(webViewFragment);
+                cvPreview.setVisibility(View.GONE);
+                fmPreview.setVisibility(View.GONE);
+                rvTitle.setVisibility(View.GONE);
+                mapFragment.showFootView(true);
+            }
+        });
     }
 
     @OnClick({R.id.iv_title_back, R.id.iv_title_save})

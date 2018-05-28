@@ -1,7 +1,6 @@
 package com.app.footprint.module.foot.mvp.presenter;
 
 import com.app.footprint.module.foot.mvp.contract.EditInfoContract;
-import com.app.footprint.module.my.bean.UserInfoEntity;
 import com.frame.zxmvp.baserx.RxHelper;
 import com.frame.zxmvp.baserx.RxSubscriber;
 
@@ -39,7 +38,7 @@ public class EditInfoPresenter extends EditInfoContract.Presenter {
                         .addFormDataPart("FootmarkInfo", FootmarkInfo);
                 for (File file : files)
                     builder.addFormDataPart("FileInfo", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
-                builder.build();
+                requestBody = builder.build();
                 break;
 
             case 3:
@@ -47,7 +46,7 @@ public class EditInfoPresenter extends EditInfoContract.Presenter {
                         .addFormDataPart("FootmarkInfo", FootmarkInfo);
                 for (File file : files)
                     builder.addFormDataPart("FileInfo", file.getName(), RequestBody.create(MediaType.parse("video/*"), file));
-                builder.build();
+                requestBody = builder.build();
                 break;
         }
 

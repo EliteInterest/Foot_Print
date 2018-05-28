@@ -349,7 +349,7 @@ public class FootRecordView extends RelativeLayout {
             }
         }
         for (FootFileBean footFile : footFiles) {
-            Drawable drawable = FootUtil.drawTextToDrawable(context, R.mipmap.foot_pop_bg, footFile.getLocationName());
+            Drawable drawable = FootUtil.drawTextToDrawable(context, R.mipmap.foot_pop_bg, footFile.getDistrict() + footFile.getRoadname());
             if (drawable == null) {
                 continue;
             }

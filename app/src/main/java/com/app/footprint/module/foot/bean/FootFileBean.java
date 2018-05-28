@@ -17,13 +17,16 @@ public class FootFileBean implements Serializable {
     private String id;
     private String point;
     private String description;
-    private String locationName;
+    private String city;
+    private String district;
+    private String roadname;
     private List<PicBean> picPaths;
     private String vedioShootPath;
     private String vedioPath;
     private String textName;
-    private String recordTime;
-    private String commitTime;
+    private String startTime;
+    private String endTime;
+    private String url;
     private boolean isRoute = false;
 
     public enum Type {
@@ -34,52 +37,81 @@ public class FootFileBean implements Serializable {
 
     private Type type = Type.Camera;
 
-    public FootFileBean(){
+    public FootFileBean() {
         this.id = UUID.randomUUID().toString().substring(0, 10);
     }
 
-    public FootFileBean(String point, String description, String locationName, List<PicBean> picPaths) {
+    public FootFileBean(String point, String description,  List<PicBean> picPaths) {
         this.point = point;
         this.description = description;
         this.picPaths = picPaths;
-        this.locationName = locationName;
         this.type = Type.Camera;
         this.id = UUID.randomUUID().toString().substring(0, 10);
     }
 
-    public FootFileBean(String point, String description, String locationName, String vedioShootPath, String vedioPath) {
+    public FootFileBean(String point, String description, String vedioShootPath, String vedioPath) {
         this.point = point;
         this.description = description;
         this.vedioShootPath = vedioShootPath;
         this.vedioPath = vedioPath;
-        this.locationName = locationName;
         this.type = Type.Vedio;
         this.id = UUID.randomUUID().toString().substring(0, 10);
     }
 
-    public FootFileBean(String point, String description, String locationName, String textName) {
+    public FootFileBean(String point, String description,  String textName) {
         this.point = point;
         this.description = description;
         this.textName = textName;
-        this.locationName = locationName;
         this.type = Type.Text;
         this.id = UUID.randomUUID().toString().substring(0, 10);
     }
 
-    public String getRecordTime() {
-        return recordTime;
+    public String getCity() {
+        return city;
     }
 
-    public void setRecordTime(String recordTime) {
-        this.recordTime = recordTime;
+    public void setCity(String city) {
+        this.city = city;
     }
 
-    public String getCommitTime() {
-        return commitTime;
+    public String getDistrict() {
+        return district;
     }
 
-    public void setCommitTime(String commitTime) {
-        this.commitTime = commitTime;
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
+    public String getRoadname() {
+        return roadname;
+    }
+
+    public void setRoadname(String roadname) {
+        this.roadname = roadname;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 
     public boolean isRoute() {
@@ -98,13 +130,6 @@ public class FootFileBean implements Serializable {
         this.id = id;
     }
 
-    public String getLocationName() {
-        return locationName;
-    }
-
-    public void setLocationName(String locationName) {
-        this.locationName = locationName;
-    }
 
     public Type getType() {
         return type;
