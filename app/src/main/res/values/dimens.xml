@@ -61,7 +61,7 @@
     <dimen name="silice_height">450dp</dimen>
 
     <!-- 字体尺寸 -->
-    <dimen name="text_size_larger">28sp</dimen>
+    <dimen name="text_size_larger">18sp</dimen>
     <dimen name="text_size_large">16sp</dimen>
     <dimen name="text_size_normal">14sp</dimen>
     <dimen name="text_size_small">12sp</dimen>

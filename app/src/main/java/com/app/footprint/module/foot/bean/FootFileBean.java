@@ -22,6 +22,9 @@ public class FootFileBean implements Serializable {
     private String vedioShootPath;
     private String vedioPath;
     private String textName;
+    private String recordTime;
+    private String commitTime;
+    private boolean isRoute = false;
 
     public enum Type {
         Camera,
@@ -61,6 +64,30 @@ public class FootFileBean implements Serializable {
         this.locationName = locationName;
         this.type = Type.Text;
         this.id = UUID.randomUUID().toString().substring(0, 10);
+    }
+
+    public String getRecordTime() {
+        return recordTime;
+    }
+
+    public void setRecordTime(String recordTime) {
+        this.recordTime = recordTime;
+    }
+
+    public String getCommitTime() {
+        return commitTime;
+    }
+
+    public void setCommitTime(String commitTime) {
+        this.commitTime = commitTime;
+    }
+
+    public boolean isRoute() {
+        return isRoute;
+    }
+
+    public void setRoute(boolean route) {
+        isRoute = route;
     }
 
     public String getId() {

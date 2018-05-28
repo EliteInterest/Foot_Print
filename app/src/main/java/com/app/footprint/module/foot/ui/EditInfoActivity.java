@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.MediaController;
@@ -32,22 +31,15 @@ import com.app.footprint.module.foot.mvp.model.EditInfoModel;
 import com.app.footprint.module.foot.mvp.presenter.EditInfoPresenter;
 import com.app.footprint.module.map.func.util.GpsUtil;
 import com.app.footprint.module.map.ui.MapChangeLocationActivity;
-import com.app.footprint.util.DateUtil;
 import com.esri.core.geometry.Point;
-import org.json.JSONObject;
-
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.zx.zxutils.other.ZXItemClickSupport;
 import com.zx.zxutils.util.ZXSystemUtil;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -128,6 +120,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
 
         footFiles = mSharedPrefUtil.getList(ConstStrings.FootFiles);
         actionByType();
+        itemBean.setRecordTime(String.valueOf(System.currentTimeMillis()));
 
         if (point == null && location != null) {
             point = new Point(location.getLongitude(), location.getLatitude());
@@ -135,7 +128,6 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
         getAddress();
         DecimalFormat decimalFormat = new DecimalFormat("#.00");
         tvLocationPoint.setText("(" + decimalFormat.format(point.getX()) + "," + decimalFormat.format(point.getY()) + ")");
-
     }
 
     /**
@@ -177,6 +169,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             vedioView.setVisibility(View.GONE);
             itemBean.setType(FootFileBean.Type.Camera);
             etRemark.setHint("照片描述");
+            itemBean.setRoute(true);
             if (footId.length() == 0) {
                 CameraActivity.startAction(this, false, true, 0);
             }
@@ -185,6 +178,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             vedioView.setVisibility(View.VISIBLE);
             itemBean.setType(FootFileBean.Type.Vedio);
             etRemark.setHint("视频描述");
+            itemBean.setRoute(true);
             if (footId.length() == 0) {
                 CameraActivity.startAction(this, false, true, 1);
             }
@@ -194,11 +188,13 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             etName.setVisibility(View.VISIBLE);
             itemBean.setType(FootFileBean.Type.Text);
             etRemark.setHint("事件简介");
+            itemBean.setRoute(true);
         } else if (editType == EditType.MapFootPic) {//地图-足迹-图片
             rvPicture.setVisibility(View.VISIBLE);
             vedioView.setVisibility(View.GONE);
             itemBean.setType(FootFileBean.Type.Text);
             etRemark.setHint("照片描述");
+            itemBean.setRoute(false);
             if (footId.length() == 0) {
                 CameraActivity.startAction(this, false, true, 0);
             }
@@ -207,6 +203,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             vedioView.setVisibility(View.VISIBLE);
             itemBean.setType(FootFileBean.Type.Vedio);
             etRemark.setHint("视频描述");
+            itemBean.setRoute(false);
             if (footId.length() == 0) {
                 CameraActivity.startAction(this, false, true, 1);
             }
@@ -216,6 +213,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             etName.setVisibility(View.VISIBLE);
             itemBean.setType(FootFileBean.Type.Text);
             etRemark.setHint("事件简介");
+            itemBean.setRoute(false);
         }
     }
 
@@ -299,8 +297,8 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
      */
     @Override
     public void onFileCommitResult(String result) {
-
         mRxManager.post("footPreview", itemBean);
+        new Handler().postDelayed(() -> finish(), 50);
     }
 
     /**
@@ -336,6 +334,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
      * 根据类型进行保存
      */
     private void saveByType() {
+        itemBean.setCommitTime(String.valueOf(System.currentTimeMillis()));
         String pointString = point.getX() + "," + point.getY();
         itemBean.setPoint(pointString);
         itemBean.setDescription(etRemark.getText().toString());
@@ -375,8 +374,8 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
 
             FootMarkTextInfo.FootMarkTextBean1 footMarkTextBean1 = new FootMarkTextInfo.FootMarkTextBean1();
             footMarkTextBean1.setPointId(itemBean.getId());
-            footMarkTextBean1.setLatitude(point.getX());
-            footMarkTextBean1.setLongitude(point.getY());
+            footMarkTextBean1.setLatitude(point.getY());
+            footMarkTextBean1.setLongitude(point.getX());
             footMarkTextBean1.setAltitude(point.getZ());
             footMarkTextBean1.setAddr(itemBean.getLocationName() == null ? "":itemBean.getLocationName());
             footMarkTextBean1.setDesc(itemBean.getDescription() == null ? "":itemBean.getDescription());

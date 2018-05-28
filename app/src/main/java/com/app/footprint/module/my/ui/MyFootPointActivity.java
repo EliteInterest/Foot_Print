@@ -3,9 +3,7 @@ package com.app.footprint.module.my.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +13,8 @@ import android.widget.TextView;
 import com.app.footprint.R;
 import com.app.footprint.api.ApiParamUtil;
 import com.app.footprint.base.BaseActivity;
-import com.app.footprint.module.my.bean.IntegralEntity;
 import com.app.footprint.module.my.bean.MyFootRouteEntity;
 import com.app.footprint.module.my.bean.MyfootMarkEntity;
-import com.app.footprint.module.my.bean.UserInfoEntity;
 import com.app.footprint.module.my.mvp.contract.MyFootPointContract;
 import com.app.footprint.module.my.mvp.model.MyFootPointModel;
 import com.app.footprint.module.my.mvp.presenter.MyFootPointPresenter;
@@ -31,9 +27,7 @@ import com.zx.zxutils.util.ZXToastUtil;
 import com.zx.zxutils.views.SwipeRecylerView.ZXSRListener;
 import com.zx.zxutils.views.SwipeRecylerView.ZXSwipeRecyler;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -77,11 +71,10 @@ public class MyFootPointActivity extends BaseActivity<MyFootPointPresenter, MyFo
         tab = getIntent().getIntExtra("tab", 0);
         userId = mSharedPrefUtil.getString("userId");
         initRecy(tab);
-        if(tab == 0) {
+        if (tab == 0) {
             myFootRoute.setTextColor(getResources().getColor(R.color.dp_blue));
             mPresenter.doRequestMyFootRouteList(ApiParamUtil.getUserDataInfo(userId));
-        }
-        else {
+        } else {
             myFootMark.setTextColor(getResources().getColor(R.color.dp_blue));
             mPresenter.doRequestMyFootMarkList(ApiParamUtil.getUserDataInfo(userId));
         }
@@ -138,8 +131,7 @@ public class MyFootPointActivity extends BaseActivity<MyFootPointPresenter, MyFo
         swipeRecyler.setLoadInfo(list.size());//total size
     }
 
-    private void initRecy(int tab)
-    {
+    private void initRecy(int tab) {
         recyclerAdapter = new ZXRecycleSimpleAdapter() {
             @Override
             public RecyclerView.ViewHolder onItemHolder(ViewGroup viewGroup, int i) {
@@ -151,13 +143,11 @@ public class MyFootPointActivity extends BaseActivity<MyFootPointPresenter, MyFo
 
             @Override
             public void onBindHolder(RecyclerView.ViewHolder viewHolder, int i) {
-                if(RvHolder.class.isInstance(viewHolder))
-                {
+                if (RvHolder.class.isInstance(viewHolder)) {
                     RvHolder holder = (RvHolder) viewHolder;
                     ZxRvHolder zxRvHolder = holder.getViewHolder();
 
-                    if(tab == 0)
-                    {
+                    if (tab == 0) {
                         List<MyFootRouteEntity> dataList = (List<MyFootRouteEntity>) recyclerAdapter.getDataList();
                         MyFootRouteEntity info = dataList.get(i);
                         TextView myName = zxRvHolder.getTextView(R.id.my_foot_name);
@@ -166,15 +156,15 @@ public class MyFootPointActivity extends BaseActivity<MyFootPointPresenter, MyFo
                         ImageView myImage = zxRvHolder.getImageView(R.id.my_foot_des_img);
 
                         String image = info.getScreenshotPath();
-                        MyTool.setIamge(MyFootPointActivity.this,myImage,image,0,0);
+                        MyTool.setIamge(MyFootPointActivity.this, myImage, image, 0, 0);
 
                         String time = info.getName() == null ? "" : info.getName();
                         myName.setText(time);
-                        String startTime = DateUtil.getDateTimeFromMillis(Math.round(Float.valueOf(info.getStartTime()))*1000);
+                        String startTime = DateUtil.getDateTimeFromMillis(Math.round(Float.valueOf(info.getStartTime())) * 1000);
                         myTime.setText(startTime);
                         int visitcount = info.getVisitVolume();
                         myVisitCount.setText(visitcount + "次访问");
-                    }else {
+                    } else {
                         List<MyfootMarkEntity> dataList = (List<MyfootMarkEntity>) recyclerAdapter.getDataList();
                         MyfootMarkEntity info = dataList.get(i);
                         TextView myName = zxRvHolder.getTextView(R.id.my_foot_name);
@@ -193,15 +183,14 @@ public class MyFootPointActivity extends BaseActivity<MyFootPointPresenter, MyFo
 
             @Override
             public List<?> onItemList() {
-                if(tab == 0)
+                if (tab == 0)
                     return adapterRouteList;
                 else
                     return adapteMarkrList;
             }
         };
 
-        if(tab == 0)
-        {
+        if (tab == 0) {
             swipeRecyler.setSimpleAdapter(recyclerAdapter)
                     .showLoadInfo(true)
                     .setSRListener(new ZXSRListener<MyFootRouteEntity>() {
@@ -229,13 +218,14 @@ public class MyFootPointActivity extends BaseActivity<MyFootPointPresenter, MyFo
                             mPresenter.doRequestMyFootRouteList(ApiParamUtil.getUserDataInfo(userId));
                         }
                     });
-        }else {
+        } else {
             swipeRecyler.setSimpleAdapter(recyclerAdapter)
                     .showLoadInfo(true)
                     .setSRListener(new ZXSRListener<MyfootMarkEntity>() {
                         @Override
                         public void onItemClick(MyfootMarkEntity o, int i) {
                             ZXToastUtil.showToast("点击:" + o.toString());
+                            PreviewActivity.startAction(MyFootPointActivity.this, false, o);
                         }
 
                         @Override

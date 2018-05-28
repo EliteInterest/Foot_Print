@@ -76,7 +76,7 @@ public class FootRecordView extends RelativeLayout {
     private ZXSharedPrefUtil zxSharedPrefUtil;
 
     private MapView mapView;
-    private GraphicsLayer routeLayer;//路线
+    public GraphicsLayer routeLayer;//路线
     private List<Graphic> mGraphicList = new ArrayList<>();
     private List<Point> mPoints = new ArrayList<>();
     private SimpleLineSymbol lineSymbol;

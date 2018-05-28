@@ -5,9 +5,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.amap.api.services.core.LatLonPoint;
@@ -28,17 +28,12 @@ import com.app.footprint.module.map.mvp.model.MapModel;
 import com.app.footprint.module.map.mvp.presenter.MapPresenter;
 import com.app.footprint.module.system.ui.MainActivity;
 import com.esri.android.map.GraphicsLayer;
-import com.esri.android.map.Layer;
 import com.esri.android.map.MapOnTouchListener;
 import com.esri.android.map.MapView;
 import com.esri.android.map.event.OnStatusChangedListener;
 import com.esri.android.runtime.ArcGISRuntime;
 import com.esri.core.geometry.Point;
-import com.esri.core.io.UserCredentials;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -61,18 +56,13 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
     ImageView ivLayer;
     @BindView(R.id.foot_record_view)
     FootRecordView footRecordView;
+    @BindView(R.id.rl_title_map)
+    RelativeLayout rlTitle;
     private static final double DEFAULT_SCALE = 350000;
     private static final Point DEFAULTPOINT = new Point(106.52252214551413, 29.55847182396155);//默认坐标
     private MapOnTouchListener defaultListener;
 
     private TianDiTuLayer tianDiTuVectorLayer, tianDiTuImageLayer;
-    private List<Layer> identifyLayers;//要素
-    private List<String> dynamicLayerNameList = new ArrayList<>();
-    private HashMap<String, List<Integer>> identifyIdNameHash = new HashMap<>();
-    private HashMap<String, String> identifyLayersHash = new HashMap<>();
-    private HashMap<String, UserCredentials> userCredentialsHash = new HashMap<>();
-
-    private GraphicsLayer mMarkersGLayer = new GraphicsLayer();// 用于展示主体或任务结果注记
     private GraphicsLayer idenLayer = new GraphicsLayer();
 
     private GeocodeSearch geocodeSearch;
@@ -105,14 +95,6 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
         }, 100, 2000);
         //刷新点集
         mRxManager.on("refreshPoint", (Action1<Boolean>) bool -> footRecordView.refreshPoints());
-        //足印-预览
-        mRxManager.on("footPreview", new Action1<Object>() {
-
-            @Override
-            public void call(Object o) {
-                
-            }
-        });
     }
 
     /**
@@ -236,7 +218,6 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
             if (msg.what == 0) {
                 Location location = GpsUtil.getLocation(getActivity());
                 if (location != null) {
-                    Log.e("MapFragment", "Latitude: " + location.getLatitude() + ", Longtitude: " + location.getLongitude());
                     LatLonPoint latLonPoint = new LatLonPoint(location.getLatitude(), location.getLongitude());
                     // 第一个参数表示一个Latlng，第二参数表示范围多少米，第三个参数表示是火系坐标系还是GPS原生坐标系
                     RegeocodeQuery query = new RegeocodeQuery(latLonPoint, 200, GeocodeSearch.GPS);
@@ -245,6 +226,19 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
             }
         }
     };
+
+
+    public void showFootView(boolean show) {
+        if (show) {
+            footRecordView.setVisibility(View.VISIBLE);
+            footRecordView.routeLayer.setVisible(true);
+            rlTitle.setVisibility(View.VISIBLE);
+        } else {
+            footRecordView.setVisibility(View.GONE);
+            footRecordView.routeLayer.setVisible(false);
+            rlTitle.setVisibility(View.GONE);
+        }
+    }
 
     @Override
     public void onPause() {
@@ -265,4 +259,5 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
         timer.cancel();
         footRecordView.onDestory();
     }
+
 }

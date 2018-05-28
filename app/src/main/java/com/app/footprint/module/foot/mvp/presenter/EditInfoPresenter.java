@@ -1,15 +1,11 @@
 package com.app.footprint.module.foot.mvp.presenter;
 
 import com.app.footprint.module.foot.mvp.contract.EditInfoContract;
-import com.app.footprint.module.my.bean.UserInfoEntity;
 import com.frame.zxmvp.baserx.RxHelper;
 import com.frame.zxmvp.baserx.RxSubscriber;
 
-import java.io.File;
 import java.util.List;
-import java.util.Map;
 
-import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
@@ -35,7 +31,7 @@ public class EditInfoPresenter extends EditInfoContract.Presenter {
 
         mModel.commitFile(requestBody)
                 .compose(RxHelper.bindToLifecycle(mView))
-                .subscribe(new RxSubscriber<String>() {
+                .subscribe(new RxSubscriber<String>(mView) {
                     @Override
                     protected void _onNext(String o) {
                         mView.onFileCommitResult(o);
