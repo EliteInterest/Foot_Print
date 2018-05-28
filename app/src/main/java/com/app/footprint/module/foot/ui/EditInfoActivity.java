@@ -42,6 +42,7 @@ import com.google.gson.JsonObject;
 import com.zx.zxutils.other.ZXItemClickSupport;
 import com.zx.zxutils.util.ZXSystemUtil;
 
+import java.io.File;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -359,10 +360,104 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             addFootBean();
         } else if (editType == EditType.MapFootPic) {//地图-足迹-图片
             itemBean.setPicPaths(picChildBeans);
+
+            FootMarkTextInfo footMarkTextInfo = new FootMarkTextInfo();
+
+            FootMarkTextInfo.FootMarkTextBean footMarkTextBean = new FootMarkTextInfo.FootMarkTextBean();
+            footMarkTextBean.setUserId(mSharedPrefUtil.getString("userId",""));
+//            footMarkTextBean.setName(itemBean.getLocationName() == null ? "":itemBean.getLocationName());
+//            footMarkTextBean.setDesc(itemBean.getDescription() == null ? "":itemBean.getDescription());
+            footMarkTextBean.setName(itemBean.getLocationName());
+            footMarkTextBean.setDesc(itemBean.getDescription());
+            footMarkTextBean.setConsumptionTime("0");
+            footMarkTextBean.setStartTime(String.valueOf(System.currentTimeMillis()));
+            footMarkTextBean.setEndTime(String.valueOf(System.currentTimeMillis()));
+            footMarkTextInfo.setFootprint(footMarkTextBean);
+
+            FootMarkTextInfo.FootMarkTextBean1 footMarkTextBean1 = new FootMarkTextInfo.FootMarkTextBean1();
+            footMarkTextBean1.setPointId(itemBean.getId());
+            footMarkTextBean1.setLatitude(point.getY());
+            footMarkTextBean1.setLongitude(point.getX());
+            footMarkTextBean1.setAltitude(point.getZ());
+            footMarkTextBean1.setAddr(itemBean.getLocationName() == null ? "":itemBean.getLocationName());
+            footMarkTextBean1.setDesc(itemBean.getDescription() == null ? "":itemBean.getDescription());
+            footMarkTextBean1.setPointType(1);
+            footMarkTextInfo.setPointPosition(footMarkTextBean1);
+
+
+            FootMarkTextInfo.FootMarkTextBean2 footMarkTextBean2 =  new FootMarkTextInfo.FootMarkTextBean2();
+            footMarkTextBean2.setTotalDesc("这是图片集合的描述，MediaInfo的数量和上传的图片和视频数量相同");
+            List<String> MediaInfos = new ArrayList<>();
+            List<File> files = new ArrayList<>();
+
+            for(FootFileBean.PicBean picBean : picChildBeans)
+            {
+                MediaInfos.add("图片描述");//test
+                File file = new File(ConstStrings.getCachePath()  + picBean.getPath());
+                files.add(file);
+            }
+
+            footMarkTextBean2.setMediaInfo(MediaInfos);
+            footMarkTextInfo.setFileInfo(footMarkTextBean2);
+
+            Gson gson = new Gson();
+            String jsonsStr  = gson.toJson(footMarkTextInfo);
+            Map<String, Object> map = new HashMap<>();
+            map.put("FootmarkInfo", jsonsStr);
+            map.put("uploadType", 1);
+            map.put("file",files);
+            mPresenter.commitFile(map);
             //TODO 直接提交
         } else if (editType == EditType.MapFootVedio) {//地图-足迹-视频
             itemBean.setVedioPath(vedioPath);
             itemBean.setVedioShootPath(vedioShootPath);
+
+            FootMarkTextInfo footMarkTextInfo = new FootMarkTextInfo();
+
+            FootMarkTextInfo.FootMarkTextBean footMarkTextBean = new FootMarkTextInfo.FootMarkTextBean();
+            footMarkTextBean.setUserId(mSharedPrefUtil.getString("userId",""));
+//            footMarkTextBean.setName(itemBean.getLocationName() == null ? "":itemBean.getLocationName());
+//            footMarkTextBean.setDesc(itemBean.getDescription() == null ? "":itemBean.getDescription());
+            footMarkTextBean.setName(itemBean.getLocationName());
+            footMarkTextBean.setDesc(itemBean.getDescription());
+            footMarkTextBean.setConsumptionTime("0");
+            footMarkTextBean.setStartTime(String.valueOf(System.currentTimeMillis()));
+            footMarkTextBean.setEndTime(String.valueOf(System.currentTimeMillis()));
+            footMarkTextInfo.setFootprint(footMarkTextBean);
+
+            FootMarkTextInfo.FootMarkTextBean1 footMarkTextBean1 = new FootMarkTextInfo.FootMarkTextBean1();
+            footMarkTextBean1.setPointId(itemBean.getId());
+            footMarkTextBean1.setLatitude(point.getY());
+            footMarkTextBean1.setLongitude(point.getX());
+            footMarkTextBean1.setAltitude(point.getZ());
+            footMarkTextBean1.setAddr(itemBean.getLocationName() == null ? "":itemBean.getLocationName());
+            footMarkTextBean1.setDesc(itemBean.getDescription() == null ? "":itemBean.getDescription());
+            footMarkTextBean1.setPointType(1);
+            footMarkTextInfo.setPointPosition(footMarkTextBean1);
+
+
+            FootMarkTextInfo.FootMarkTextBean2 footMarkTextBean2 =  new FootMarkTextInfo.FootMarkTextBean2();
+            footMarkTextBean2.setTotalDesc("这是图片集合的描述，MediaInfo的数量和上传的图片和视频数量相同");
+            List<String> MediaInfos = new ArrayList<>();
+            List<File> files = new ArrayList<>();
+
+//            for(FootFileBean.PicBean picBean : picChildBeans)
+//            {
+                MediaInfos.add("图片描述");//test
+                File file = new File(ConstStrings.getCachePath() + vedioPath);
+                files.add(file);
+//            }
+
+            footMarkTextBean2.setMediaInfo(MediaInfos);
+            footMarkTextInfo.setFileInfo(footMarkTextBean2);
+
+            Gson gson = new Gson();
+            String jsonsStr  = gson.toJson(footMarkTextInfo);
+            Map<String, Object> map = new HashMap<>();
+            map.put("FootmarkInfo", jsonsStr);
+            map.put("uploadType", 1);
+            map.put("file",files);
+            mPresenter.commitFile(map);
             //TODO 直接提交
         } else if (editType == EditType.MapFootText) {//地图-足迹-文本
             itemBean.setTextName(etName.getText().toString());

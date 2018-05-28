@@ -102,7 +102,6 @@ public class MyfootMarkEntity implements Serializable {
 
     @Override
     public String toString() {
-//        return Id.toString() + Name == null ?"":Name.toString() + StartTime.toString() + EndTime.toString();
-        return "";
+        return DetailsUrlPath.toString();
     }
 }

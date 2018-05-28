@@ -3,6 +3,7 @@ package com.app.footprint.module.foot.bean;
 import com.esri.core.internal.catalog.User;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by Xiangb on 2018/5/22.
@@ -170,6 +171,7 @@ public class FootMarkTextInfo implements Serializable {
     public static class FootMarkTextBean2 implements Serializable {
         public String TotalDesc;
         public FootMarkTextBean3 TextInfo;
+        public List<String> MediaInfo;
 
         public String getTotalDesc() {
             return TotalDesc;
@@ -185,6 +187,15 @@ public class FootMarkTextInfo implements Serializable {
 
         public void setTextInfo(FootMarkTextBean3 textInfo) {
             TextInfo = textInfo;
+        }
+
+        public List<String> getMediaInfo() {
+            return MediaInfo;
+        }
+
+        public void setMediaInfo(List<String> MediaInfo)
+        {
+            this.MediaInfo = MediaInfo;
         }
     }
 
