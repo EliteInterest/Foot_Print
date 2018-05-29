@@ -358,7 +358,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             footMarkTextBean.setUserId(mSharedPrefUtil.getString("userId", ""));
 //            footMarkTextBean.setName(itemBean.getLocationName() == null ? "":itemBean.getLocationName());
 //            footMarkTextBean.setDesc(itemBean.getDescription() == null ? "":itemBean.getDescription());
-            footMarkTextBean.setName(itemBean.getDistrict() + itemBean.getRoadname());
+            footMarkTextBean.setName(itemBean.getRoadname().length() == 0 ? itemBean.getDistrict() + itemBean.getRoadname() : itemBean.getRoadname());
             footMarkTextBean.setDesc(itemBean.getDescription());
             footMarkTextBean.setConsumptionTime("0");
             footMarkTextBean.setStartTime(String.valueOf(System.currentTimeMillis()));
@@ -370,7 +370,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             footMarkTextBean1.setLatitude(point.getY());
             footMarkTextBean1.setLongitude(point.getX());
             footMarkTextBean1.setAltitude(point.getZ());
-            footMarkTextBean1.setAddr(itemBean.getDistrict() + itemBean.getRoadname());
+            footMarkTextBean1.setAddr(itemBean.getRoadname().length() == 0 ? itemBean.getDistrict() + itemBean.getRoadname() : itemBean.getRoadname());
             footMarkTextBean1.setDesc(itemBean.getCity() + itemBean.getDistrict() + itemBean.getRoadname());
             footMarkTextBean1.setPointType(2);
             footMarkTextInfo.setPointPosition(footMarkTextBean1);
@@ -397,7 +397,6 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             map.put("uploadType", 2);
             map.put("file", files);
             mPresenter.commitFile(map);
-            //TODO 直接提交
         } else if (editType == EditType.MapFootVedio) {//地图-足迹-视频
             itemBean.setVedioPath(vedioPath);
             itemBean.setVedioShootPath(vedioShootPath);
@@ -408,7 +407,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             footMarkTextBean.setUserId(mSharedPrefUtil.getString("userId", ""));
 //            footMarkTextBean.setName(itemBean.getLocationName() == null ? "":itemBean.getLocationName());
 //            footMarkTextBean.setDesc(itemBean.getDescription() == null ? "":itemBean.getDescription());
-            footMarkTextBean.setName(itemBean.getDistrict() + itemBean.getRoadname());
+            footMarkTextBean.setName(itemBean.getRoadname().length() == 0 ? itemBean.getDistrict() + itemBean.getRoadname() : itemBean.getRoadname());
             footMarkTextBean.setDesc(itemBean.getDescription());
             footMarkTextBean.setConsumptionTime("0");
             footMarkTextBean.setStartTime(String.valueOf(itemBean.getStartTime()));
@@ -420,7 +419,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             footMarkTextBean1.setLatitude(point.getY());
             footMarkTextBean1.setLongitude(point.getX());
             footMarkTextBean1.setAltitude(point.getZ());
-            footMarkTextBean1.setAddr(itemBean.getDistrict() + itemBean.getRoadname());
+            footMarkTextBean1.setAddr(itemBean.getRoadname().length() == 0 ? itemBean.getDistrict() + itemBean.getRoadname() : itemBean.getRoadname());
             footMarkTextBean1.setDesc(itemBean.getCity() + itemBean.getDistrict() + itemBean.getRoadname());
             footMarkTextBean1.setPointType(3);
             footMarkTextInfo.setPointPosition(footMarkTextBean1);
@@ -448,10 +447,8 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             map.put("uploadType", 3);
             map.put("file", files);
             mPresenter.commitFile(map);
-            //TODO 直接提交
         } else if (editType == EditType.MapFootText) {//地图-足迹-文本
             itemBean.setTextName(etName.getText().toString());
-            //TODO 直接提交
             //初始化JSON文本
             FootMarkTextInfo footMarkTextInfo = new FootMarkTextInfo();
 
@@ -459,7 +456,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             footMarkTextBean.setUserId(mSharedPrefUtil.getString("userId", ""));
 //            footMarkTextBean.setName(itemBean.getAddrSimple() == null ? "":itemBean.getAddrSimple());
 //            footMarkTextBean.setDesc(itemBean.getDescription() == null ? "":itemBean.getDescription());
-            footMarkTextBean.setName(itemBean.getRoadname());
+            footMarkTextBean.setName(itemBean.getRoadname().length() == 0 ? itemBean.getDistrict() + itemBean.getRoadname() : itemBean.getRoadname());
             footMarkTextBean.setDesc(itemBean.getDescription());
             footMarkTextBean.setConsumptionTime("0");
             footMarkTextBean.setStartTime(String.valueOf(itemBean.getStartTime()));
@@ -471,7 +468,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             footMarkTextBean1.setLatitude(point.getY());
             footMarkTextBean1.setLongitude(point.getX());
             footMarkTextBean1.setAltitude(point.getZ());
-            footMarkTextBean1.setAddr(itemBean.getDistrict() + itemBean.getRoadname());
+            footMarkTextBean1.setAddr(itemBean.getRoadname().length() == 0 ? itemBean.getDistrict() + itemBean.getRoadname() : itemBean.getRoadname());
             footMarkTextBean1.setDesc(itemBean.getCity() + itemBean.getDistrict() + itemBean.getRoadname());
             footMarkTextBean1.setPointType(1);
             footMarkTextInfo.setPointPosition(footMarkTextBean1);
