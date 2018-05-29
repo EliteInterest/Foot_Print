@@ -55,6 +55,11 @@ public class WebViewFragment extends BaseFragment<WebViewPresenter, WebViewModel
 
     }
 
+    public void reload(String url) {
+        webView.loadUrl(url);
+        webView.reload();
+    }
+
 
     class webViewClient extends WebViewClient {
 
@@ -72,5 +77,12 @@ public class WebViewFragment extends BaseFragment<WebViewPresenter, WebViewModel
 
         }
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        webView.clearCache(true);
+        webView.destroy();
     }
 }

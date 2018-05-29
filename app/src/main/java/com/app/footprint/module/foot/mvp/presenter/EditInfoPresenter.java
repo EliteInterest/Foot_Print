@@ -52,7 +52,7 @@ public class EditInfoPresenter extends EditInfoContract.Presenter {
 
         mModel.commitFile(requestBody)
                 .compose(RxHelper.bindToLifecycle(mView))
-                .subscribe(new RxSubscriber<String>() {
+                .subscribe(new RxSubscriber<String>(mView, "正在上传中...") {
                     @Override
                     protected void _onNext(String o) {
                         mView.onFileCommitResult(o);

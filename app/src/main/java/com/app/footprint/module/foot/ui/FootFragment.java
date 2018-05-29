@@ -65,8 +65,12 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
             if (footFileBean != null) {
                 cvPreview.setVisibility(View.VISIBLE);
                 fmPreview.setVisibility(View.VISIBLE);
-                webViewFragment = WebViewFragment.newInstance(footFileBean.getUrl());
-                ZXFragmentUtil.addFragment(getFragmentManager(), webViewFragment, R.id.fm_map_preview);
+                if (webViewFragment == null) {
+                    webViewFragment = WebViewFragment.newInstance(footFileBean.getUrl());
+                    ZXFragmentUtil.addFragment(getChildFragmentManager(), webViewFragment, R.id.fm_map_preview);
+                } else {
+                    webViewFragment.reload(footFileBean.getUrl());
+                }
                 rvTitle.setVisibility(View.VISIBLE);
                 if (footFileBean.isRoute()) {
                     tvTitle.setText("路径预览");
@@ -74,8 +78,7 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
                     tvTitle.setText("足印预览");
                 }
                 mapFragment.showFootView(false);
-            } else if (webViewFragment != null) {
-                ZXFragmentUtil.removeFragment(webViewFragment);
+            } else {
                 cvPreview.setVisibility(View.GONE);
                 fmPreview.setVisibility(View.GONE);
                 rvTitle.setVisibility(View.GONE);
