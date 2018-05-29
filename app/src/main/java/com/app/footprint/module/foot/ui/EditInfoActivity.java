@@ -299,7 +299,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
     public void onFileCommitResult(String result) {
         itemBean.setUrl(result);
         mRxManager.post("footPreview", itemBean);
-        new Handler().postDelayed(() -> finish(), 50);
+        new Handler().postDelayed(() -> finish(), 100);
     }
 
     /**
@@ -312,13 +312,13 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
         geocodeSearch.getFromLocationAsyn(query);
     }
 
-    @OnClick({R.id.iv_title_back, R.id.iv_title_save, R.id.btn_location_change})
+    @OnClick({R.id.iv_title_back, R.id.tv_title_save, R.id.btn_location_change})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_title_back:
                 finish();
                 break;
-            case R.id.iv_title_save:
+            case R.id.tv_title_save:
                 if (etName.getVisibility() == View.VISIBLE && etName.getText().toString().length() == 0) {
                     showToast("请填写事件名称");
                 } else {
@@ -508,7 +508,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
         }
         mSharedPrefUtil.putList(ConstStrings.FootFiles, footFiles);
         mRxManager.post("refreshPoint", true);
-        new Handler().postDelayed(() -> finish(), 50);
+        new Handler().postDelayed(() -> finish(), 100);
     }
 
     @Override

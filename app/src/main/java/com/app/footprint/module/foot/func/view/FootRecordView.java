@@ -33,10 +33,12 @@ import com.esri.core.map.Graphic;
 import com.esri.core.symbol.PictureMarkerSymbol;
 import com.esri.core.symbol.SimpleLineSymbol;
 import com.esri.core.symbol.SimpleMarkerSymbol;
+import com.frame.zxmvp.baserx.RxManager;
 import com.zx.zxutils.util.ZXDialogUtil;
 import com.zx.zxutils.util.ZXFileUtil;
 import com.zx.zxutils.util.ZXSharedPrefUtil;
 import com.zx.zxutils.util.ZXTimeUtil;
+import com.zx.zxutils.util.ZXToastUtil;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -171,7 +173,7 @@ public class FootRecordView extends RelativeLayout {
     /**
      * 清除sharepref
      */
-    private void clearSharedPref() {
+    public void clearSharedPref() {
         zxSharedPrefUtil.remove(RECORD_POINTS);
         zxSharedPrefUtil.remove(RECORD_START_TIME);
         zxSharedPrefUtil.putBool(RECORD_STATUS, false);
@@ -179,7 +181,7 @@ public class FootRecordView extends RelativeLayout {
         ZXFileUtil.deleteFiles(ConstStrings.getCachePath());
     }
 
-    @OnClick({R.id.iv_record_foot_text, R.id.iv_record_mode_route, R.id.iv_record_mode_foot, R.id.ll_record_foot_start, R.id.iv_record_tab_cancel,
+    @OnClick({R.id.iv_record_foot_text, R.id.iv_record_mode_route, R.id.iv_record_mode_foot, R.id.ll_record_foot_start, R.id.iv_record_tab_cancel, R.id.ll_record_tab_commit,
             R.id.cv_record_tab, R.id.iv_record_tab_camera, R.id.iv_record_tab_vedio, R.id.iv_record_tab_text, R.id.iv_record_foot_camera, R.id.iv_record_foot_vedio})
     public void onViewClicked(View v) {
         switch (v.getId()) {
@@ -226,6 +228,16 @@ public class FootRecordView extends RelativeLayout {
                 break;
             case R.id.iv_record_foot_text://足迹-文本
                 EditInfoActivity.startAction((Activity) context, false, EditInfoActivity.EditType.MapFootText);
+                break;
+            case R.id.ll_record_tab_commit:
+                List<FootFileBean> footFiles = zxSharedPrefUtil.getList(ConstStrings.FootFiles);
+                if (footFiles == null || footFiles.size() == 0) {
+                    ZXToastUtil.showToast("请至少记录一个点位(拍照、视频或文字说明)!");
+                    break;
+                }
+                RxManager rxManager = new RxManager();
+                rxManager.post("commitRoute", true);
+                ZXDialogUtil.dismissDialog();
                 break;
             default:
                 break;

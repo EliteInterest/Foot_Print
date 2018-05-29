@@ -260,4 +260,7 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
         footRecordView.onDestory();
     }
 
+    public void clearSharedPref() {
+        footRecordView.clearSharedPref();
+    }
 }

@@ -57,13 +57,13 @@ public class PicPreviewActivity extends BaseActivity<PicPreviewPresenter, PicPre
         etRemark.setText(remark);
     }
 
-    @OnClick({R.id.iv_title_back, R.id.iv_title_save})
+    @OnClick({R.id.iv_title_back, R.id.tv_title_save})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_title_back:
                 finish();
                 break;
-            case R.id.iv_title_save:
+            case R.id.tv_title_save:
                 Intent intent = new Intent();
                 intent.putExtra("remark", etRemark.getText().toString());
                 setResult(0x03, intent);

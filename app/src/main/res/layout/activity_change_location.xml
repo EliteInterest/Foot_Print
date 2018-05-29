@@ -27,7 +27,7 @@
             android:textSize="@dimen/text_size_large"/>
 
         <TextView
-            android:id="@+id/iv_title_save"
+            android:id="@+id/tv_title_save"
             android:layout_width="50dp"
             android:layout_height="40dp"
             android:layout_alignParentRight="true"

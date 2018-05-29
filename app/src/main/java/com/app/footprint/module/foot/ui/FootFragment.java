@@ -3,7 +3,9 @@ package com.app.footprint.module.foot.ui;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -33,11 +35,19 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
     @BindView(R.id.tv_title)
     TextView tvTitle;
     @BindView(R.id.rl_title_bar)
-    RelativeLayout rvTitle;
+    RelativeLayout rlTitle;
     @BindView(R.id.cv_foot_preview)
     CardView cvPreview;
     @BindView(R.id.fm_map_preview)
     FrameLayout fmPreview;
+    @BindView(R.id.tv_title_save)
+    TextView tvAction;
+    @BindView(R.id.ll_route_edit)
+    LinearLayout llRouteEdite;
+    @BindView(R.id.et_route_name)
+    EditText etRouteName;
+    @BindView(R.id.et_route_detail)
+    EditText etRouteDetail;
     private MapFragment mapFragment;
     private WebViewFragment webViewFragment;
 
@@ -63,6 +73,7 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
 
         mRxManager.on("footPreview", (Action1<FootFileBean>) footFileBean -> {
             if (footFileBean != null) {
+                tvAction.setText("分享");
                 cvPreview.setVisibility(View.VISIBLE);
                 fmPreview.setVisibility(View.VISIBLE);
                 if (webViewFragment == null) {
@@ -71,7 +82,7 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
                 } else {
                     webViewFragment.reload(footFileBean.getUrl());
                 }
-                rvTitle.setVisibility(View.VISIBLE);
+                rlTitle.setVisibility(View.VISIBLE);
                 if (footFileBean.isRoute()) {
                     tvTitle.setText("路径预览");
                 } else {
@@ -81,21 +92,60 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
             } else {
                 cvPreview.setVisibility(View.GONE);
                 fmPreview.setVisibility(View.GONE);
-                rvTitle.setVisibility(View.GONE);
+                rlTitle.setVisibility(View.GONE);
+                llRouteEdite.setVisibility(View.GONE);
                 mapFragment.showFootView(true);
             }
         });
+        mRxManager.on("commitRoute", (Action1<Boolean>) aBoolean -> {
+            if (aBoolean) {
+                rlTitle.setVisibility(View.VISIBLE);
+                llRouteEdite.setVisibility(View.VISIBLE);
+                tvAction.setText("保存");
+                tvTitle.setText("路线编辑");
+            } else {
+                rlTitle.setVisibility(View.GONE);
+                llRouteEdite.setVisibility(View.GONE);
+                tvAction.setText("分享");
+            }
+
+        });
     }
 
-    @OnClick({R.id.iv_title_back, R.id.iv_title_save})
+    @OnClick({R.id.iv_title_back, R.id.tv_title_save})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_title_back:
-                mRxManager.post("footPreview", null);
+                if ("分享".equals(tvAction.getText().toString())) {
+                    mRxManager.post("footPreview", null);
+                } else if ("保存".equals(tvAction.getText().toString())) {
+                    mRxManager.post("commitRoute", false);
+                }
                 break;
-            case R.id.iv_title_save://分享
+            case R.id.tv_title_save://分享
+                if ("分享".equals(tvAction.getText().toString())) {
 
+                } else if ("保存".equals(tvAction.getText().toString())) {
+                    if (etRouteName.getText().toString().length() == 0) {
+                        showToast("路线名称不能为空");
+                        break;
+                    }
+                    String routeName = etRouteName.getText().toString();
+                    String routeDetail = etRouteDetail.getText().toString();
+                    List<FootFileBean> footFileBeans = mSharedPrefUtil.getList(ConstStrings.FootFiles);
+                    mPresenter.commitRoute(routeName, routeDetail, footFileBeans);
+                }
                 break;
         }
+    }
+
+    @Override
+    public void onRouteCommitResult(String url) {
+        FootFileBean footFileBean = new FootFileBean();
+        footFileBean.setUrl(url);
+        footFileBean.setRoute(true);
+        llRouteEdite.setVisibility(View.GONE);
+        mapFragment.clearSharedPref();
+        mRxManager.post("footPreview", footFileBean);
     }
 }

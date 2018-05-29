@@ -82,7 +82,8 @@ public class WebViewFragment extends BaseFragment<WebViewPresenter, WebViewModel
     @Override
     public void onDestroy() {
         super.onDestroy();
-        webView.clearCache(true);
-        webView.destroy();
+        if (webView != null) {
+            webView.destroy();
+        }
     }
 }

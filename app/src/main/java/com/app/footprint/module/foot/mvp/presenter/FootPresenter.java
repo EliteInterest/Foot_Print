@@ -1,6 +1,9 @@
 package com.app.footprint.module.foot.mvp.presenter;
 
+import com.app.footprint.module.foot.bean.FootFileBean;
 import com.app.footprint.module.foot.mvp.contract.FootContract;
+
+import java.util.List;
 
 
 /**
@@ -10,4 +13,8 @@ import com.app.footprint.module.foot.mvp.contract.FootContract;
 public class FootPresenter extends FootContract.Presenter {
 
 
+    @Override
+    public void commitRoute(String name, String detail, List<FootFileBean> footFileBeans) {
+
+    }
 }

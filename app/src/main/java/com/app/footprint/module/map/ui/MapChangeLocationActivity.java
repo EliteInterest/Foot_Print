@@ -72,13 +72,13 @@ public class MapChangeLocationActivity extends BaseActivity<MapChangeLocationPre
         mMapView.addLayer(tianDiTuVectorLayer);
     }
 
-    @OnClick({R.id.iv_title_back, R.id.iv_title_save})
+    @OnClick({R.id.iv_title_back, R.id.tv_title_save})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_title_back:
                 finish();
                 break;
-            case R.id.iv_title_save:
+            case R.id.tv_title_save:
                 // 得到设备的分辨率
                 int left = mMapView.getLeft();
                 int right = mMapView.getRight();

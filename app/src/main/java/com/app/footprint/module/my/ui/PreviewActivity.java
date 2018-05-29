@@ -52,13 +52,13 @@ public class PreviewActivity extends BaseActivity<PreviewPresenter, PreviewModel
         ZXFragmentUtil.addFragment(getSupportFragmentManager(), WebViewFragment.newInstance(markEntity.getDetailsUrlPath()), R.id.fm_preview);
     }
 
-    @OnClick({R.id.iv_title_back, R.id.iv_title_save})
+    @OnClick({R.id.iv_title_back, R.id.tv_title_save})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_title_back:
                 finish();
                 break;
-            case R.id.iv_title_save:
+            case R.id.tv_title_save:
 
                 break;
         }
