@@ -17,9 +17,6 @@ public class FootFileBean implements Serializable {
     private String id;
     private String point;
     private String description;
-    private String city;
-    private String district;
-    private String roadname;
     private List<PicBean> picPaths;
     private String vedioShootPath;
     private String vedioPath;
@@ -27,6 +24,8 @@ public class FootFileBean implements Serializable {
     private String startTime;
     private String endTime;
     private String url;
+    private String streetAddress;
+    private String formatAddress;
     private boolean isRoute = false;
 
     public enum Type {
@@ -66,28 +65,20 @@ public class FootFileBean implements Serializable {
         this.id = UUID.randomUUID().toString().substring(0, 10);
     }
 
-    public String getCity() {
-        return city;
+    public String getStreetAddress() {
+        return streetAddress;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setStreetAddress(String streetAddress) {
+        this.streetAddress = streetAddress;
     }
 
-    public String getDistrict() {
-        return district;
+    public String getFormatAddress() {
+        return formatAddress;
     }
 
-    public void setDistrict(String district) {
-        this.district = district;
-    }
-
-    public String getRoadname() {
-        return roadname;
-    }
-
-    public void setRoadname(String roadname) {
-        this.roadname = roadname;
+    public void setFormatAddress(String formatAddress) {
+        this.formatAddress = formatAddress;
     }
 
     public String getUrl() {

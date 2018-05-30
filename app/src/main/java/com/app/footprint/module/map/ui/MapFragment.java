@@ -10,18 +10,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.amap.api.services.core.LatLonPoint;
-import com.amap.api.services.geocoder.GeocodeResult;
-import com.amap.api.services.geocoder.GeocodeSearch;
-import com.amap.api.services.geocoder.RegeocodeAddress;
-import com.amap.api.services.geocoder.RegeocodeQuery;
-import com.amap.api.services.geocoder.RegeocodeResult;
 import com.app.footprint.R;
 import com.app.footprint.app.ConstStrings;
 import com.app.footprint.base.BaseFragment;
 import com.app.footprint.module.foot.func.view.FootRecordView;
 import com.app.footprint.module.map.func.tool.tiditu.TianDiTuLayer;
 import com.app.footprint.module.map.func.tool.tiditu.TianDiTuLayerTypes;
+import com.app.footprint.module.map.func.util.BaiduMapUtil;
 import com.app.footprint.module.map.func.util.GpsUtil;
 import com.app.footprint.module.map.mvp.contract.MapContract;
 import com.app.footprint.module.map.mvp.model.MapModel;
@@ -39,7 +34,6 @@ import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import rx.functions.Action1;
 
 /**
  * Create By admin On 2017/7/11
@@ -65,7 +59,6 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
     private TianDiTuLayer tianDiTuVectorLayer, tianDiTuImageLayer;
     private GraphicsLayer idenLayer = new GraphicsLayer();
 
-    private GeocodeSearch geocodeSearch;
     private Timer timer = new Timer();
 
     public static MapFragment newInstance() {
@@ -85,49 +78,13 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
             mMapView.restoreState((String) ins);
         }
         initMap();
-        initGaoDe();
         footRecordView.setMapView(mMapView);
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 handler.sendEmptyMessage(0);
             }
-        }, 100, 2000);
-        //刷新点集
-        mRxManager.on("refreshPoint", (Action1<Boolean>) bool -> footRecordView.refreshPoints());
-    }
-
-    /**
-     * 初始化高德定位
-     */
-    private void initGaoDe() {
-        geocodeSearch = new GeocodeSearch(getActivity());
-        geocodeSearch.setOnGeocodeSearchListener(new GeocodeSearch.OnGeocodeSearchListener() {
-            @Override
-            public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
-                if (regeocodeResult != null && regeocodeResult.getRegeocodeAddress() != null) {
-                    String city = "", district = "", roadName = "";
-                    String address = "";
-                    try {
-                        RegeocodeAddress regeocodeAddress = regeocodeResult.getRegeocodeAddress();
-                        city = regeocodeAddress.getCity();
-                        district = regeocodeAddress.getDistrict();
-                        if (regeocodeAddress.getCrossroads() != null && regeocodeAddress.getCrossroads().size() > 0) {
-                            roadName = regeocodeAddress.getCrossroads().get(0).getFirstRoadName().length() == 0 ? regeocodeAddress.getCrossroads().get(0).getSecondRoadName() : regeocodeAddress.getCrossroads().get(0).getFirstRoadName();
-                        }
-                        address = city + district + roadName;
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        address = regeocodeResult.getRegeocodeAddress().getFormatAddress();
-                    }
-                    tvAddress.setText(address);
-                }
-            }
-
-            @Override
-            public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
-            }
-        });
+        }, 100, 1000 * 10);
     }
 
     /**
@@ -172,7 +129,7 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
                 break;
             case R.id.iv_map_location:
                 try {
-                    GpsUtil.location(mMapView, (MainActivity) getActivity());
+                    GpsUtil.location(mMapView, getActivity());
                 } catch (Exception e) {
                     e.printStackTrace();
                     mMapView.zoomToScale(DEFAULTPOINT, DEFAULT_SCALE);
@@ -188,6 +145,10 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
             idenLayer.removeAll();
             mMapView.getCallout().hide();
         }
+    }
+
+    public void refreshPoints(){
+        footRecordView.refreshPoints();
     }
 
     OnStatusChangedListener layerLoadListener = new OnStatusChangedListener() {
@@ -218,10 +179,8 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
             if (msg.what == 0) {
                 Location location = GpsUtil.getLocation(getActivity());
                 if (location != null) {
-                    LatLonPoint latLonPoint = new LatLonPoint(location.getLatitude(), location.getLongitude());
-                    // 第一个参数表示一个Latlng，第二参数表示范围多少米，第三个参数表示是火系坐标系还是GPS原生坐标系
-                    RegeocodeQuery query = new RegeocodeQuery(latLonPoint, 200, GeocodeSearch.GPS);
-                    geocodeSearch.getFromLocationAsyn(query);
+                    BaiduMapUtil.searchPoi(location.getLongitude(), location.getLatitude(),
+                            baiduSearchBean -> tvAddress.setText(baiduSearchBean.getResult().getFormatted_address()));
                 }
             }
         }
@@ -257,7 +216,9 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
     public void onDestroy() {
         super.onDestroy();
         timer.cancel();
-        footRecordView.onDestory();
+        if (footRecordView != null) {
+            footRecordView.onDestory();
+        }
     }
 
     public void clearSharedPref() {

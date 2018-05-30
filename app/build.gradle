@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 //apply plugin: 'me.tatarka.retrolambda'
 android {
     compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+    buildToolsVersion '27.0.3'
 //    useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "com.app.footprint"
@@ -86,17 +86,17 @@ repositories {
 
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support'
     })
-    compile 'com.esri.arcgis.android:arcgis-android:10.2.8'
-    compile project(':zxmvp')
-    compile 'com.amap.api:search:5.0.0'
+    implementation 'com.esri.arcgis.android:arcgis-android:10.2.8'
+    implementation project(':zxmvp')
+//    implementation 'com.amap.api:search:5.0.0'
 //    compile 'com.amap.api:location:4.0.1'
-    compile 'com.github.StannyBing:ZXUtils:2.1.0'
-    compile 'com.android.support:multidex:1.0.2'
-    compile 'com.zhy:okhttputils:2.0.0'
+    implementation 'com.github.StannyBing:ZXUtils:2.1.0'
+    implementation 'com.android.support:multidex:1.0.2'
+    implementation 'com.zhy:okhttputils:2.0.0'
 //    implementation files('lib/AMap_Location_V4.0.1_20180426.jar')
 }
 

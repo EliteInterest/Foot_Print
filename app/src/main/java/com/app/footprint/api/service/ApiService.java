@@ -1,5 +1,7 @@
 package com.app.footprint.api.service;
 
+import com.app.footprint.module.map.bean.BaiduLatlngBean;
+import com.app.footprint.module.map.bean.BaiduSearchBean;
 import com.app.footprint.module.my.bean.IntegralEntity;
 import com.app.footprint.module.my.bean.MyFootRouteEntity;
 import com.app.footprint.module.my.bean.MyfootMarkEntity;
@@ -11,14 +13,11 @@ import com.frame.zxmvp.basebean.BaseRespose;
 import java.util.List;
 import java.util.Map;
 
-import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
-import retrofit2.http.Part;
 import retrofit2.http.QueryMap;
 import rx.Observable;
 
@@ -75,4 +74,11 @@ public interface ApiService {
 
     @POST("/fsms/footprint/footmark/info/upload")
     Observable<BaseRespose<String>> commitFile(@Body RequestBody userId);
+
+    @GET("http://api.map.baidu.com/geocoder/v2/")
+    Observable<BaiduSearchBean> queryBaiduSearch(@QueryMap Map<String, String> map);
+
+    @GET("http://api.map.baidu.com/geoconv/v1/")
+    Observable<BaiduLatlngBean> queryBaiduLatlng(@QueryMap Map<String, String> map);
+
 }

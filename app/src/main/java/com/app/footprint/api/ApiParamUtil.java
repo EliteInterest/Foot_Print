@@ -1,13 +1,9 @@
 package com.app.footprint.api;
 
 import com.app.footprint.app.ConstStrings;
-import com.zx.zxutils.util.ZXMD5Util;
-import com.zx.zxutils.util.ZXUniqueIdUtil;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 
 /**

@@ -1,5 +1,6 @@
 package com.app.footprint.module.foot.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.View;
@@ -71,32 +72,6 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
             mSharedPrefUtil.putList(ConstStrings.FootFiles, footFiles);
         }
 
-        mRxManager.on("footPreview", (Action1<FootFileBean>) footFileBean -> {
-            if (footFileBean != null) {
-                tvAction.setText("分享");
-                cvPreview.setVisibility(View.VISIBLE);
-                fmPreview.setVisibility(View.VISIBLE);
-                if (webViewFragment == null) {
-                    webViewFragment = WebViewFragment.newInstance(footFileBean.getUrl());
-                    ZXFragmentUtil.addFragment(getChildFragmentManager(), webViewFragment, R.id.fm_map_preview);
-                } else {
-                    webViewFragment.reload(footFileBean.getUrl());
-                }
-                rlTitle.setVisibility(View.VISIBLE);
-                if (footFileBean.isRoute()) {
-                    tvTitle.setText("路径预览");
-                } else {
-                    tvTitle.setText("足印预览");
-                }
-                mapFragment.showFootView(false);
-            } else {
-                cvPreview.setVisibility(View.GONE);
-                fmPreview.setVisibility(View.GONE);
-                rlTitle.setVisibility(View.GONE);
-                llRouteEdite.setVisibility(View.GONE);
-                mapFragment.showFootView(true);
-            }
-        });
         mRxManager.on("commitRoute", (Action1<Boolean>) aBoolean -> {
             if (aBoolean) {
                 rlTitle.setVisibility(View.VISIBLE);
@@ -117,7 +92,7 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
         switch (view.getId()) {
             case R.id.iv_title_back:
                 if ("分享".equals(tvAction.getText().toString())) {
-                    mRxManager.post("footPreview", null);
+                    openFootPreview(null);
                 } else if ("保存".equals(tvAction.getText().toString())) {
                     mRxManager.post("commitRoute", false);
                 }
@@ -139,6 +114,37 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
         }
     }
 
+    /**
+     * 开启预览
+     * @param footFileBean
+     */
+    private void openFootPreview(FootFileBean footFileBean){
+        if (footFileBean != null) {
+            tvAction.setText("分享");
+            cvPreview.setVisibility(View.VISIBLE);
+            fmPreview.setVisibility(View.VISIBLE);
+            if (webViewFragment == null) {
+                webViewFragment = WebViewFragment.newInstance(footFileBean.getUrl());
+                ZXFragmentUtil.addFragment(getChildFragmentManager(), webViewFragment, R.id.fm_map_preview);
+            } else {
+                webViewFragment.reload(footFileBean.getUrl());
+            }
+            rlTitle.setVisibility(View.VISIBLE);
+            if (footFileBean.isRoute()) {
+                tvTitle.setText("路径预览");
+            } else {
+                tvTitle.setText("足印预览");
+            }
+            mapFragment.showFootView(false);
+        } else {
+            cvPreview.setVisibility(View.GONE);
+            fmPreview.setVisibility(View.GONE);
+            rlTitle.setVisibility(View.GONE);
+            llRouteEdite.setVisibility(View.GONE);
+            mapFragment.showFootView(true);
+        }
+    }
+
     @Override
     public void onRouteCommitResult(String url) {
         FootFileBean footFileBean = new FootFileBean();
@@ -146,6 +152,18 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
         footFileBean.setRoute(true);
         llRouteEdite.setVisibility(View.GONE);
         mapFragment.clearSharedPref();
-        mRxManager.post("footPreview", footFileBean);
+        openFootPreview(footFileBean);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        mapFragment.onActivityResult(requestCode,resultCode,data);
+        if (resultCode == 0x01) {
+            mapFragment.refreshPoints();
+        } else if (resultCode == 0x02) {
+            FootFileBean itemBean = (FootFileBean) data.getSerializableExtra("itemBean");
+            openFootPreview(itemBean);
+        }
     }
 }

@@ -355,24 +355,28 @@ public class FootRecordView extends RelativeLayout {
             return;
         }
         int[] graphicIds = routeLayer.getGraphicIDs();
-        for (int graphicId : graphicIds) {
-            if (routeLayer.getGraphic(graphicId).getAttributes() != null && routeLayer.getGraphic(graphicId).getAttributes().containsKey("footId")) {
-                routeLayer.removeGraphic(graphicId);
+        if (graphicIds != null) {
+            for (int graphicId : graphicIds) {
+                if (routeLayer.getGraphic(graphicId).getAttributes() != null && routeLayer.getGraphic(graphicId).getAttributes().containsKey("footId")) {
+                    routeLayer.removeGraphic(graphicId);
+                }
             }
         }
-        for (FootFileBean footFile : footFiles) {
-            Drawable drawable = FootUtil.drawTextToDrawable(context, R.mipmap.foot_pop_bg, footFile.getDistrict() + footFile.getRoadname());
-            if (drawable == null) {
-                continue;
-            }
-            PictureMarkerSymbol pictureMarkerSymbol = new PictureMarkerSymbol(drawable);
-            pictureMarkerSymbol.setOffsetY(20);
-            Point point = footFile.getMapPoint();
-            if (point != null) {
-                Map<String, Object> attr = new HashMap<>();
-                attr.put("footId", footFile.getId());
-                Graphic graphic = new Graphic(point, pictureMarkerSymbol, attr);
-                routeLayer.addGraphic(graphic);
+        if (footFiles != null) {
+            for (FootFileBean footFile : footFiles) {
+                Drawable drawable = FootUtil.drawTextToDrawable(context, R.mipmap.foot_pop_bg, footFile.getStreetAddress());
+                if (drawable == null) {
+                    continue;
+                }
+                PictureMarkerSymbol pictureMarkerSymbol = new PictureMarkerSymbol(drawable);
+                pictureMarkerSymbol.setOffsetY(20);
+                Point point = footFile.getMapPoint();
+                if (point != null) {
+                    Map<String, Object> attr = new HashMap<>();
+                    attr.put("footId", footFile.getId());
+                    Graphic graphic = new Graphic(point, pictureMarkerSymbol, attr);
+                    routeLayer.addGraphic(graphic);
+                }
             }
         }
     }

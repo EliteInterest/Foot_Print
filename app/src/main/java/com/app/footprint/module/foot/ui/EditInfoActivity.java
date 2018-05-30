@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -14,12 +13,6 @@ import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
 
-import com.amap.api.services.core.LatLonPoint;
-import com.amap.api.services.geocoder.GeocodeResult;
-import com.amap.api.services.geocoder.GeocodeSearch;
-import com.amap.api.services.geocoder.RegeocodeAddress;
-import com.amap.api.services.geocoder.RegeocodeQuery;
-import com.amap.api.services.geocoder.RegeocodeResult;
 import com.app.footprint.R;
 import com.app.footprint.app.ConstStrings;
 import com.app.footprint.base.BaseActivity;
@@ -29,6 +22,8 @@ import com.app.footprint.module.foot.func.adapter.FootPicAdapter;
 import com.app.footprint.module.foot.mvp.contract.EditInfoContract;
 import com.app.footprint.module.foot.mvp.model.EditInfoModel;
 import com.app.footprint.module.foot.mvp.presenter.EditInfoPresenter;
+import com.app.footprint.module.map.bean.BaiduSearchBean;
+import com.app.footprint.module.map.func.util.BaiduMapUtil;
 import com.app.footprint.module.map.func.util.GpsUtil;
 import com.app.footprint.module.map.ui.MapChangeLocationActivity;
 import com.esri.core.geometry.Point;
@@ -71,7 +66,6 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
 
 
     private Point point;
-    private GeocodeSearch geocodeSearch;
 
     private EditType editType;
     private FootPicAdapter picAdapter;
@@ -97,7 +91,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
     public static void startAction(Activity activity, boolean isFinish, EditType editType) {
         Intent intent = new Intent(activity, EditInfoActivity.class);
         intent.putExtra("type", editType);
-        activity.startActivity(intent);
+        activity.startActivityForResult(intent, 0x01);
         if (isFinish) activity.finish();
     }
 
@@ -118,7 +112,6 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
     public void initView(Bundle savedInstanceState) {
         editType = (EditType) getIntent().getSerializableExtra("type");
         Location location = GpsUtil.getLocation(this);
-        initGaoDe();
         itemBean = new FootFileBean();
 
         footFiles = mSharedPrefUtil.getList(ConstStrings.FootFiles);
@@ -254,62 +247,39 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
     }
 
     /**
-     * 初始化高德定位
-     */
-    private void initGaoDe() {
-        geocodeSearch = new GeocodeSearch(this);
-        geocodeSearch.setOnGeocodeSearchListener(new GeocodeSearch.OnGeocodeSearchListener() {
-            @Override
-            public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
-                if (regeocodeResult != null && regeocodeResult.getRegeocodeAddress() != null) {
-                    String city = "", district = "", roadName = "";
-                    try {
-                        RegeocodeAddress regeocodeAddress = regeocodeResult.getRegeocodeAddress();
-                        city = regeocodeAddress.getCity();
-                        district = regeocodeAddress.getDistrict();
-                        if (regeocodeAddress.getCrossroads() != null && regeocodeAddress.getCrossroads().size() > 0) {
-                            roadName = regeocodeAddress.getCrossroads().get(0).getFirstRoadName().length() == 0 ? regeocodeAddress.getCrossroads().get(0).getSecondRoadName() : regeocodeAddress.getCrossroads().get(0).getFirstRoadName();
-                        } else if (regeocodeAddress.getTownship() != null && regeocodeAddress.getTownship().length() > 0) {
-                            roadName = regeocodeAddress.getTownship();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    tvLocationAddress.setText(roadName);
-                    itemBean.setCity(city);
-                    itemBean.setDistrict(district);
-                    itemBean.setRoadname(roadName);
-                    DecimalFormat decimalFormat = new DecimalFormat("#.00");
-                    tvLocationPoint.setText("(" + decimalFormat.format(point.getX()) + "," + decimalFormat.format(point.getY()) + ")");
-                    itemBean.setPoint(point.getX() + "," + point.getY());
-                }
-            }
-
-            @Override
-            public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
-
-            }
-        });
-    }
-
-    /**
      * 上传成功
      */
     @Override
     public void onFileCommitResult(String result) {
         itemBean.setUrl(result);
-        mRxManager.post("footPreview", itemBean);
-        new Handler().postDelayed(() -> finish(), 100);
+        Intent intent = new Intent();
+        intent.putExtra("itemBean", itemBean);
+        setResult(0x02,intent);
+        finish();
     }
 
     /**
      * 获取地理位置信息
      */
     private void getAddress() {
-        LatLonPoint latLonPoint = new LatLonPoint(point.getY(), point.getX());
-        // 第一个参数表示一个Latlng，第二参数表示范围多少米，第三个参数表示是火系坐标系还是GPS原生坐标系
-        RegeocodeQuery query = new RegeocodeQuery(latLonPoint, 200, GeocodeSearch.GPS);
-        geocodeSearch.getFromLocationAsyn(query);
+        BaiduMapUtil.searchPoi(point.getX(), point.getY(), new BaiduMapUtil.OnBaiduSearchListener() {
+            @Override
+            public void onSearchBack(BaiduSearchBean baiduSearchBean) {
+                String streetName = "";
+                String formatName = "";
+                streetName = baiduSearchBean.getResult().getAddressComponent().getStreet();
+                formatName = baiduSearchBean.getResult().getFormatted_address();
+                if (streetName == null || streetName.length() == 0) {
+                    streetName = formatName;
+                }
+                tvLocationAddress.setText(streetName);
+                itemBean.setFormatAddress(formatName);
+                itemBean.setStreetAddress(streetName);
+                DecimalFormat decimalFormat = new DecimalFormat("#.00");
+                tvLocationPoint.setText("(" + decimalFormat.format(point.getX()) + "," + decimalFormat.format(point.getY()) + ")");
+                itemBean.setPoint(point.getX() + "," + point.getY());
+            }
+        });
     }
 
     @OnClick({R.id.iv_title_back, R.id.tv_title_save, R.id.btn_location_change})
@@ -358,7 +328,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             footMarkTextBean.setUserId(mSharedPrefUtil.getString("userId", ""));
 //            footMarkTextBean.setName(itemBean.getLocationName() == null ? "":itemBean.getLocationName());
 //            footMarkTextBean.setDesc(itemBean.getDescription() == null ? "":itemBean.getDescription());
-            footMarkTextBean.setName(itemBean.getRoadname().length() == 0 ? itemBean.getDistrict() + itemBean.getRoadname() : itemBean.getRoadname());
+            footMarkTextBean.setName(itemBean.getStreetAddress());
             footMarkTextBean.setDesc(itemBean.getDescription());
             footMarkTextBean.setConsumptionTime("0");
             footMarkTextBean.setStartTime(String.valueOf(System.currentTimeMillis()));
@@ -370,8 +340,8 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             footMarkTextBean1.setLatitude(point.getY());
             footMarkTextBean1.setLongitude(point.getX());
             footMarkTextBean1.setAltitude(point.getZ());
-            footMarkTextBean1.setAddr(itemBean.getRoadname().length() == 0 ? itemBean.getDistrict() + itemBean.getRoadname() : itemBean.getRoadname());
-            footMarkTextBean1.setDesc(itemBean.getCity() + itemBean.getDistrict() + itemBean.getRoadname());
+            footMarkTextBean1.setAddr(itemBean.getStreetAddress());
+            footMarkTextBean1.setDesc(itemBean.getFormatAddress());
             footMarkTextBean1.setPointType(2);
             footMarkTextInfo.setPointPosition(footMarkTextBean1);
 
@@ -407,7 +377,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             footMarkTextBean.setUserId(mSharedPrefUtil.getString("userId", ""));
 //            footMarkTextBean.setName(itemBean.getLocationName() == null ? "":itemBean.getLocationName());
 //            footMarkTextBean.setDesc(itemBean.getDescription() == null ? "":itemBean.getDescription());
-            footMarkTextBean.setName(itemBean.getRoadname().length() == 0 ? itemBean.getDistrict() + itemBean.getRoadname() : itemBean.getRoadname());
+            footMarkTextBean.setName(itemBean.getStreetAddress());
             footMarkTextBean.setDesc(itemBean.getDescription());
             footMarkTextBean.setConsumptionTime("0");
             footMarkTextBean.setStartTime(String.valueOf(itemBean.getStartTime()));
@@ -419,8 +389,8 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             footMarkTextBean1.setLatitude(point.getY());
             footMarkTextBean1.setLongitude(point.getX());
             footMarkTextBean1.setAltitude(point.getZ());
-            footMarkTextBean1.setAddr(itemBean.getRoadname().length() == 0 ? itemBean.getDistrict() + itemBean.getRoadname() : itemBean.getRoadname());
-            footMarkTextBean1.setDesc(itemBean.getCity() + itemBean.getDistrict() + itemBean.getRoadname());
+            footMarkTextBean1.setAddr(itemBean.getStreetAddress());
+            footMarkTextBean1.setDesc(itemBean.getFormatAddress());
             footMarkTextBean1.setPointType(3);
             footMarkTextInfo.setPointPosition(footMarkTextBean1);
 
@@ -456,7 +426,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             footMarkTextBean.setUserId(mSharedPrefUtil.getString("userId", ""));
 //            footMarkTextBean.setName(itemBean.getAddrSimple() == null ? "":itemBean.getAddrSimple());
 //            footMarkTextBean.setDesc(itemBean.getDescription() == null ? "":itemBean.getDescription());
-            footMarkTextBean.setName(itemBean.getRoadname().length() == 0 ? itemBean.getDistrict() + itemBean.getRoadname() : itemBean.getRoadname());
+            footMarkTextBean.setName(itemBean.getStreetAddress());
             footMarkTextBean.setDesc(itemBean.getDescription());
             footMarkTextBean.setConsumptionTime("0");
             footMarkTextBean.setStartTime(String.valueOf(itemBean.getStartTime()));
@@ -468,8 +438,8 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             footMarkTextBean1.setLatitude(point.getY());
             footMarkTextBean1.setLongitude(point.getX());
             footMarkTextBean1.setAltitude(point.getZ());
-            footMarkTextBean1.setAddr(itemBean.getRoadname().length() == 0 ? itemBean.getDistrict() + itemBean.getRoadname() : itemBean.getRoadname());
-            footMarkTextBean1.setDesc(itemBean.getCity() + itemBean.getDistrict() + itemBean.getRoadname());
+            footMarkTextBean1.setAddr(itemBean.getStreetAddress());
+            footMarkTextBean1.setDesc(itemBean.getFormatAddress());
             footMarkTextBean1.setPointType(1);
             footMarkTextInfo.setPointPosition(footMarkTextBean1);
 
@@ -507,8 +477,8 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             footFiles.add(itemBean);
         }
         mSharedPrefUtil.putList(ConstStrings.FootFiles, footFiles);
-        mRxManager.post("refreshPoint", true);
-        new Handler().postDelayed(() -> finish(), 100);
+        setResult(0x01);
+        finish();
     }
 
     @Override

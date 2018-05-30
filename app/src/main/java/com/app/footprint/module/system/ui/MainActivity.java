@@ -34,6 +34,8 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
     @BindView(R.id.tvp_main)
     ZXTabViewPager tvpMain;
 
+    private FootFragment footFragment;
+
     public static void startAction(Activity activity, boolean isFinish) {
         Intent intent = new Intent(activity, MainActivity.class);
         activity.startActivity(intent);
@@ -48,9 +50,10 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
     @Override
     public void initView(Bundle savedInstanceState) {
 //        mPresenter.getVersionInfo(ApiParamUtil.getVersionUpdateDataInfo(ZXSystemUtil.getVersionName()));
+        footFragment = FootFragment.newInstance();
         tvpMain.setManager(getSupportFragmentManager())
                 .setTabLayoutGravity(ZXTabViewPager.TabGravity.GRAVITY_BOTTOM)
-                .addTab(FootFragment.newInstance(), "足迹", R.drawable.foot_tab)
+                .addTab(footFragment, "足迹", R.drawable.foot_tab)
 //                .addTab(TaskFragment.newInstance(), "任务", R.mipmap.ic_launcher)
                 .addTab(MyFragment.newInstance(), "个人中心", R.drawable.mine_tab)
                 .setTitleColor(ContextCompat.getColor(this, R.color.gray_8f), ContextCompat.getColor(this, R.color.colorPrimary))
@@ -94,6 +97,12 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
     }
 
     private long triggerAtTimefirst = 0;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        footFragment.onActivityResult(requestCode, resultCode, data);
+    }
 
     @Override
     public void onBackPressed() {
