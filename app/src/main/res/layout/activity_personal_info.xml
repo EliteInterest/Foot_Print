@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/gray_tab"
+    android:background="@color/light_gray"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -51,8 +51,7 @@
             android:padding="5dp"
             android:layout_marginLeft="10dp"
             android:text="头像"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_large" />
+            android:textSize="@dimen/text_size_normal" />
 
         <ImageView
             android:id="@+id/personal_image"
@@ -69,9 +68,8 @@
     <View
         android:id="@+id/divider_1"
         android:layout_width="fill_parent"
-        android:layout_height="@dimen/px1"
-        android:layout_below="@+id/layout_head"
-        android:background="@color/darkgrey" />
+        android:layout_height="1px"
+        android:layout_below="@+id/layout_head" />
 
     <RelativeLayout
         android:id="@+id/layout_nickName"
@@ -90,10 +88,9 @@
             android:layout_alignParentLeft="true"
             android:padding="5dp"
             android:layout_marginLeft="10dp"
-            android:textColor="@color/black"
             android:text="昵称"
             android:gravity="center_vertical"
-            android:textSize="@dimen/text_size_large"/>
+            android:textSize="@dimen/text_size_normal"/>
 
         <TextView
             android:id="@+id/person_nickName_content"
@@ -121,9 +118,8 @@
     <View
         android:id="@+id/divider_2"
         android:layout_width="fill_parent"
-        android:layout_height="@dimen/px1"
-        android:layout_below="@+id/layout_nickName"
-        android:background="@color/darkgrey" />
+        android:layout_height="1px"
+        android:layout_below="@+id/layout_nickName" />
 
     <RelativeLayout
         android:id="@+id/layout_account"
@@ -142,10 +138,9 @@
             android:layout_alignParentLeft="true"
             android:padding="5dp"
             android:layout_marginLeft="10dp"
-            android:textColor="@color/black"
             android:text="账号"
             android:gravity="center_vertical"
-            android:textSize="@dimen/text_size_large"/>
+            android:textSize="@dimen/text_size_normal"/>
 
         <TextView
             android:id="@+id/personal_username_textview"
@@ -173,9 +168,8 @@
     <View
         android:id="@+id/divider_3"
         android:layout_width="fill_parent"
-        android:layout_height="@dimen/px1"
-        android:layout_below="@+id/layout_account"
-        android:background="@color/darkgrey" />
+        android:layout_height="1px"
+        android:layout_below="@+id/layout_account" />
 
     <RelativeLayout
         android:id="@+id/layout_phone"
@@ -194,10 +188,9 @@
             android:layout_alignParentLeft="true"
             android:padding="5dp"
             android:layout_marginLeft="10dp"
-            android:textColor="@color/black"
             android:text="手机"
             android:gravity="center_vertical"
-            android:textSize="@dimen/text_size_large"/>
+            android:textSize="@dimen/text_size_normal"/>
 
         <TextView
             android:id="@+id/person_phone_content"
@@ -230,6 +223,6 @@
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
         android:textStyle="bold"
-        android:textSize="@dimen/text_size_large"
+        android:textSize="@dimen/text_size_normal"
         android:text="退    出" />
 </RelativeLayout>

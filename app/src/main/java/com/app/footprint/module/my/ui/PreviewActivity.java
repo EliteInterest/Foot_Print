@@ -8,9 +8,7 @@ import android.widget.TextView;
 
 import com.app.footprint.R;
 import com.app.footprint.base.BaseActivity;
-import com.app.footprint.module.foot.bean.FootFileBean;
 import com.app.footprint.module.foot.ui.WebViewFragment;
-import com.app.footprint.module.my.bean.MyfootMarkEntity;
 import com.app.footprint.module.my.mvp.contract.PreviewContract;
 import com.app.footprint.module.my.mvp.model.PreviewModel;
 import com.app.footprint.module.my.mvp.presenter.PreviewPresenter;
@@ -29,12 +27,13 @@ public class PreviewActivity extends BaseActivity<PreviewPresenter, PreviewModel
     @BindView(R.id.tv_title)
     TextView tvTitle;
 
-    private FootFileBean footFileBean;
-    private MyfootMarkEntity markEntity;
+    private String name = "";
+    private String url = "";
 
-    public static void startAction(Activity activity, boolean isFinish, MyfootMarkEntity object) {
+    public static void startAction(Activity activity, boolean isFinish, String name, String url) {
         Intent intent = new Intent(activity, PreviewActivity.class);
-        intent.putExtra("entity", object);
+        intent.putExtra("name", name);
+        intent.putExtra("url", url);
         activity.startActivity(intent);
         if (isFinish) activity.finish();
     }
@@ -46,10 +45,11 @@ public class PreviewActivity extends BaseActivity<PreviewPresenter, PreviewModel
 
     @Override
     public void initView(Bundle savedInstanceState) {
-        markEntity = (MyfootMarkEntity) getIntent().getSerializableExtra("entity");
-        tvTitle.setText(markEntity.getName());
+        name = getIntent().getStringExtra("name");
+        url = getIntent().getStringExtra("url");
+        tvTitle.setText(name);
 
-        ZXFragmentUtil.addFragment(getSupportFragmentManager(), WebViewFragment.newInstance(markEntity.getDetailsUrlPath()), R.id.fm_preview);
+        ZXFragmentUtil.addFragment(getSupportFragmentManager(), WebViewFragment.newInstance(url), R.id.fm_preview);
     }
 
     @OnClick({R.id.iv_title_back, R.id.tv_title_save})

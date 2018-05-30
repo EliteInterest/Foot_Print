@@ -1,10 +1,7 @@
 package com.app.footprint.module.my.ui;
 
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.telecom.Call;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -15,20 +12,14 @@ import android.widget.TextView;
 import com.app.footprint.R;
 import com.app.footprint.api.ApiParamUtil;
 import com.app.footprint.base.BaseFragment;
-import com.app.footprint.module.my.bean.IntegralEntity;
 import com.app.footprint.module.my.bean.UserInfoEntity;
 import com.app.footprint.module.my.mvp.contract.MyContract;
 import com.app.footprint.module.my.mvp.model.MyModel;
 import com.app.footprint.module.my.mvp.presenter.MyPresenter;
-import com.app.footprint.module.my.tool.MyTool;
-import com.squareup.okhttp.Request;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.BitmapCallback;
-import com.zx.zxutils.util.ZXDialogUtil;
+import com.app.footprint.module.my.func.tool.MyTool;
 import com.zx.zxutils.views.BottomSheet.SheetData;
 import com.zx.zxutils.views.BottomSheet.ZXBottomSheet;
 
-import butterknife.BindBool;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -194,11 +185,11 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
                 break;
 
             case R.id.RouteCount_layout://路线
-                MyFootPointActivity.startAction(getActivity(),false,0);
+                MyFootListActivity.startAction(getActivity(),false,0);
                 break;
 
             case R.id.FootmarkCount_layout://脚印
-                MyFootPointActivity.startAction(getActivity(),false,1);
+                MyFootListActivity.startAction(getActivity(),false,1);
                 break;
 
             case R.id.Integral_layout://积分

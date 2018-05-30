@@ -1,9 +1,8 @@
-package com.app.footprint.module.my.tool;
+package com.app.footprint.module.my.func.tool;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.support.v4.app.FragmentActivity;
 import android.widget.ImageView;
 
 import com.app.footprint.module.my.ui.MyFragment;

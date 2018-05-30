@@ -104,10 +104,11 @@
             android:name=".module.my.ui.IntegralActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".module.my.ui.MyFootPointActivity"
-            android:screenOrientation="portrait"/>
-        <activity
             android:name=".module.my.ui.PreviewActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".module.my.ui.MyFootListActivity"
             android:screenOrientation="portrait">
         </activity>
     </application>

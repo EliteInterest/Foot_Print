@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:background="@color/gray_tab"
+                android:background="@color/light_gray"
                 android:orientation="vertical">
 
     <RelativeLayout
@@ -50,7 +50,7 @@
             android:imeOptions="actionDone"
             android:singleLine="true"
             android:layout_marginLeft="@dimen/px30"
-            android:textSize="@dimen/text_size_large" />
+            android:textSize="@dimen/text_size_normal" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -74,7 +74,7 @@
             android:layout_alignParentLeft="true"
             android:singleLine="true"
             android:layout_marginLeft="@dimen/px30"
-            android:textSize="@dimen/text_size_large" />
+            android:textSize="@dimen/text_size_normal" />
 
         <Button
             android:id="@+id/btn_user_edit_send_phone"
@@ -82,10 +82,10 @@
             android:layout_height="@dimen/px50"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:background="@color/dp_darker_blue"
+            android:background="@color/colorPrimary"
             android:text="获取验证码"
             android:textColor="@color/whitesmoke"
-            android:textSize="@dimen/text_size_large"
+            android:textSize="@dimen/text_size_normal"
             android:layout_alignParentRight="true"
             android:layout_marginRight="30dp"
             android:gravity="center" />

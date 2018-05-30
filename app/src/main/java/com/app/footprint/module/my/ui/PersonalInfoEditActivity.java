@@ -3,13 +3,11 @@ package com.app.footprint.module.my.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatButton;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,8 +21,6 @@ import com.app.footprint.module.my.mvp.contract.PersonalInfoEditContract;
 import com.app.footprint.module.my.mvp.model.PersonalInfoEditModel;
 import com.app.footprint.module.my.mvp.presenter.PersonalInfoEditPresenter;
 import com.app.footprint.module.system.bean.LoginEntity;
-
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -138,10 +134,10 @@ public class PersonalInfoEditActivity extends BaseActivity<PersonalInfoEditPrese
     @Override
     public void onUploadResult(UserInfoEntity userInfoEntity) {
         showToast("更新成功！");
-        if(tab == 1)
-            mSharedPrefUtil.putString("nickName",mEdit.getText().toString());
-        else  if(tab == 2)
-            mSharedPrefUtil.putString("userName",mEdit.getText().toString());
+        if (tab == 1)
+            mSharedPrefUtil.putString("nickName", mEdit.getText().toString());
+        else if (tab == 2)
+            mSharedPrefUtil.putString("userName", mEdit.getText().toString());
         else {
             Log.e("fxs", "update phone to: " + mEdit.getText().toString());
             mSharedPrefUtil.putString("phone", mEdit.getText().toString());

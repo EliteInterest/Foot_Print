@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@color/gray_tab"
-    android:orientation="vertical">
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@color/light_gray"
+                android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/mine_integral_title"
@@ -17,7 +17,7 @@
             android:layout_height="30dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:background="@mipmap/title_back" />
+            android:background="@mipmap/title_back"/>
 
         <TextView
             android:id="@+id/personal_edit_title"
@@ -26,14 +26,14 @@
             android:layout_centerInParent="true"
             android:text="我的积分"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_size_large" />
+            android:textSize="@dimen/text_size_large"/>
 
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/mine_integral_title_layout"
         android:layout_width="fill_parent"
-        android:layout_height="@dimen/px100"
+        android:layout_height="@dimen/px80"
         android:layout_below="@+id/mine_integral_title"
         android:background="@color/white"
         android:gravity="center_vertical"
@@ -44,23 +44,20 @@
             android:id="@+id/mine_integral_tile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"
-            android:layout_marginLeft="@dimen/px100"
+            android:layout_marginRight="50dp"
+            android:layout_toLeftOf="@+id/mine_integral_content"
             android:text="积分"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_large" />
+            android:textSize="@dimen/text_size_large"/>
 
         <TextView
             android:id="@+id/mine_integral_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
-            android:layout_marginRight="170dp"
             android:text="0"
-            android:textColor="@color/dp_blue"
-            android:textSize="@dimen/text_size_large" />
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_size_normal"/>
 
     </RelativeLayout>
 
@@ -82,8 +79,8 @@
             android:id="@+id/RouteCount_layout"
             android:layout_columnWeight="1"
             android:layout_margin="1dp"
-            android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
             android:layout_rowWeight="1"
             android:background="#ffffff"
             android:gravity="center"
@@ -95,12 +92,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="路线"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_large" />
+                android:textSize="@dimen/text_size_normal"/>
 
             <View
                 android:layout_width="fill_parent"
-                android:layout_height="10dp" />
+                android:layout_height="10dp"/>
 
             <TextView
                 android:id="@+id/RouteCount"
@@ -108,16 +104,16 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="+0"
-                android:textColor="@color/dp_blue"
-                android:textSize="@dimen/text_size_large" />
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_size_normal"/>
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/FootmarkCount_layout"
             android:layout_columnWeight="1"
             android:layout_margin="1dp"
-            android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
             android:layout_rowWeight="1"
             android:background="#ffffff"
             android:gravity="center"
@@ -129,12 +125,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="脚印"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_large" />
+                android:textSize="@dimen/text_size_normal"/>
 
             <View
                 android:layout_width="fill_parent"
-                android:layout_height="10dp" />
+                android:layout_height="10dp"/>
 
             <TextView
                 android:id="@+id/FootmarkCount"
@@ -142,8 +137,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="+0"
-                android:textColor="@color/dp_blue"
-                android:textSize="@dimen/text_size_large" />
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_size_normal"/>
         </LinearLayout>
 
         <LinearLayout
@@ -152,8 +147,8 @@
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
             android:layout_margin="1dp"
-            android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
             android:layout_rowWeight="1"
             android:background="#ffffff"
             android:gravity="center"
@@ -165,12 +160,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="访问"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_large" />
+                android:textSize="@dimen/text_size_normal"/>
 
             <View
                 android:layout_width="fill_parent"
-                android:layout_height="10dp" />
+                android:layout_height="10dp"/>
 
             <TextView
                 android:id="@+id/VisitVolumel"
@@ -178,8 +172,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="+0"
-                android:textColor="@color/dp_blue"
-                android:textSize="16sp" />
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -188,8 +182,8 @@
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
             android:layout_margin="1dp"
-            android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
             android:layout_rowWeight="1"
             android:background="#ffffff"
             android:gravity="center"
@@ -201,12 +195,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="登录"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_large" />
+                android:textSize="@dimen/text_size_normal"/>
 
             <View
                 android:layout_width="fill_parent"
-                android:layout_height="10dp" />
+                android:layout_height="10dp"/>
 
             <TextView
                 android:id="@+id/IntegralCount"
@@ -214,8 +207,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="+0"
-                android:textColor="@color/dp_blue"
-                android:textSize="16sp" />
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp"/>
         </LinearLayout>
     </GridLayout>
 
@@ -233,21 +226,19 @@
         <TextView
             android:id="@+id/mine_integral_detail_tile"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="50dp"
             android:layout_alignParentLeft="true"
-            android:background="@color/white"
+            android:background="@color/gray_cc"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/px20"
             android:text="积分明细"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="@dimen/text_size_normal"/>
 
         <com.zx.zxutils.views.SwipeRecylerView.ZXSwipeRecyler
             android:id="@+id/mine_integral_detail_content"
-            android:layout_below="@+id/mine_integral_detail_tile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/gray_tab">
+            android:layout_below="@+id/mine_integral_detail_tile">
         </com.zx.zxutils.views.SwipeRecylerView.ZXSwipeRecyler>
 
     </RelativeLayout>

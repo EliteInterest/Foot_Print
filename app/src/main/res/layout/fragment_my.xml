@@ -2,12 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/gray_tab">
+    android:background="@color/light_gray">
 
     <RelativeLayout
         android:id="@+id/personal_center"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/px80"
+        android:layout_height="@dimen/px70"
         android:background="@color/white"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -20,29 +20,24 @@
         android:layout_below="@+id/personal_center"
         android:layout_marginTop="@dimen/px10"
         android:background="@color/white"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
         android:visibility="visible">
 
         <ImageView
             android:id="@+id/personal_image"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignTop="@+id/personal_nickname_textview"
-            android:layout_marginLeft="50dp"
-            android:layout_marginStart="50dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="40dp"
             android:background="@mipmap/head_image" />
 
         <TextView
             android:id="@+id/personal_nickname_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/view1"
             android:layout_marginLeft="20dp"
             android:layout_marginStart="20dp"
-            android:layout_toEndOf="@+id/personal_image"
+            android:layout_marginTop="20dp"
             android:layout_toRightOf="@+id/personal_image"
             android:gravity="center_vertical"
             android:padding="5dp"
@@ -56,7 +51,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/personal_nickname_textview"
-            android:layout_alignStart="@+id/personal_nickname_textview"
             android:layout_below="@+id/personal_nickname_textview"
             android:gravity="center_vertical"
             android:padding="5dp"
@@ -64,23 +58,14 @@
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_normal" />
 
-        <View
-            android:id="@+id/view1"
-            android:layout_alignParentRight="true"
-            android:layout_width="@dimen/px10"
-            android:layout_height="@dimen/px30"/>
-
         <ImageView
             android:id="@+id/personal_image_right"
-            android:layout_width="15dp"
-            android:layout_height="18dp"
-            android:layout_below="@+id/view1"
-            android:layout_marginLeft="35dp"
-            android:layout_marginStart="35dp"
-            android:layout_toEndOf="@+id/personal_nickname_textview"
-            android:layout_toRightOf="@+id/personal_nickname_textview"
-            android:background="@mipmap/arrow_right_blue"
-            android:paddingTop="40dp" />
+            android:layout_width="9dp"
+            android:layout_height="11dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="50dp"
+            android:background="@mipmap/arrow_right_blue" />
 
     </RelativeLayout>
 
@@ -114,8 +99,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_large"
+                android:textSize="@dimen/text_size_normal"
                 android:textStyle="bold"
                 android:text="路线"/>
             <View
@@ -127,7 +111,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textColor="@color/dp_blue"
-                android:textSize="@dimen/text_size_large"
+                android:textSize="@dimen/text_size_normal"
                 android:text="0"/>
         </LinearLayout>
         <LinearLayout
@@ -146,8 +130,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_large"
+                android:textSize="@dimen/text_size_normal"
                 android:textStyle="bold"
                 android:text="脚印"/>
             <View
@@ -159,7 +142,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textColor="@color/dp_blue"
-                android:textSize="@dimen/text_size_large"
+                android:textSize="@dimen/text_size_normal"
                 android:text="0"/>
         </LinearLayout>
         <LinearLayout
@@ -178,8 +161,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_large"
+                android:textSize="@dimen/text_size_normal"
                 android:textStyle="bold"
                 android:text="积分"/>
             <View
@@ -191,7 +173,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textColor="@color/dp_blue"
-                android:textSize="@dimen/text_size_large"
+                android:textSize="@dimen/text_size_normal"
                 android:text="0"/>
         </LinearLayout>
         <LinearLayout
@@ -210,8 +192,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_large"
+                android:textSize="@dimen/text_size_normal"
                 android:textStyle="bold"
                 android:text="访问"/>
             <View
@@ -223,7 +204,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textColor="@color/dp_blue"
-                android:textSize="@dimen/text_size_large"
+                android:textSize="@dimen/text_size_normal"
                 android:text="0"/>
         </LinearLayout>
     </GridLayout>
@@ -241,8 +222,8 @@
 
         <ImageView
             android:id="@+id/personal_settings_icon"
-            android:layout_width="@dimen/px30"
-            android:layout_height="@dimen/px30"
+            android:layout_width="@dimen/px25"
+            android:layout_height="@dimen/px25"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
@@ -265,8 +246,7 @@
             android:gravity="center_vertical"
             android:padding="5dp"
             android:text="设置"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_large" />
+            android:textSize="@dimen/text_size_normal" />
 
         <TextView
             android:id="@+id/person_account_content"
@@ -281,7 +261,7 @@
             android:padding="5dp"
             android:text="10秒"
             android:textColor="@color/dp_blue"
-            android:textSize="@dimen/text_size_large" />
+            android:textSize="@dimen/text_size_normal" />
 
     </RelativeLayout>
 
@@ -289,8 +269,7 @@
         android:id="@+id/divider_1"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/px1"
-        android:layout_below="@+id/layout_settings"
-        android:background="@color/darkgrey" />
+        android:layout_below="@+id/layout_settings" />
 
     <RelativeLayout
         android:id="@+id/layout_contact"
@@ -304,8 +283,8 @@
 
         <ImageView
             android:id="@+id/personal_message_icon"
-            android:layout_width="@dimen/px30"
-            android:layout_height="@dimen/px30"
+            android:layout_width="@dimen/px25"
+            android:layout_height="@dimen/px25"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
@@ -326,13 +305,12 @@
             android:gravity="center_vertical"
             android:padding="5dp"
             android:text="联系"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_large" />
+            android:textSize="@dimen/text_size_normal" />
 
         <ImageView
             android:id="@+id/message_right_arrow"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/personal_message_icon"
