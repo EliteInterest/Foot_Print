@@ -263,4 +263,9 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
     public void clearSharedPref() {
         footRecordView.clearSharedPref();
     }
+
+    public FootRecordView getFootRecordView()
+    {
+        return footRecordView;
+    }
 }

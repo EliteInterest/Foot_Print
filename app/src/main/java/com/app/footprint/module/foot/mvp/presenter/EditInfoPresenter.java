@@ -19,7 +19,6 @@ import okhttp3.RequestBody;
  */
 public class EditInfoPresenter extends EditInfoContract.Presenter {
 
-
     @Override
     public void commitFile(Map<String, Object> map) {
         String FootmarkInfo = (String) map.get("FootmarkInfo");
@@ -65,27 +64,4 @@ public class EditInfoPresenter extends EditInfoContract.Presenter {
                     }
                 });
     }
-
-//    @Override
-//    public void commitFile(String FootmarkInfo, List<String> files) {
-//        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
-//                .addFormDataPart("FootmarkInfo", FootmarkInfo)
-////                .addFormDataPart("file", file.getName(), RequestBody.create(MediaType.parse("image/*"), file))
-//                .build();
-//
-//        mModel.commitFile(requestBody)
-//                .compose(RxHelper.bindToLifecycle(mView))
-//                .subscribe(new RxSubscriber<String>() {
-//                    @Override
-//                    protected void _onNext(String o) {
-//                        mView.onFileCommitResult(o);
-//                    }
-//
-//                    @Override
-//                    protected void _onError(String message) {
-//
-//                        mView.showToast(message);
-//                    }
-//                });
-//    }
 }

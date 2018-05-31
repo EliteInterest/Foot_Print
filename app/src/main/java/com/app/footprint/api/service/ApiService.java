@@ -76,6 +76,9 @@ public interface ApiService {
     @POST("/fsms/footprint/footmark/info/upload")
     Observable<BaseRespose<String>> commitFile(@Body RequestBody userId);
 
+    @POST("/fsms/footprint/route/info/upload")
+    Observable<BaseRespose<String>> commitRouteFile(@Body RequestBody userId);
+
     @GET("http://api.map.baidu.com/geocoder/v2/")
     Observable<BaiduSearchBean> queryBaiduSearch(@QueryMap Map<String, String> map);
 

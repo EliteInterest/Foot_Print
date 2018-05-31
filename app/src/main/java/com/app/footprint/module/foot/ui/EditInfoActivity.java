@@ -18,6 +18,7 @@ import com.app.footprint.app.ConstStrings;
 import com.app.footprint.base.BaseActivity;
 import com.app.footprint.module.foot.bean.FootFileBean;
 import com.app.footprint.module.foot.bean.FootMarkTextInfo;
+import com.app.footprint.module.foot.bean.FootRouteTextInfo;
 import com.app.footprint.module.foot.func.adapter.FootPicAdapter;
 import com.app.footprint.module.foot.mvp.contract.EditInfoContract;
 import com.app.footprint.module.foot.mvp.model.EditInfoModel;
@@ -79,9 +80,9 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
     private String footId = "";
 
     public enum EditType implements Serializable {
+        MapRouteText,
         MapRoutePic,
         MapRouteVedio,
-        MapRouteText,
         MapFootPic,
         MapFootVedio,
         MapFootText,
@@ -254,7 +255,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
         itemBean.setUrl(result);
         Intent intent = new Intent();
         intent.putExtra("itemBean", itemBean);
-        setResult(0x02,intent);
+        setResult(0x02, intent);
         finish();
     }
 
@@ -306,18 +307,22 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
      */
     private void saveByType() {
         itemBean.setEndTime(String.valueOf(System.currentTimeMillis()));
-        String pointString = point.getX() + "," + point.getY();
+        String pointString = point.getX() + "," + point.getY() + "," + point.getZ();
         itemBean.setPoint(pointString);
         itemBean.setDescription(etRemark.getText().toString());
         if (editType == EditType.MapRoutePic) {//地图-轨迹-图片
             itemBean.setPicPaths(picChildBeans);
+            itemBean.setType(FootFileBean.Type.Camera);
             addFootBean();
         } else if (editType == EditType.MapRouteVedio) {//地图-轨迹-视频
             itemBean.setVedioPath(vedioPath);
             itemBean.setVedioShootPath(vedioShootPath);
+            itemBean.setType(FootFileBean.Type.Vedio);
             addFootBean();
         } else if (editType == EditType.MapRouteText) {//地图-轨迹-文本
             itemBean.setTextName(etName.getText().toString());
+            itemBean.setDescription(etRemark.getText().toString());
+            itemBean.setType(FootFileBean.Type.Text);
             addFootBean();
         } else if (editType == EditType.MapFootPic) {//地图-足迹-图片
             itemBean.setPicPaths(picChildBeans);

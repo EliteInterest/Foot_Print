@@ -238,6 +238,7 @@ public class FootRecordView extends RelativeLayout {
                 RxManager rxManager = new RxManager();
                 rxManager.post("commitRoute", true);
                 ZXDialogUtil.dismissDialog();
+                zxSharedPrefUtil.putString("ConsumptionTime",tvTabCountTime.getText().toString());
                 break;
             default:
                 break;
@@ -271,6 +272,7 @@ public class FootRecordView extends RelativeLayout {
             }
             DecimalFormat df = new DecimalFormat("#.00");
             tvTabCountSize.setText(df.format(countSize).startsWith(".") ? "0" + df.format(countSize) : df.format(countSize));
+            zxSharedPrefUtil.putString("Mileage",tvTabCountSize.getText().toString());
             refreshPoints();
         } else {
             countTime = 0;
@@ -278,6 +280,7 @@ public class FootRecordView extends RelativeLayout {
             mPoints.clear();
             mGraphicList.clear();
             tvTabCountSize.setText("0.00");
+            zxSharedPrefUtil.putString("Mileage",tvTabCountSize.getText().toString());
         }
         //开启定时器
         timeTimer = new Timer();
@@ -327,6 +330,7 @@ public class FootRecordView extends RelativeLayout {
                             countSize += length / 1000;
                             DecimalFormat df = new DecimalFormat("#.00");
                             tvTabCountSize.setText(df.format(countSize).startsWith(".") ? "0" + df.format(countSize) : df.format(countSize));
+                            zxSharedPrefUtil.putString("Mileage",tvTabCountSize.getText().toString());
                         }
                     } else {
                         mPoints.add(point);

@@ -1,11 +1,15 @@
 package com.app.footprint.module.foot.mvp.model;
 
+import com.app.footprint.api.service.ApiService;
 import com.frame.zxmvp.base.BaseModel;
 
 import com.app.footprint.module.foot.mvp.contract.FootContract;
+import com.frame.zxmvp.baserx.RxHelper;
+import com.frame.zxmvp.baserx.RxSchedulers;
 
 import java.util.Map;
 
+import okhttp3.RequestBody;
 import rx.Observable;
 
 /**
@@ -14,9 +18,11 @@ import rx.Observable;
  */
 public class FootModel extends BaseModel implements FootContract.Model {
 
-
     @Override
-    public Observable<String> commitRoute(Map<String, String> map) {
-        return null;
+    public Observable<String> commitRoute(RequestBody requestBody) {
+        return mRepositoryManager.obtainRetrofitService(ApiService.class)
+                .commitRouteFile(requestBody)
+                .compose(RxHelper.handleResult())
+                .compose(RxSchedulers.io_main());
     }
 }

@@ -8,6 +8,7 @@ import com.frame.zxmvp.base.IView;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.RequestBody;
 import rx.Observable;
 
 
@@ -23,11 +24,11 @@ public interface FootContract {
 
     //Model层定义接口,外部只需关心Model返回的数据,无需关心内部细节,即是否使用缓存
     interface Model extends IModel {
-        Observable<String> commitRoute(Map<String, String> map);
+        Observable<String> commitRoute(RequestBody requestBody);
     }
 
     //方法
     abstract class Presenter extends BasePresenter<View, Model> {
-        public abstract void commitRoute(String name, String detail, List<FootFileBean> footFileBeans);
+        public abstract void commitRoute(Map<String, Object> map);
     }
 }

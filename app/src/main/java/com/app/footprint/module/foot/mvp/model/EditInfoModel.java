@@ -19,12 +19,6 @@ import rx.Observable;
  */
 public class EditInfoModel extends BaseModel implements EditInfoContract.Model {
 
-
-//    @Override
-//    public Observable<String> commitFile(Map<String, String> map) {
-//        return null;
-//    }
-
     @Override
     public Observable<String> commitFile(RequestBody requestBody) {
         return mRepositoryManager.obtainRetrofitService(ApiService.class)
