@@ -2,6 +2,7 @@ package com.app.footprint.api.service;
 
 import com.app.footprint.module.map.bean.BaiduLatlngBean;
 import com.app.footprint.module.map.bean.BaiduSearchBean;
+import com.app.footprint.module.map.bean.MapUrlBean;
 import com.app.footprint.module.my.bean.IntegralEntity;
 import com.app.footprint.module.my.bean.MyFootRouteEntity;
 import com.app.footprint.module.my.bean.MyfootMarkEntity;
@@ -80,5 +81,8 @@ public interface ApiService {
 
     @GET("http://api.map.baidu.com/geoconv/v1/")
     Observable<BaiduLatlngBean> queryBaiduLatlng(@QueryMap Map<String, String> map);
+
+    @GET("fsms/config/map/info")
+    Observable<BaseRespose<List<MapUrlBean>>> getMapUrl();
 
 }

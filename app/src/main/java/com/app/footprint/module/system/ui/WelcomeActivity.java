@@ -9,6 +9,7 @@ import com.app.footprint.R;
 import com.app.footprint.api.ApiParamUtil;
 import com.app.footprint.app.ConstStrings;
 import com.app.footprint.base.BaseActivity;
+import com.app.footprint.module.map.bean.MapUrlBean;
 import com.app.footprint.module.system.bean.LoginEntity;
 import com.app.footprint.module.system.mvp.contract.WelcomeContract;
 import com.app.footprint.module.system.mvp.model.WelcomeModel;
@@ -17,6 +18,8 @@ import com.zx.zxutils.util.ZXFileUtil;
 import com.zx.zxutils.util.ZXPermissionUtil;
 import com.zx.zxutils.util.ZXStringUtil;
 import com.zx.zxutils.util.ZXSystemUtil;
+
+import java.util.List;
 
 
 /**
@@ -51,7 +54,8 @@ public class WelcomeActivity extends BaseActivity<WelcomePresenter, WelcomeModel
         if (!ZXPermissionUtil.checkPermissionsByArray(permissions)) {
             ZXPermissionUtil.requestPermissionsByArray(this);
         } else {
-            loginIn();
+            mPresenter.getMapUrl();
+//            loginIn();
         }
     }
 
@@ -80,7 +84,8 @@ public class WelcomeActivity extends BaseActivity<WelcomePresenter, WelcomeModel
             showToast("当前应用缺乏必要权限");
             finish();
         } else {
-            loginIn();
+            mPresenter.getMapUrl();
+//            loginIn();
         }
     }
 
@@ -91,7 +96,7 @@ public class WelcomeActivity extends BaseActivity<WelcomePresenter, WelcomeModel
         if (loginEntity == null) {
             LoginActivity.startAction(this, true);
         } else {
-            Log.i(TAG,"loginEntity.getUserName() is " +loginEntity.getUserName());
+            Log.i(TAG, "loginEntity.getUserName() is " + loginEntity.getUserName());
             mSharedPrefUtil.putString("userName", loginEntity.getUserName());
             mSharedPrefUtil.putString("userId", loginEntity.getUserId());
             mSharedPrefUtil.putString("headPortraits", loginEntity.getHeadPortraits());
@@ -99,6 +104,14 @@ public class WelcomeActivity extends BaseActivity<WelcomePresenter, WelcomeModel
             mSharedPrefUtil.putString("phone", loginEntity.getPhone());
             goToMain();
         }
+    }
+
+    @Override
+    public void onMapUrlResult(List<MapUrlBean> mapUrlBeans) {
+        if (mapUrlBeans != null) {
+            mSharedPrefUtil.putList("mapUrl", mapUrlBeans);
+        }
+        loginIn();
     }
 
     /**

@@ -1,12 +1,14 @@
 package com.app.footprint.module.system.mvp.model;
 
 import com.app.footprint.api.service.ApiService;
+import com.app.footprint.module.map.bean.MapUrlBean;
 import com.app.footprint.module.system.bean.LoginEntity;
 import com.app.footprint.module.system.mvp.contract.WelcomeContract;
 import com.frame.zxmvp.base.BaseModel;
 import com.frame.zxmvp.baserx.RxHelper;
 import com.frame.zxmvp.baserx.RxSchedulers;
 
+import java.util.List;
 import java.util.Map;
 
 import rx.Observable;
@@ -23,5 +25,13 @@ public class WelcomeModel extends BaseModel implements WelcomeContract.Model {
                 .login(map)
                 .compose(RxHelper.<LoginEntity>handleResult())
                 .compose(RxSchedulers.<LoginEntity>io_main());
+    }
+
+    @Override
+    public Observable<List<MapUrlBean>> mapUrlData() {
+        return mRepositoryManager.obtainRetrofitService(ApiService.class)
+                .getMapUrl()
+                .compose(RxHelper.handleResult())
+                .compose(RxSchedulers.io_main());
     }
 }

@@ -14,6 +14,7 @@ import com.app.footprint.R;
 import com.app.footprint.app.ConstStrings;
 import com.app.footprint.base.BaseFragment;
 import com.app.footprint.module.foot.func.view.FootRecordView;
+import com.app.footprint.module.map.bean.MapUrlBean;
 import com.app.footprint.module.map.func.tool.tiditu.TianDiTuLayer;
 import com.app.footprint.module.map.func.tool.tiditu.TianDiTuLayerTypes;
 import com.app.footprint.module.map.func.util.BaiduMapUtil;
@@ -25,10 +26,12 @@ import com.app.footprint.module.system.ui.MainActivity;
 import com.esri.android.map.GraphicsLayer;
 import com.esri.android.map.MapOnTouchListener;
 import com.esri.android.map.MapView;
+import com.esri.android.map.ags.ArcGISTiledMapServiceLayer;
 import com.esri.android.map.event.OnStatusChangedListener;
 import com.esri.android.runtime.ArcGISRuntime;
 import com.esri.core.geometry.Point;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -57,6 +60,7 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
     private MapOnTouchListener defaultListener;
 
     private TianDiTuLayer tianDiTuVectorLayer, tianDiTuImageLayer;
+    private ArcGISTiledMapServiceLayer vectorLayer, imageLayer, imageLabelLayer;
     private GraphicsLayer idenLayer = new GraphicsLayer();
 
     private Timer timer = new Timer();
@@ -97,12 +101,33 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
         showLoading("正在初始化地图，请稍后...");
         mMapView.setOnStatusChangedListener(layerLoadListener);
         defaultListener = new MapOnTouchListener(this.getActivity(), mMapView);
-//        mMapView.addLayer(mMarkersGLayer);
+        List<MapUrlBean> mapUrlBeans = mSharedPrefUtil.getList("mapUrl");
+        if (mapUrlBeans != null && mapUrlBeans.size() != 0) {
+            for (MapUrlBean bean : mapUrlBeans) {
+                if (bean.getType() == 1) {//矢量
+                    vectorLayer = new ArcGISTiledMapServiceLayer(bean.getMapUrl());
+                } else if (bean.getType() == 2) {
+                    imageLayer = new ArcGISTiledMapServiceLayer(bean.getMapUrl());
+                    imageLabelLayer = new ArcGISTiledMapServiceLayer(bean.getLabelUrl());
+                }
+            }
+        }
         tianDiTuVectorLayer = new TianDiTuLayer(TianDiTuLayerTypes.TIANDITU_VECTOR_2000);
         tianDiTuImageLayer = new TianDiTuLayer(TianDiTuLayerTypes.TIANDITU_IMAGE_2000);
-        mMapView.addLayer(tianDiTuVectorLayer);
-        mMapView.addLayer(tianDiTuImageLayer);
-        tianDiTuImageLayer.setVisible(false);
+        if (vectorLayer != null) {
+            mMapView.addLayer(vectorLayer);
+        } else {
+            mMapView.addLayer(tianDiTuVectorLayer);
+        }
+        if (imageLayer != null) {
+            mMapView.addLayer(imageLayer);
+            mMapView.addLayer(imageLabelLayer);
+            imageLayer.setVisible(false);
+            imageLabelLayer.setVisible(false);
+        } else {
+            mMapView.addLayer(tianDiTuImageLayer);
+            tianDiTuImageLayer.setVisible(false);
+        }
         new Handler().postDelayed(() -> {
             try {
                 GpsUtil.location(mMapView, (MainActivity) getActivity());
@@ -117,14 +142,28 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_map_layer:
-                if (tianDiTuVectorLayer.isVisible()) {
-                    tianDiTuVectorLayer.setVisible(false);
-                    tianDiTuImageLayer.setVisible(true);
-                    ivLayer.setBackground(ContextCompat.getDrawable(getActivity(), R.mipmap.map_mode_img));
+                if (vectorLayer != null) {
+                    if (vectorLayer.isVisible()) {
+                        vectorLayer.setVisible(false);
+                        imageLayer.setVisible(true);
+                        imageLabelLayer.setVisible(true);
+                        ivLayer.setBackground(ContextCompat.getDrawable(getActivity(), R.mipmap.map_mode_img));
+                    } else {
+                        vectorLayer.setVisible(true);
+                        imageLayer.setVisible(false);
+                        imageLabelLayer.setVisible(false);
+                        ivLayer.setBackground(ContextCompat.getDrawable(getActivity(), R.mipmap.map_mode_vector));
+                    }
                 } else {
-                    tianDiTuVectorLayer.setVisible(true);
-                    tianDiTuImageLayer.setVisible(false);
-                    ivLayer.setBackground(ContextCompat.getDrawable(getActivity(), R.mipmap.map_mode_vector));
+                    if (tianDiTuVectorLayer.isVisible()) {
+                        tianDiTuVectorLayer.setVisible(false);
+                        tianDiTuImageLayer.setVisible(true);
+                        ivLayer.setBackground(ContextCompat.getDrawable(getActivity(), R.mipmap.map_mode_img));
+                    } else {
+                        tianDiTuVectorLayer.setVisible(true);
+                        tianDiTuImageLayer.setVisible(false);
+                        ivLayer.setBackground(ContextCompat.getDrawable(getActivity(), R.mipmap.map_mode_vector));
+                    }
                 }
                 break;
             case R.id.iv_map_location:
@@ -147,7 +186,7 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
         }
     }
 
-    public void refreshPoints(){
+    public void refreshPoints() {
         footRecordView.refreshPoints();
     }
 

@@ -1,12 +1,14 @@
 package com.app.footprint.module.system.mvp.presenter;
 
 import com.app.footprint.app.ConstStrings;
+import com.app.footprint.module.map.bean.MapUrlBean;
 import com.app.footprint.module.system.bean.LoginEntity;
 import com.app.footprint.module.system.mvp.contract.WelcomeContract;
 import com.frame.zxmvp.baserx.RxHelper;
 import com.frame.zxmvp.baserx.RxSubscriber;
 import com.zx.zxutils.util.ZXSharedPrefUtil;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -34,6 +36,23 @@ public class WelcomePresenter extends WelcomeContract.Presenter {
                     protected void _onError(String message) {
                         mView.showToast(message);
                         mView.onLoginResult(null);
+                    }
+                });
+    }
+
+    @Override
+    public void getMapUrl() {
+        mModel.mapUrlData()
+                .compose(RxHelper.bindToLifecycle(mView))
+                .subscribe(new RxSubscriber<List<MapUrlBean>>(mView) {
+                    @Override
+                    protected void _onNext(List<MapUrlBean> mapUrlBeans) {
+                        mView.onMapUrlResult(mapUrlBeans);
+                    }
+
+                    @Override
+                    protected void _onError(String message) {
+                        mView.onMapUrlResult(null);
                     }
                 });
     }
