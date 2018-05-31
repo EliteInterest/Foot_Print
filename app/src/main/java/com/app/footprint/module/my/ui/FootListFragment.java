@@ -14,7 +14,6 @@ import com.app.footprint.module.my.func.adapter.FootListAdapter;
 import com.app.footprint.module.my.mvp.contract.FootListContract;
 import com.app.footprint.module.my.mvp.model.FootListModel;
 import com.app.footprint.module.my.mvp.presenter.FootListPresenter;
-import com.zx.zxutils.util.ZXToastUtil;
 import com.zx.zxutils.views.RecylerMenu.ZXRecyclerDeleteHelper;
 
 import java.util.ArrayList;
@@ -35,6 +34,7 @@ public class FootListFragment extends BaseFragment<FootListPresenter, FootListMo
     SwipeRefreshLayout srlFootRefresh;
 
     private List<MyfootMarkEntity> footList = new ArrayList();
+    private int deletePosition = 0;
     private FootListAdapter footListAdapter;
 
     public static FootListFragment newInstance() {
@@ -60,7 +60,8 @@ public class FootListFragment extends BaseFragment<FootListPresenter, FootListMo
                 .setSwipeable(R.id.ll_item_content, R.id.ll_list_menu, new ZXRecyclerDeleteHelper.OnSwipeOptionsClickListener() {
                     @Override
                     public void onSwipeOptionClicked(int viewID, int position) {
-                        ZXToastUtil.showToast("删除第" + position + "个");
+                        deletePosition = position;
+                        mPresenter.deleteList(ApiParamUtil.getDeleteMap(footList.get(position).getId()));
                     }
                 });
         loadData();
@@ -81,5 +82,12 @@ public class FootListFragment extends BaseFragment<FootListPresenter, FootListMo
         footList.addAll(list);
         srlFootRefresh.setRefreshing(false);
         footListAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onDeleteResult() {
+        footList.remove(deletePosition);
+        footListAdapter.notifyItemRemoved(deletePosition);
+        footListAdapter.notifyItemRangeChanged(deletePosition, footList.size());
     }
 }

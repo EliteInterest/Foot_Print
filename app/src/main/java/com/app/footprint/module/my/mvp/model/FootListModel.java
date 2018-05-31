@@ -25,4 +25,12 @@ public class FootListModel extends BaseModel implements FootListContract.Model {
                 .compose(RxHelper.handleResult())
                 .compose(RxSchedulers.io_main());
     }
+
+    @Override
+    public Observable<String> deleteList(Map<String, String> map) {
+        return mRepositoryManager.obtainRetrofitService(ApiService.class)
+                .deleteFoot(map)
+                .compose(RxHelper.handleResult())
+                .compose(RxSchedulers.io_main());
+    }
 }

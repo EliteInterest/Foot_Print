@@ -14,7 +14,6 @@ import com.app.footprint.module.my.func.adapter.RouteListAdapter;
 import com.app.footprint.module.my.mvp.contract.RouteListContract;
 import com.app.footprint.module.my.mvp.model.RouteListModel;
 import com.app.footprint.module.my.mvp.presenter.RouteListPresenter;
-import com.zx.zxutils.util.ZXToastUtil;
 import com.zx.zxutils.views.RecylerMenu.ZXRecyclerDeleteHelper;
 
 import java.util.ArrayList;
@@ -35,6 +34,7 @@ public class RouteListFragment extends BaseFragment<RouteListPresenter, RouteLis
     SwipeRefreshLayout srlRouteRefresh;
 
     private List<MyFootRouteEntity> routeList = new ArrayList();
+    private int deletePosition = 0;
     private RouteListAdapter routeListAdapter;
 
     public static RouteListFragment newInstance() {
@@ -60,7 +60,8 @@ public class RouteListFragment extends BaseFragment<RouteListPresenter, RouteLis
                 .setSwipeable(R.id.ll_item_content, R.id.ll_list_menu, new ZXRecyclerDeleteHelper.OnSwipeOptionsClickListener() {
                     @Override
                     public void onSwipeOptionClicked(int viewID, int position) {
-                        ZXToastUtil.showToast("删除第" + position + "个");
+                        deletePosition = position;
+                        mPresenter.deleteList(ApiParamUtil.getDeleteMap(routeList.get(position).getId()));
                     }
                 });
         loadData();
@@ -82,6 +83,13 @@ public class RouteListFragment extends BaseFragment<RouteListPresenter, RouteLis
         routeList.addAll(list);
         srlRouteRefresh.setRefreshing(false);
         routeListAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onDeleteResult() {
+        routeList.remove(deletePosition);
+        routeListAdapter.notifyItemRemoved(deletePosition);
+        routeListAdapter.notifyItemRangeChanged(deletePosition, routeList.size());
     }
 
 }

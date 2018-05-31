@@ -85,4 +85,7 @@ public interface ApiService {
     @GET("fsms/config/map/info")
     Observable<BaseRespose<List<MapUrlBean>>> getMapUrl();
 
+    @GET("fsms/footprint/delete/info")
+    Observable<BaseRespose<String>> deleteFoot(@QueryMap Map<String, String> map);
+
 }

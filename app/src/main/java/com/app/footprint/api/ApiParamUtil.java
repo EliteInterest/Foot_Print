@@ -48,7 +48,7 @@ public class ApiParamUtil {
     }
 
     //用户注册
-    public static Map<String, String> getRegisterDataInfo(String Name,String Password,String Nickname,String Phone,String VerificationCode) {
+    public static Map<String, String> getRegisterDataInfo(String Name, String Password, String Nickname, String Phone, String VerificationCode) {
         Map<String, String> map = new HashMap<>();
         map.put("Name", Name);
         map.put("Password", Password);
@@ -66,7 +66,7 @@ public class ApiParamUtil {
     }
 
     //更新用户名称
-    public static Map<String, String> getUserNameInfo(String userId,String userName) {
+    public static Map<String, String> getUserNameInfo(String userId, String userName) {
         Map<String, String> map = new HashMap<>();
         map.put("UserId", userId);
         map.put("UserName", userName);
@@ -74,7 +74,7 @@ public class ApiParamUtil {
     }
 
     //更新用户昵称
-    public static Map<String, String> getUserNickNameIfo(String userId,String nickName) {
+    public static Map<String, String> getUserNickNameIfo(String userId, String nickName) {
         Map<String, String> map = new HashMap<>();
         map.put("UserId", userId);
         map.put("Nickname", nickName);
@@ -82,7 +82,7 @@ public class ApiParamUtil {
     }
 
     //更新手机号
-    public static Map<String, String> getUserPhoneInfo(String userId,String phone,String checkNum) {
+    public static Map<String, String> getUserPhoneInfo(String userId, String phone, String checkNum) {
         Map<String, String> map = new HashMap<>();
         map.put("UserId", userId);
         map.put("Number", phone);
@@ -91,10 +91,17 @@ public class ApiParamUtil {
     }
 
     //更新头像
-    public static Map<String, String> getHeadPortraitsInfo(String userId,String file) {
+    public static Map<String, String> getHeadPortraitsInfo(String userId, String file) {
         Map<String, String> map = new HashMap<>();
         map.put("userId", userId);
         map.put("file", file);
+        return map;
+    }
+
+    //删除列表item
+    public static Map<String, String> getDeleteMap(String footprintId) {
+        Map<String, String> map = new HashMap<>();
+        map.put("footprintId", footprintId);
         return map;
     }
 }

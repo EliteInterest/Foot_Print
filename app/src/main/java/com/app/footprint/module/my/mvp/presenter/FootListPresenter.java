@@ -31,4 +31,21 @@ public class FootListPresenter extends FootListContract.Presenter {
                 });
     }
 
+    @Override
+    public void deleteList(Map<String, String> map) {
+        mModel.deleteList(map)
+                .compose(RxHelper.bindToLifecycle(mView))
+                .subscribe(new RxSubscriber<String>(mView) {
+                    @Override
+                    protected void _onNext(String s) {
+                        mView.onDeleteResult();
+                    }
+
+                    @Override
+                    protected void _onError(String message) {
+                        mView.showToast(message);
+                    }
+                });
+    }
+
 }

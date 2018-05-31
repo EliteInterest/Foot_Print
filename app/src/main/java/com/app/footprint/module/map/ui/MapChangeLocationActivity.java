@@ -9,6 +9,7 @@ import android.view.View;
 import com.app.footprint.R;
 import com.app.footprint.app.ConstStrings;
 import com.app.footprint.base.BaseActivity;
+import com.app.footprint.module.map.bean.MapUrlBean;
 import com.app.footprint.module.map.func.tool.tiditu.TianDiTuLayer;
 import com.app.footprint.module.map.func.tool.tiditu.TianDiTuLayerTypes;
 import com.app.footprint.module.map.func.util.GpsUtil;
@@ -16,9 +17,12 @@ import com.app.footprint.module.map.mvp.contract.MapChangeLocationContract;
 import com.app.footprint.module.map.mvp.model.MapChangeLocationModel;
 import com.app.footprint.module.map.mvp.presenter.MapChangeLocationPresenter;
 import com.esri.android.map.MapView;
+import com.esri.android.map.ags.ArcGISTiledMapServiceLayer;
 import com.esri.android.map.event.OnStatusChangedListener;
 import com.esri.android.runtime.ArcGISRuntime;
 import com.esri.core.geometry.Point;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -35,6 +39,7 @@ public class MapChangeLocationActivity extends BaseActivity<MapChangeLocationPre
     private static final double DEFAULT_SCALE = 30000;
 
     private TianDiTuLayer tianDiTuVectorLayer;
+    private ArcGISTiledMapServiceLayer vectorLayer;
     private Point point;
 
     public static void startAction(Activity activity, boolean isFinish, Point point) {
@@ -68,8 +73,19 @@ public class MapChangeLocationActivity extends BaseActivity<MapChangeLocationPre
         mMapView.setMapBackground(0xffffff, 0xffffff, 1, 1);
         showLoading("正在初始化地图，请稍后...");
         mMapView.setOnStatusChangedListener(layerLoadListener);
+        List<MapUrlBean> mapUrlBeans = mSharedPrefUtil.getList("mapUrl");
+        for (MapUrlBean urlBean : mapUrlBeans) {
+            if (urlBean.getType() == 1) {
+                vectorLayer = new ArcGISTiledMapServiceLayer(urlBean.getMapUrl());
+                break;
+            }
+        }
         tianDiTuVectorLayer = new TianDiTuLayer(TianDiTuLayerTypes.TIANDITU_VECTOR_2000);
-        mMapView.addLayer(tianDiTuVectorLayer);
+        if (vectorLayer == null) {
+            mMapView.addLayer(tianDiTuVectorLayer);
+        } else {
+            mMapView.addLayer(vectorLayer);
+        }
     }
 
     @OnClick({R.id.iv_title_back, R.id.tv_title_save})
