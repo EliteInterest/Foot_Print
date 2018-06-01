@@ -201,7 +201,6 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
                     Gson gson = new Gson();
                     String jsonsStr = gson.toJson(footRouteTextInfo);
                     map.put("FootprintInfo", jsonsStr);
-                    Log.i("wangwansheng", "FootprintInfo json str is " + jsonsStr);
 
                     //设置TextInfo域
                     if (footRouteTextInfoBeanList.size() > 0) {
@@ -210,18 +209,22 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
                         gson = new Gson();
                         jsonsStr = gson.toJson(footRouteTextInfoBean);
                         map.put("TextInfo", jsonsStr);
-                        Log.i("wangwansheng", "TextInfo json str is " + jsonsStr);
                     }
 
                     //设置PathInfo域
                     List<Point> pointList = zxSharedPrefUtil.getList("record_points");
-                    List<String> pointStringList = new ArrayList<>();
+                    List<List<Double>> pointStringList = new ArrayList<>();
                     for (Point point : pointList) {
                         double x = point.getX();
                         double y = point.getY();
                         double z = point.getZ();
-                        pointStringList.add(x + "," + y + "," + z);
+                        List<Double> doubles = new ArrayList<>();
+                        doubles.add(y);
+                        doubles.add(x);
+                        doubles.add(z);
+                        pointStringList.add(doubles);
                     }
+
                     String pointJson = new Gson().toJson(pointStringList.toArray());
                     map.put("PathInfo", pointJson);
 
