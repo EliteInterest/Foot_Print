@@ -3,7 +3,6 @@ package com.app.footprint.module.foot.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -139,14 +138,13 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
                     List<FootRouteTextInfo.FootRouteFileInfo> mediaFiles = new ArrayList<>();
 
                     List<FootFileBean> footFiles = zxSharedPrefUtil.getList(ConstStrings.FootFiles);
-                    Log.i("wangwansheng", "footFiles size is " + footFiles.size());
                     int index = 1;
                     for (FootFileBean bean : footFiles) {
                         FootRouteTextInfo.FootRouteTextInfoPointPositions footRouteTextInfoPointPositions = new FootRouteTextInfo.FootRouteTextInfoPointPositions();
                         String pointId = mSharedPrefUtil.getString("userId", "") + "-p" + index++;
                         footRouteTextInfoPointPositions.setPointId(pointId);
-                        footRouteTextInfoPointPositions.setAddr(bean.getTextName());
-                        footRouteTextInfoPointPositions.setDesc(bean.getDescription());
+                        footRouteTextInfoPointPositions.setAddr(bean.getFormatAddress());
+                        footRouteTextInfoPointPositions.setDesc(bean.getStreetAddress());
                         String[] point = bean.getPoint().split(",");
                         footRouteTextInfoPointPositions.setLongitude(Double.valueOf(point[0]));
                         footRouteTextInfoPointPositions.setLatitude(Double.valueOf(point[1]));
@@ -236,7 +234,6 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
                         gson = new Gson();
                         jsonsStr = gson.toJson(footRouteSaveInfo);
                         map.put("SaveInfo", jsonsStr);
-                        Log.i("wangwansheng", "SaveInfo json str is " + jsonsStr);
                     }
 
                     if (mediaFiles.size() > 0) {
@@ -278,6 +275,8 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
             rlTitle.setVisibility(View.GONE);
             llRouteEdite.setVisibility(View.GONE);
             mapFragment.showFootView(true);
+//            ZXFragmentUtil.removeFragment(webViewFragment);
+//            webViewFragment = null;
         }
     }
 

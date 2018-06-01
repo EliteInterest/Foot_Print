@@ -77,11 +77,11 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
     @Override
     protected void initView(Bundle savedInstanceState) {
         refreshUI();
-        doUserData();
     }
 
     @Override
     public void onResume() {
+        doUserData();
         refreshUI();
         super.onResume();
     }

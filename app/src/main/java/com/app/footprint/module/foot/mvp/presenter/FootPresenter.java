@@ -22,21 +22,19 @@ public class FootPresenter extends FootContract.Presenter {
     @Override
     public void commitRoute(Map<String, Object> map) {
         String FootprintInfo = map.get("FootprintInfo") == null ? "" : (String) map.get("FootprintInfo");
-        String TextInfo = map.get("TextInfo") == null ? "" : (String) map.get("TextInfo");
-        String PathInfo = map.get("PathInfo") == null ? "" : (String) map.get("PathInfo");
-        String SaveInfo = map.get("SaveInfo") == null ? "" : (String) map.get("SaveInfo");
+        String TextInfo = map.get("TextInfo") == null ? "{}" : (String) map.get("TextInfo");
+        String PathInfo = map.get("PathInfo") == null ? "{}" : (String) map.get("PathInfo");
+        String SaveInfo = map.get("SaveInfo") == null ? "{}" : (String) map.get("SaveInfo");
         List<FootRouteTextInfo.FootRouteFileInfo> files = (List<FootRouteTextInfo.FootRouteFileInfo>) map.get("file");
         RequestBody requestBody = null;
 
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("FootprintInfo", FootprintInfo);
 
-//        if (TextInfo != null)
         builder.addFormDataPart("TextInfo", TextInfo);
-//        if (PathInfo != null)
         builder.addFormDataPart("PathInfo", PathInfo);
-//        if (SaveInfo != null)
         builder.addFormDataPart("SaveInfo", SaveInfo);
+
         if (files != null && files.size() > 0) {
             for (FootRouteTextInfo.FootRouteFileInfo file : files) {
                 if (file.getFileType() == 2)
@@ -44,8 +42,6 @@ public class FootPresenter extends FootContract.Presenter {
                 else
                     builder.addFormDataPart("FileInfo", file.getMediaInfo().getName(), RequestBody.create(MediaType.parse("video/*"), file.getMediaInfo()));
             }
-        } else {
-            builder.addFormDataPart("FileInfo", "");
         }
 
         requestBody = builder.build();
