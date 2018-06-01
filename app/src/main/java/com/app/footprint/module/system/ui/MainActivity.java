@@ -110,6 +110,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
         long triggerAtTimeSecond = triggerAtTimefirst;
         triggerAtTimefirst = SystemClock.elapsedRealtime();
         if (triggerAtTimefirst - triggerAtTimeSecond <= 2000) {
+            mRxManager.post("destory", true);
             MyApplication.getInstance().finishAll();
         } else {
             showToast("请再点击一次, 确认退出...");

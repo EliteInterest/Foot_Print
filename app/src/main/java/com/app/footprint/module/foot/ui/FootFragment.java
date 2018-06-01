@@ -1,7 +1,6 @@
 package com.app.footprint.module.foot.ui;
 
 import android.content.Intent;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.util.Log;
@@ -22,8 +21,8 @@ import com.app.footprint.module.foot.mvp.contract.FootContract;
 import com.app.footprint.module.foot.mvp.model.FootModel;
 import com.app.footprint.module.foot.mvp.presenter.FootPresenter;
 import com.app.footprint.module.map.ui.MapFragment;
+import com.esri.core.geometry.Point;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.zx.zxutils.util.ZXFragmentUtil;
 import com.zx.zxutils.util.ZXSharedPrefUtil;
 
@@ -139,7 +138,7 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
                     List<FootRouteTextInfo.FootRouteFileInfo> mediaFiles = new ArrayList<>();
 
                     List<FootFileBean> footFiles = zxSharedPrefUtil.getList(ConstStrings.FootFiles);
-                    Log.i("wangwansheng","footFiles size is " + footFiles.size());
+                    Log.i("wangwansheng", "footFiles size is " + footFiles.size());
                     int index = 1;
                     for (FootFileBean bean : footFiles) {
                         FootRouteTextInfo.FootRouteTextInfoPointPositions footRouteTextInfoPointPositions = new FootRouteTextInfo.FootRouteTextInfoPointPositions();
@@ -164,16 +163,15 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
                         } else if (type == FootFileBean.Type.Camera) {
                             uploadType = 2;
                             //照片
-                            List<FootFileBean.PicBean> picBeanList =  bean.getPicPaths();
-                            for(FootFileBean.PicBean bean1:picBeanList)
-                            {
+                            List<FootFileBean.PicBean> picBeanList = bean.getPicPaths();
+                            for (FootFileBean.PicBean bean1 : picBeanList) {
                                 //增加路径个点的说明
                                 FootRouteTextInfo.FootRouteSaveInfoDetail footRouteSaveInfoDetail = new FootRouteTextInfo.FootRouteSaveInfoDetail();
                                 footRouteSaveInfoDetail.setPointId(pointId);
                                 footRouteSaveInfoDetail.setDesc(bean1.getRemark());
                                 footRouteSaveInfoList.add(footRouteSaveInfoDetail);
                                 //增加file路径
-                                File file = new File(bean1.getPath());
+                                File file = new File(ConstStrings.getCachePath() + bean1.getPath());
                                 FootRouteTextInfo.FootRouteFileInfo fileInfo = new FootRouteTextInfo.FootRouteFileInfo();
                                 fileInfo.setMediaFile(file);
                                 fileInfo.setFileType(2);
@@ -186,7 +184,7 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
                             footRouteSaveInfoDetail.setDesc(bean.getDescription());
                             footRouteSaveInfoList.add(footRouteSaveInfoDetail);
 
-                            File file = new File(bean.getVedioPath());
+                            File file = new File(ConstStrings.getCachePath() + bean.getVedioPath());
                             FootRouteTextInfo.FootRouteFileInfo fileInfo = new FootRouteTextInfo.FootRouteFileInfo();
                             fileInfo.setMediaFile(file);
                             fileInfo.setFileType(3);
@@ -202,43 +200,43 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
                     Gson gson = new Gson();
                     String jsonsStr = gson.toJson(footRouteTextInfo);
                     map.put("FootprintInfo", jsonsStr);
-                    Log.i("wangwansheng","FootprintInfo json str is " +jsonsStr);
+                    Log.i("wangwansheng", "FootprintInfo json str is " + jsonsStr);
 
                     //设置TextInfo域
-                    if(footRouteTextInfoBeanList.size() > 0)
-                    {
+                    if (footRouteTextInfoBeanList.size() > 0) {
                         FootRouteTextInfo.FootRouteTextInfoBean footRouteTextInfoBean = new FootRouteTextInfo.FootRouteTextInfoBean();
                         footRouteTextInfoBean.setTextInfo(footRouteTextInfoBeanList);
                         gson = new Gson();
                         jsonsStr = gson.toJson(footRouteTextInfoBean);
                         map.put("TextInfo", jsonsStr);
-                        Log.i("wangwansheng","TextInfo json str is " +jsonsStr);
+                        Log.i("wangwansheng", "TextInfo json str is " + jsonsStr);
                     }
 
                     //设置PathInfo域
-                    List<com.esri.core.geometry.Point> pointList = zxSharedPrefUtil.getList("record_points");
-                    for(com.esri.core.geometry.Point point:pointList)
-                    {
-                       double x = point.getX();
-                       double y = point.getY();
-                       double z = point.getZ();
+                    List<Point> pointList = zxSharedPrefUtil.getList("record_points");
+                    List<String> pointStringList = new ArrayList<>();
+                    for (Point point : pointList) {
+                        double x = point.getX();
+                        double y = point.getY();
+                        double z = point.getZ();
+                        pointStringList.add(x + "," + y + "," + z);
                     }
+                    String pointJson = new Gson().toJson(pointStringList.toArray());
+                    map.put("PathInfo", pointJson);
 
                     //设置SaveInfo域
-                    if(footRouteSaveInfoList.size() > 0)
-                    {
-                        FootRouteTextInfo.FootRouteSaveInfo footRouteSaveInfo =  new FootRouteTextInfo.FootRouteSaveInfo();
+                    if (footRouteSaveInfoList.size() > 0) {
+                        FootRouteTextInfo.FootRouteSaveInfo footRouteSaveInfo = new FootRouteTextInfo.FootRouteSaveInfo();
                         footRouteSaveInfo.setTotalDesc("");
                         footRouteSaveInfo.setMediaInfo(footRouteSaveInfoList);
                         gson = new Gson();
                         jsonsStr = gson.toJson(footRouteSaveInfo);
                         map.put("SaveInfo", jsonsStr);
-                        Log.i("wangwansheng","SaveInfo json str is " +jsonsStr);
+                        Log.i("wangwansheng", "SaveInfo json str is " + jsonsStr);
                     }
 
-                    if(mediaFiles.size() > 0)
-                    {
-                        map.put("file",mediaFiles);
+                    if (mediaFiles.size() > 0) {
+                        map.put("file", mediaFiles);
                     }
 
                     mPresenter.commitRoute(map);

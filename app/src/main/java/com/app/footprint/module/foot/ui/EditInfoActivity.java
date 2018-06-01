@@ -18,7 +18,6 @@ import com.app.footprint.app.ConstStrings;
 import com.app.footprint.base.BaseActivity;
 import com.app.footprint.module.foot.bean.FootFileBean;
 import com.app.footprint.module.foot.bean.FootMarkTextInfo;
-import com.app.footprint.module.foot.bean.FootRouteTextInfo;
 import com.app.footprint.module.foot.func.adapter.FootPicAdapter;
 import com.app.footprint.module.foot.mvp.contract.EditInfoContract;
 import com.app.footprint.module.foot.mvp.model.EditInfoModel;
@@ -278,7 +277,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
                 itemBean.setStreetAddress(streetName);
                 DecimalFormat decimalFormat = new DecimalFormat("#.00");
                 tvLocationPoint.setText("(" + decimalFormat.format(point.getX()) + "," + decimalFormat.format(point.getY()) + ")");
-                itemBean.setPoint(point.getX() + "," + point.getY());
+                itemBean.setPoint(point.getX() + "," + point.getY() + point.getZ());
             }
         });
     }

@@ -37,6 +37,7 @@ import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import rx.functions.Action1;
 
 /**
  * Create By admin On 2017/7/11
@@ -89,6 +90,11 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
                 handler.sendEmptyMessage(0);
             }
         }, 100, 1000 * 10);
+        mRxManager.on("destory", (Action1<Boolean>) aBoolean -> {
+            if (footRecordView != null) {
+                footRecordView.onDestory();
+            }
+        });
     }
 
     /**
@@ -264,8 +270,7 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
         footRecordView.clearSharedPref();
     }
 
-    public FootRecordView getFootRecordView()
-    {
+    public FootRecordView getFootRecordView() {
         return footRecordView;
     }
 }

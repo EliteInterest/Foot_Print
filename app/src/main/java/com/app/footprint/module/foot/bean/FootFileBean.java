@@ -138,7 +138,7 @@ public class FootFileBean implements Serializable {
         Point mapPoint = null;
         try {
             String[] pointArray = point.split(",");
-            if (pointArray.length == 2) {
+            if (pointArray.length >= 2) {
                 mapPoint = new Point(Double.parseDouble(pointArray[0]), Double.parseDouble(pointArray[1]));
             }
         } catch (Exception e) {

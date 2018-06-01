@@ -49,7 +49,6 @@ public class WelcomeActivity extends BaseActivity<WelcomePresenter, WelcomeModel
         ConstStrings.LOCAL_PATH = ZXSystemUtil.getSDCardPath();
         ConstStrings.INI_PATH = getFilesDir().getPath();
         ZXFileUtil.deleteFiles(ConstStrings.getApkPath());
-        ZXFileUtil.deleteFiles(ConstStrings.getCachePath());
         ZXFileUtil.deleteFiles(ConstStrings.getOnlinePath());
         if (!ZXPermissionUtil.checkPermissionsByArray(permissions)) {
             ZXPermissionUtil.requestPermissionsByArray(this);
