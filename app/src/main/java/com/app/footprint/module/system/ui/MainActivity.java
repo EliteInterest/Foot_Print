@@ -106,7 +106,6 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
 
     @Override
     public void onBackPressed() {
-
         long triggerAtTimeSecond = triggerAtTimefirst;
         triggerAtTimefirst = SystemClock.elapsedRealtime();
         if (triggerAtTimefirst - triggerAtTimeSecond <= 2000) {

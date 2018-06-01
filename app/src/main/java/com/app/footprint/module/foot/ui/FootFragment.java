@@ -16,6 +16,7 @@ import com.app.footprint.app.ConstStrings;
 import com.app.footprint.base.BaseFragment;
 import com.app.footprint.module.foot.bean.FootFileBean;
 import com.app.footprint.module.foot.bean.FootRouteTextInfo;
+import com.app.footprint.module.foot.func.tool.ShareTool;
 import com.app.footprint.module.foot.func.view.FootRecordView;
 import com.app.footprint.module.foot.mvp.contract.FootContract;
 import com.app.footprint.module.foot.mvp.model.FootModel;
@@ -110,7 +111,7 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
                 break;
             case R.id.tv_title_save://分享
                 if ("分享".equals(tvAction.getText().toString())) {
-
+                    ShareTool.doShare(getActivity());
                 } else if ("保存".equals(tvAction.getText().toString())) {
                     if (etRouteName.getText().toString().length() == 0) {
                         showToast("路线名称不能为空");

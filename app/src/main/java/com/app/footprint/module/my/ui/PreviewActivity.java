@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.app.footprint.R;
 import com.app.footprint.base.BaseActivity;
+import com.app.footprint.module.foot.func.tool.ShareTool;
 import com.app.footprint.module.foot.ui.WebViewFragment;
 import com.app.footprint.module.my.mvp.contract.PreviewContract;
 import com.app.footprint.module.my.mvp.model.PreviewModel;
@@ -59,7 +60,7 @@ public class PreviewActivity extends BaseActivity<PreviewPresenter, PreviewModel
                 finish();
                 break;
             case R.id.tv_title_save:
-
+                ShareTool.doShare(this);
                 break;
         }
     }
