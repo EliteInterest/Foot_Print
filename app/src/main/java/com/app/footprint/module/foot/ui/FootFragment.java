@@ -289,6 +289,9 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
         llRouteEdite.setVisibility(View.GONE);
         mapFragment.clearSharedPref();
         openFootPreview(footFileBean);
+        mapFragment.resetMap();
+        etRouteName.setText("");
+        etRouteDetail.setText("");
     }
 
     @Override

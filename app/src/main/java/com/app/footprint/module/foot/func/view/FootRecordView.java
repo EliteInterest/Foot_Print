@@ -200,12 +200,7 @@ public class FootRecordView extends RelativeLayout {
                 break;
             case R.id.iv_record_tab_cancel://录制取消
                 ZXDialogUtil.showYesNoDialog(context, "提示", "是否取消路线录制？", (dialog, which) -> {
-                    cvRecordTab.setVisibility(GONE);
-                    timeTimer.cancel();
-                    mPoints.clear();
-                    mGraphicList.clear();
-                    routeLayer.removeAll();
-                    clearSharedPref();
+                    closeRoute();
                 });
                 break;
             case R.id.cv_record_tab:
@@ -243,6 +238,15 @@ public class FootRecordView extends RelativeLayout {
             default:
                 break;
         }
+    }
+
+    public void closeRoute() {
+        cvRecordTab.setVisibility(GONE);
+        timeTimer.cancel();
+        mPoints.clear();
+        mGraphicList.clear();
+        routeLayer.removeAll();
+        clearSharedPref();
     }
 
     /**

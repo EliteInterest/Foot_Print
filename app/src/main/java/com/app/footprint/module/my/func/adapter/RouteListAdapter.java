@@ -10,8 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.app.footprint.R;
+import com.app.footprint.module.map.func.util.BaiduMapUtil;
 import com.app.footprint.module.my.bean.MyFootRouteEntity;
 import com.app.footprint.util.DateUtil;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -45,10 +47,20 @@ public class RouteListAdapter extends RecyclerView.Adapter<RouteListAdapter.MyHo
         holder.myTime.setText(startTime);
         int visitcount = entity.getVisitVolume();
         holder.myVisitCount.setText(visitcount + "次访问");
-//        Glide.with(context)
-//                .load(BaiduMapUtil.getStaticBitmapPath(entity.getLongitude(), entity.getLatitude()))
-//                .centerCrop()
-//                .into(holder.myImage);
+        List<List<Double>> points = entity.getPointPosition();
+        double longitude = 0;
+        double latitude = 0;
+        for (List<Double> point : points) {
+            if (point.size() >= 2) {
+                latitude = point.get(0);
+                longitude = point.get(1);
+                break;
+            }
+        }
+        Glide.with(context)
+                .load(BaiduMapUtil.getStaticBitmapPath(longitude, latitude))
+                .centerCrop()
+                .into(holder.myImage);
     }
 
     @Override

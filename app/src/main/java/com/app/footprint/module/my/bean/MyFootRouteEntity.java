@@ -18,7 +18,15 @@ public class MyFootRouteEntity implements Serializable {
     public String ScreenshotPath;
     public String DetailsUrlPath;
     public List<List<Float>> Path;
+    public List<List<Double>> PointPosition;
 
+    public List<List<Double>> getPointPosition() {
+        return PointPosition;
+    }
+
+    public void setPointPosition(List<List<Double>> pointPosition) {
+        PointPosition = pointPosition;
+    }
 
     public String getId() {
         return this.Id;

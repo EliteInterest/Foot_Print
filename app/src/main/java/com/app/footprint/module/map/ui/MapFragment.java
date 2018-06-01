@@ -273,4 +273,8 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
     public FootRecordView getFootRecordView() {
         return footRecordView;
     }
+
+    public void resetMap() {
+        footRecordView.closeRoute();
+    }
 }
