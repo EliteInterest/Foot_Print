@@ -62,6 +62,8 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
     private WebViewFragment webViewFragment;
     private ZXSharedPrefUtil zxSharedPrefUtil;
 
+    private String shareUrl = "";
+
     public static FootFragment newInstance() {
         FootFragment fragment = new FootFragment();
         return fragment;
@@ -110,7 +112,7 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
                 break;
             case R.id.tv_title_save://分享
                 if ("分享".equals(tvAction.getText().toString())) {
-                    ShareTool.doShare(getActivity());
+                    ShareTool.doShare(getActivity(), shareUrl);
                 } else if ("保存".equals(tvAction.getText().toString())) {
                     if (etRouteName.getText().toString().length() == 0) {
                         showToast("路线名称不能为空");
@@ -257,7 +259,8 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
             cvPreview.setVisibility(View.VISIBLE);
             fmPreview.setVisibility(View.VISIBLE);
             if (webViewFragment == null) {
-                webViewFragment = WebViewFragment.newInstance(footFileBean.getUrl());
+                shareUrl = footFileBean.getUrl();
+                webViewFragment = WebViewFragment.newInstance(shareUrl);
                 ZXFragmentUtil.addFragment(getChildFragmentManager(), webViewFragment, R.id.fm_map_preview);
             } else {
                 webViewFragment.reload(footFileBean.getUrl());

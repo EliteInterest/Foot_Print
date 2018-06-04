@@ -3,12 +3,18 @@ buildscript {
     repositories {
         jcenter()
         google()
+        maven {
+            url "http://mvn.mob.com/android"
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.2'
         classpath 'com.novoda:bintray-release:0.8.0'
+        classpath 'com.mob.sdk:MobSDK:+'
         //lambda
 //        classpath 'me.tatarka:gradle-retrolambda:3.6.0'
+        // 添加MobSDK的maven地址
+
     }
 
 }
@@ -24,6 +30,9 @@ allprojects {
         }
         maven {
             url 'https://dl.bintray.com/cjt/maven'
+        }
+        maven {
+            url "http://mvn.mob.com/android"
         }
         google()
     }

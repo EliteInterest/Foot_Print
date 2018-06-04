@@ -8,6 +8,7 @@ import android.support.multidex.MultiDex;
 
 import com.frame.zxmvp.baseapp.BaseApplication;
 import com.frame.zxmvp.di.component.AppComponent;
+import com.mob.MobSDK;
 import com.zx.zxutils.ZXApp;
 import com.zx.zxutils.util.ZXSharedPrefUtil;
 
@@ -25,6 +26,7 @@ public class MyApplication extends BaseApplication {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        MobSDK.init(this);
         ZXApp.init(this, true);
         MyApplication.sContext = getApplicationContext();
         mSharedPrefUtil = new ZXSharedPrefUtil();

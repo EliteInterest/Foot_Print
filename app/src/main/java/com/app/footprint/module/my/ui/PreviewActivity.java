@@ -60,7 +60,7 @@ public class PreviewActivity extends BaseActivity<PreviewPresenter, PreviewModel
                 finish();
                 break;
             case R.id.tv_title_save:
-                ShareTool.doShare(this);
+                ShareTool.doShare(this, url);
                 break;
         }
     }
