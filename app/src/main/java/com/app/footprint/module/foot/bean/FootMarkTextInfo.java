@@ -68,7 +68,7 @@ public class FootMarkTextInfo implements Serializable {
             return Desc;
         }
 
-        public void setDesc(String Sum) {
+        public void setDesc(String Desc) {
             this.Desc = Desc;
         }
 

@@ -330,10 +330,8 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
 
             FootMarkTextInfo.FootMarkTextBean footMarkTextBean = new FootMarkTextInfo.FootMarkTextBean();
             footMarkTextBean.setUserId(mSharedPrefUtil.getString("userId", ""));
-//            footMarkTextBean.setName(itemBean.getLocationName() == null ? "":itemBean.getLocationName());
-//            footMarkTextBean.setDesc(itemBean.getDescription() == null ? "":itemBean.getDescription());
             footMarkTextBean.setName(itemBean.getStreetAddress());
-            footMarkTextBean.setDesc(itemBean.getDescription());
+            footMarkTextBean.setDesc(itemBean.getFormatAddress());
             footMarkTextBean.setConsumptionTime("0");
             footMarkTextBean.setStartTime(String.valueOf(System.currentTimeMillis()));
             footMarkTextBean.setEndTime(String.valueOf(System.currentTimeMillis()));
@@ -379,10 +377,8 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
 
             FootMarkTextInfo.FootMarkTextBean footMarkTextBean = new FootMarkTextInfo.FootMarkTextBean();
             footMarkTextBean.setUserId(mSharedPrefUtil.getString("userId", ""));
-//            footMarkTextBean.setName(itemBean.getLocationName() == null ? "":itemBean.getLocationName());
-//            footMarkTextBean.setDesc(itemBean.getDescription() == null ? "":itemBean.getDescription());
             footMarkTextBean.setName(itemBean.getStreetAddress());
-            footMarkTextBean.setDesc(itemBean.getDescription());
+            footMarkTextBean.setDesc(itemBean.getFormatAddress());
             footMarkTextBean.setConsumptionTime("0");
             footMarkTextBean.setStartTime(String.valueOf(itemBean.getStartTime()));
             footMarkTextBean.setEndTime(String.valueOf(itemBean.getEndTime()));
@@ -428,10 +424,8 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
 
             FootMarkTextInfo.FootMarkTextBean footMarkTextBean = new FootMarkTextInfo.FootMarkTextBean();
             footMarkTextBean.setUserId(mSharedPrefUtil.getString("userId", ""));
-//            footMarkTextBean.setName(itemBean.getAddrSimple() == null ? "":itemBean.getAddrSimple());
-//            footMarkTextBean.setDesc(itemBean.getDescription() == null ? "":itemBean.getDescription());
             footMarkTextBean.setName(itemBean.getStreetAddress());
-            footMarkTextBean.setDesc(itemBean.getDescription());
+            footMarkTextBean.setDesc(itemBean.getFormatAddress());
             footMarkTextBean.setConsumptionTime("0");
             footMarkTextBean.setStartTime(String.valueOf(itemBean.getStartTime()));
             footMarkTextBean.setEndTime(String.valueOf(itemBean.getEndTime()));
@@ -444,6 +438,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             footMarkTextBean1.setAltitude(point.getZ());
             footMarkTextBean1.setAddr(itemBean.getStreetAddress());
             footMarkTextBean1.setDesc(itemBean.getFormatAddress());
+
             footMarkTextBean1.setPointType(1);
             footMarkTextInfo.setPointPosition(footMarkTextBean1);
 
