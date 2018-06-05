@@ -32,12 +32,12 @@ public class ShareTool {
 
     public static void doShare(Context context, String url) {
         bottomSheet = ZXBottomSheet.initGrid(context)
-                .addItem("QQ", ContextCompat.getDrawable(context, R.mipmap.ic_launcher))
-                .addItem("QQ空间", ContextCompat.getDrawable(context, R.mipmap.ic_launcher))
-                .addItem("新浪微博", ContextCompat.getDrawable(context, R.mipmap.ic_launcher))
-                .addItem("微信好友", ContextCompat.getDrawable(context, R.mipmap.ic_launcher))
-                .addItem("微信朋友圈", ContextCompat.getDrawable(context, R.mipmap.ic_launcher))
-                .addItem("微信收藏", ContextCompat.getDrawable(context, R.mipmap.ic_launcher))
+                .addItem("QQ", ContextCompat.getDrawable(context, R.mipmap.share_qq))
+                .addItem("QQ空间", ContextCompat.getDrawable(context, R.mipmap.share_qzone))
+                .addItem("新浪微博", ContextCompat.getDrawable(context, R.mipmap.share_weibo))
+                .addItem("微信好友", ContextCompat.getDrawable(context, R.mipmap.share_wechat))
+                .addItem("微信朋友圈", ContextCompat.getDrawable(context, R.mipmap.share_wechat_friend))
+                .addItem("微信收藏", ContextCompat.getDrawable(context, R.mipmap.share_wechat_star))
                 .showCheckMark(false)
                 .showCloseView(true)
                 .setOnItemClickListener(new ZXBottomSheet.OnSheetItemClickListener() {
