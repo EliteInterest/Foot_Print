@@ -58,7 +58,7 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
     EditText etRouteName;
     @BindView(R.id.et_route_detail)
     EditText etRouteDetail;
-    private MapFragment mapFragment;
+    public static MapFragment mapFragment;
     private WebViewFragment webViewFragment;
     private ZXSharedPrefUtil zxSharedPrefUtil;
 

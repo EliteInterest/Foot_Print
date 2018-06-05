@@ -1,5 +1,6 @@
 package com.app.footprint.module.my.ui;
 
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -11,14 +12,21 @@ import android.widget.TextView;
 
 import com.app.footprint.R;
 import com.app.footprint.api.ApiParamUtil;
+import com.app.footprint.app.ConstStrings;
 import com.app.footprint.base.BaseFragment;
+import com.app.footprint.module.foot.func.view.FootRecordView;
+import com.app.footprint.module.foot.ui.FootFragment;
 import com.app.footprint.module.my.bean.UserInfoEntity;
 import com.app.footprint.module.my.mvp.contract.MyContract;
 import com.app.footprint.module.my.mvp.model.MyModel;
 import com.app.footprint.module.my.mvp.presenter.MyPresenter;
 import com.app.footprint.module.my.func.tool.MyTool;
+import com.zx.zxutils.util.ZXDialogUtil;
+import com.zx.zxutils.util.ZXFileUtil;
 import com.zx.zxutils.views.BottomSheet.SheetData;
 import com.zx.zxutils.views.BottomSheet.ZXBottomSheet;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -131,7 +139,8 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
     }
 
     @OnClick({R.id.layout_head, R.id.layout_settings, R.id.layout_contact,
-                R.id.RouteCount_layout,R.id.FootmarkCount_layout,R.id.Integral_layout,R.id.VisitVolume_layout})
+                R.id.RouteCount_layout,R.id.FootmarkCount_layout,R.id.Integral_layout,
+                R.id.VisitVolume_layout,R.id.layout_delete_cache})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout_head:
@@ -199,6 +208,33 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
             case R.id.VisitVolume_layout://访问
                 break;
 
+            case R.id.layout_delete_cache:
+                final boolean recordStatus = mSharedPrefUtil.getBool("record_status", false);
+                ZXDialogUtil.showInfoDialog(getActivity(), "提示", "是否清除缓存？", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(recordStatus)
+                        {
+                            //recording... so first stop it!
+                            if(FootFragment.mapFragment!=null)
+                            {
+                                FootRecordView footRecordView = FootFragment.mapFragment.getFootRecordView();
+                                if(footRecordView!=null)
+                                {
+                                    footRecordView.closeRoute();
+                                }
+                            }
+                        }else{
+                            mSharedPrefUtil.remove("record_points");
+                            mSharedPrefUtil.remove("record_start_time");
+                            mSharedPrefUtil.putList(ConstStrings.FootFiles, new ArrayList<>());
+                            ZXFileUtil.deleteFiles(ConstStrings.getCachePath());
+                        }
+                        dialog.dismiss();
+                        showToast("缓存清除成功");
+                    }
+                });
+                break;
 
             default:
                 break;
