@@ -13,6 +13,7 @@
         android:id="@+id/rl_title_map"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginRight="60dp"
         android:layout_marginTop="10dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
@@ -31,7 +32,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/iv_map_layer"
             android:layout_toRightOf="@id/iv_map_location"
             android:background="@drawable/shape_map_address_bg"
             android:ellipsize="end"
@@ -39,17 +39,31 @@
             android:minWidth="100dp"
             android:padding="3dp"
             android:singleLine="true"
-            android:textSize="@dimen/text_size_smaller"/>
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_normal"/>
 
-        <ImageView
-            android:id="@+id/iv_map_layer"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:background="@mipmap/map_mode_vector"/>
     </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/iv_map_layer_img"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@mipmap/map_mode_img"/>
+
+    <ImageView
+        android:id="@+id/iv_map_layer_vector"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/iv_map_layer_img"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@mipmap/map_mode_vector"/>
 
     <com.app.footprint.module.foot.func.view.FootRecordView
         android:id="@+id/foot_record_view"

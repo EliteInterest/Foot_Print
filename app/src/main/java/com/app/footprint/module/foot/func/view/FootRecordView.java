@@ -301,7 +301,7 @@ public class FootRecordView extends RelativeLayout {
             public void run() {
                 handler.sendEmptyMessage(1);
             }
-        }, 100, 1000 * 10);
+        }, 100, 1000 * zxSharedPrefUtil.getInt("footPeriod", 10));
 
     }
 

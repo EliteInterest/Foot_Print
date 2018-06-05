@@ -4,9 +4,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -22,7 +20,6 @@ import com.app.footprint.module.map.func.util.GpsUtil;
 import com.app.footprint.module.map.mvp.contract.MapContract;
 import com.app.footprint.module.map.mvp.model.MapModel;
 import com.app.footprint.module.map.mvp.presenter.MapPresenter;
-import com.app.footprint.module.system.ui.MainActivity;
 import com.esri.android.map.GraphicsLayer;
 import com.esri.android.map.MapOnTouchListener;
 import com.esri.android.map.MapView;
@@ -50,8 +47,6 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
     MapView mMapView;
     @BindView(R.id.tv_map_address)
     TextView tvAddress;
-    @BindView(R.id.iv_map_layer)
-    ImageView ivLayer;
     @BindView(R.id.foot_record_view)
     FootRecordView footRecordView;
     @BindView(R.id.rl_title_map)
@@ -136,7 +131,7 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
         }
         new Handler().postDelayed(() -> {
             try {
-                GpsUtil.location(mMapView, (MainActivity) getActivity());
+                GpsUtil.location(mMapView, getActivity());
             } catch (Exception e) {
                 e.printStackTrace();
                 mMapView.zoomToScale(DEFAULTPOINT, DEFAULT_SCALE);
@@ -144,32 +139,27 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
         }, 500);
     }
 
-    @OnClick({R.id.iv_map_layer, R.id.iv_map_location})
+    @OnClick({R.id.iv_map_layer_vector, R.id.iv_map_layer_img, R.id.iv_map_location})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.iv_map_layer:
+            case R.id.iv_map_layer_vector:
                 if (vectorLayer != null) {
-                    if (vectorLayer.isVisible()) {
-                        vectorLayer.setVisible(false);
-                        imageLayer.setVisible(true);
-                        imageLabelLayer.setVisible(true);
-                        ivLayer.setBackground(ContextCompat.getDrawable(getActivity(), R.mipmap.map_mode_img));
-                    } else {
-                        vectorLayer.setVisible(true);
-                        imageLayer.setVisible(false);
-                        imageLabelLayer.setVisible(false);
-                        ivLayer.setBackground(ContextCompat.getDrawable(getActivity(), R.mipmap.map_mode_vector));
-                    }
+                    vectorLayer.setVisible(true);
+                    imageLayer.setVisible(false);
+                    imageLabelLayer.setVisible(false);
                 } else {
-                    if (tianDiTuVectorLayer.isVisible()) {
-                        tianDiTuVectorLayer.setVisible(false);
-                        tianDiTuImageLayer.setVisible(true);
-                        ivLayer.setBackground(ContextCompat.getDrawable(getActivity(), R.mipmap.map_mode_img));
-                    } else {
-                        tianDiTuVectorLayer.setVisible(true);
-                        tianDiTuImageLayer.setVisible(false);
-                        ivLayer.setBackground(ContextCompat.getDrawable(getActivity(), R.mipmap.map_mode_vector));
-                    }
+                    tianDiTuVectorLayer.setVisible(true);
+                    tianDiTuImageLayer.setVisible(false);
+                }
+                break;
+            case R.id.iv_map_layer_img:
+                if (vectorLayer != null) {
+                    vectorLayer.setVisible(false);
+                    imageLayer.setVisible(true);
+                    imageLabelLayer.setVisible(true);
+                } else {
+                    tianDiTuVectorLayer.setVisible(false);
+                    tianDiTuImageLayer.setVisible(true);
                 }
                 break;
             case R.id.iv_map_location:
@@ -203,7 +193,12 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
         public void onStatusChanged(Object source, STATUS status) {
             if (status == STATUS.INITIALIZED) {
                 dismissLoading();
-                mMapView.zoomToScale(DEFAULTPOINT, DEFAULT_SCALE);
+                try {
+                    GpsUtil.location(mMapView, getActivity());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    mMapView.zoomToScale(DEFAULTPOINT, DEFAULT_SCALE);
+                }
             } else if (STATUS.LAYER_LOADED == status) {
                 dismissLoading();
                 mMapView.postInvalidate();

@@ -41,6 +41,23 @@ public class BaiduMapUtil {
         return bitmapPath;
     }
 
+    public static String getStaticBitmapPath(double startLongitude, double startLatitude, double endLongitude, double endLatitude) {
+        String centerPoint = (startLongitude + endLongitude) / 2 + "," + (startLatitude + endLatitude) / 2;
+        String startPoint = startLongitude + "," + startLatitude;
+        String endPoint = endLongitude + "," + endLatitude;
+        String bitmapPath = "http://api.map.baidu.com/staticimage/v2?" +
+                "ak=" + ak +
+                "&mcode=" + getMcode() +
+                "&center=" + centerPoint +
+                "&width=400" +
+                "&height=200" +
+                "&zoom=14" +
+                "&copyright=1" +
+                "&coordtype=wgs84ll" +
+                "&markers=" + startPoint + "|" + endPoint;
+        return bitmapPath;
+    }
+
     public static void searchPoi(double longitude, double latitude, OnBaiduSearchListener baiduSearchListener) {
         Map<String, String> latlngMap = new HashMap<>();
         latlngMap.put("ak", ak);

@@ -48,17 +48,31 @@ public class RouteListAdapter extends RecyclerView.Adapter<RouteListAdapter.MyHo
         int visitcount = entity.getVisitVolume();
         holder.myVisitCount.setText(visitcount + "次访问");
         List<List<Double>> points = entity.getPointPosition();
-        double longitude = 0;
-        double latitude = 0;
-        for (List<Double> point : points) {
-            if (point.size() >= 2) {
-                latitude = point.get(0);
-                longitude = point.get(1);
-                break;
+
+        String bitmap = "";
+        double startLongitude = 0;
+        double startLatitude = 0;
+        double endLongitude = 0;
+        double endLatitude = 0;
+        try {
+            if (points.size() >= 2) {
+                startLatitude = points.get(0).get(0);
+                startLongitude = points.get(0).get(1);
+                endLatitude = points.get(points.size() - 1).get(0);
+                endLongitude = points.get(points.size() - 1).get(1);
+                bitmap = BaiduMapUtil.getStaticBitmapPath(startLongitude, startLatitude, endLongitude, endLatitude);
+            } else if (points.size() > 0) {
+                if (points.get(0).size() >= 2) {
+                    startLatitude = points.get(0).get(0);
+                    startLongitude = points.get(0).get(1);
+                    bitmap = BaiduMapUtil.getStaticBitmapPath(startLongitude, startLatitude);
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         Glide.with(context)
-                .load(BaiduMapUtil.getStaticBitmapPath(longitude, latitude))
+                .load(bitmap)
                 .centerCrop()
                 .into(holder.myImage);
     }
