@@ -21,7 +21,6 @@ public class FootPresenter extends FootContract.Presenter {
 
     @Override
     public void commitRoute(Map<String, Object> map) {
-        boolean isEnter = false;
         String FootprintInfo = map.get("FootprintInfo") == null ? "" : (String) map.get("FootprintInfo");
         String TextInfo = map.get("TextInfo") == null ? "{}" : (String) map.get("TextInfo");
         String PathInfo = map.get("PathInfo") == null ? "{}" : (String) map.get("PathInfo");
@@ -39,16 +38,8 @@ public class FootPresenter extends FootContract.Presenter {
         if (files != null && files.size() > 0) {
             for (FootRouteTextInfo.FootRouteFileInfo file : files) {
                 if (file.getFileType() == 2) {
-                    if (!isEnter) {
-                        builder.addFormDataPart("FileInfo", file.getMediaInfo().getName(), RequestBody.create(MediaType.parse("image/*"), file.getMediaInfo()));
-                        isEnter = true;
-                    }
                     builder.addFormDataPart("FileInfo", file.getMediaInfo().getName(), RequestBody.create(MediaType.parse("image/*"), file.getMediaInfo()));
                 } else {
-                    if (!isEnter) {
-                        builder.addFormDataPart("FileInfo", file.getMediaInfo().getName(), RequestBody.create(MediaType.parse("video/*"), file.getMediaInfo()));
-                        isEnter = true;
-                    }
                     builder.addFormDataPart("FileInfo", file.getMediaInfo().getName(), RequestBody.create(MediaType.parse("video/*"), file.getMediaInfo()));
                 }
             }
