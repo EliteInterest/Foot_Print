@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -82,7 +83,7 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
                 llRouteEdite.setVisibility(View.VISIBLE);
                 tvAction.setText("保存");
                 tvTitle.setText("路线编辑");
-            }else {
+            } else {
                 rlTitle.setVisibility(View.GONE);
                 llRouteEdite.setVisibility(View.GONE);
                 mapFragment.showFootView(true);
@@ -128,7 +129,8 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
                 int index = 1;
                 for (FootFileBean bean : footFiles) {
                     FootRouteTextInfo.FootRouteTextInfoPointPositions footRouteTextInfoPointPositions = new FootRouteTextInfo.FootRouteTextInfoPointPositions();
-                    String pointId = mSharedPrefUtil.getString("userId", "") + "-p" + index++;
+//                    String pointId = mSharedPrefUtil.getString("userId", "") + "-p" + index++;
+                    String pointId = UUID.randomUUID().toString().substring(0, 32) + "-p" + index++;
                     footRouteTextInfoPointPositions.setPointId(pointId);
                     footRouteTextInfoPointPositions.setAddr(bean.getFormatAddress());
                     footRouteTextInfoPointPositions.setDesc(bean.getStreetAddress());
