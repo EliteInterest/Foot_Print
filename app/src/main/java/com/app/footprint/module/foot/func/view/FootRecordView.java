@@ -285,6 +285,10 @@ public class FootRecordView extends RelativeLayout {
             mGraphicList.clear();
             tvTabCountSize.setText("0.00");
             zxSharedPrefUtil.putString("Mileage", tvTabCountSize.getText().toString());
+
+            lastCurrentTime = System.currentTimeMillis();
+            tvTabDate.setText(ZXTimeUtil.getTime(lastCurrentTime) + " " + ZXTimeUtil.dateToWeek(lastCurrentTime).replace("周", "星期"));
+
         }
         //开启定时器
         timeTimer = new Timer();
