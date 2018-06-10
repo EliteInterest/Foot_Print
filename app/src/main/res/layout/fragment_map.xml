@@ -65,12 +65,12 @@
         android:layout_marginTop="10dp"
         android:background="@mipmap/map_mode_vector"/>
 
-    <com.app.footprint.module.foot.func.view.FootRecordView
+    <cn.gisdata.footprint.module.foot.func.view.FootRecordView
         android:id="@+id/foot_record_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
 
-    </com.app.footprint.module.foot.func.view.FootRecordView>
+    </cn.gisdata.footprint.module.foot.func.view.FootRecordView>
 
 </RelativeLayout>

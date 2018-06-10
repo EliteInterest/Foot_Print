@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          package="com.app.footprint">
+          package="cn.gisdata.footprint">
 
     <!-- To access Google+ APIs: -->
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -70,7 +70,7 @@
             android:name="design_height"
             android:value="1920"/>
         <meta-data
-            android:name="com.app.footprint.app.GlobalConfiguration"
+            android:name="cn.gisdata.footprint.app.GlobalConfiguration"
             android:value="ConfigModule"/>
 
         <activity

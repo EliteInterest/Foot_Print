@@ -70,7 +70,7 @@
     </RelativeLayout>
 
 
-    <GridLayout
+    <LinearLayout
         android:id="@+id/layout_personal_info"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/px100"
@@ -78,22 +78,18 @@
         android:layout_marginTop="@dimen/px10"
         android:background="@color/white"
         android:visibility="visible"
-        android:layout_weight="10"
-        android:rowCount="1"
         android:gravity="center"
-        android:orientation="horizontal"
-        android:columnCount="4">
+        android:orientation="horizontal">
         <LinearLayout
             android:id="@+id/RouteCount_layout"
             android:background="#ffffff"
             android:layout_margin="1dp"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:orientation="vertical"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
             android:gravity="center">
             <TextView
                 android:layout_width="wrap_content"
@@ -118,12 +114,11 @@
             android:id="@+id/FootmarkCount_layout"
             android:orientation="vertical"
             android:layout_margin="1dp"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
             android:gravity="center"
             android:background="#ffffff">
             <TextView
@@ -149,13 +144,12 @@
             android:id="@+id/Integral_layout"
             android:background="#ffffff"
             android:layout_margin="1dp"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
             android:gravity="center">
             <TextView
                 android:layout_width="wrap_content"
@@ -180,11 +174,10 @@
             android:id="@+id/VisitVolume_layout"
             android:background="#ffffff"
             android:layout_margin="1dp"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:gravity="center">
@@ -207,7 +200,7 @@
                 android:textSize="@dimen/text_size_normal"
                 android:text="0"/>
         </LinearLayout>
-    </GridLayout>
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/layout_settings"
