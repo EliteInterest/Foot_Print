@@ -81,11 +81,11 @@ public class MapChangeLocationActivity extends BaseActivity<MapChangeLocationPre
             }
         }
         tianDiTuVectorLayer = new TianDiTuLayer(TianDiTuLayerTypes.TIANDITU_VECTOR_2000);
-        if (vectorLayer == null) {
+//        if (vectorLayer == null) {
             mMapView.addLayer(tianDiTuVectorLayer);
-        } else {
+//        } else {
             mMapView.addLayer(vectorLayer);
-        }
+//        }
     }
 
     @OnClick({R.id.iv_title_back, R.id.tv_title_save})
