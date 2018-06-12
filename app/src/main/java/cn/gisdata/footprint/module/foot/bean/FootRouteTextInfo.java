@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by Xiangb on 2018/5/22.
+ * Created by fxs on 2018/5/22.
  * 功能：
  */
 
@@ -36,7 +36,7 @@ public class FootRouteTextInfo implements Serializable {
         public String Name;
         public String Desc;
         public float Mileage;
-        public String ConsumptionTime;
+        public int ConsumptionTime;
         public String StartTime;
         public String EndTime;
 
@@ -73,11 +73,11 @@ public class FootRouteTextInfo implements Serializable {
             Mileage = mileage;
         }
 
-        public String getConsumptionTime() {
+        public int getConsumptionTime() {
             return ConsumptionTime;
         }
 
-        public void setConsumptionTime(String ConsumptionTime) {
+        public void setConsumptionTime(int ConsumptionTime) {
             this.ConsumptionTime = ConsumptionTime;
         }
 

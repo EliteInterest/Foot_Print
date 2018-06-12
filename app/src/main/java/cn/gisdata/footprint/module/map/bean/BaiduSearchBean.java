@@ -3,7 +3,7 @@ package cn.gisdata.footprint.module.map.bean;
 import java.util.List;
 
 /**
- * Created by Xiangb on 2018/5/30.
+ * Created by fxs on 2018/5/30.
  * 功能：
  */
 public class BaiduSearchBean {

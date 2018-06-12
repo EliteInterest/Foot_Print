@@ -23,7 +23,7 @@ import cn.sharesdk.wechat.friends.Wechat;
 import cn.sharesdk.wechat.moments.WechatMoments;
 
 /**
- * Created by Xiangb on 2018/6/1.
+ * Created by fxs on 2018/6/1.
  * 功能：分享工具
  */
 public class ShareTool {

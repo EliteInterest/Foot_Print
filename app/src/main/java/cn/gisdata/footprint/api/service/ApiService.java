@@ -23,7 +23,7 @@ import retrofit2.http.QueryMap;
 import rx.Observable;
 
 /**
- * Create By Xiangb On 2017/7/11
+ * Create By fxs On 2017/7/11
  * 功能：接口列表
  */
 public interface ApiService {

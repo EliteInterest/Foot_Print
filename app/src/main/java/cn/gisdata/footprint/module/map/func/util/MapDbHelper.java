@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.zx.zxutils.util.ZXSystemUtil;
 
 /**
- * Created by Xiangb on 2016/12/8.
+ * Created by fxs on 2016/12/8.
  * 功能：
  */
 public class MapDbHelper extends SQLiteOpenHelper {

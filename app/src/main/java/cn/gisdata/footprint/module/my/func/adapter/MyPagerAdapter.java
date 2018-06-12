@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Xiangb on 2016/9/19.
+ * Created by fxs on 2016/9/19.
  * 功能：TabLayout的适配器
  */
 public class MyPagerAdapter extends FragmentPagerAdapter {

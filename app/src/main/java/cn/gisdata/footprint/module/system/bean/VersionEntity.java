@@ -1,7 +1,7 @@
 package cn.gisdata.footprint.module.system.bean;
 
 /**
- * Created by Xiangb on 2017/7/12.
+ * Created by fxs on 2017/7/12.
  * 功能：
  */
 

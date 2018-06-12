@@ -53,7 +53,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * Created by Xiangb on 2018/5/17.
+ * Created by fxs on 2018/5/17.
  * 功能：
  */
 
@@ -392,6 +392,11 @@ public class FootRecordView extends RelativeLayout {
                 }
             }
         }
+    }
+
+    public int getCountTime()
+    {
+        return countTime;
     }
 
 }

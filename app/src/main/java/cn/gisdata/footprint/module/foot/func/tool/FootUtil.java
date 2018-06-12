@@ -13,7 +13,7 @@ import android.graphics.drawable.Drawable;
 import com.zx.zxutils.util.ZXBitmapUtil;
 
 /**
- * Created by Xiangb on 2018/5/24.
+ * Created by fxs on 2018/5/24.
  * 功能：
  */
 

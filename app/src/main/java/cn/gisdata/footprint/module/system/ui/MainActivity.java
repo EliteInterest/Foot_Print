@@ -26,7 +26,7 @@ import butterknife.BindView;
 
 
 /**
- * Create By Xiangb On 2017/7/11
+ * Create By fxs On 2017/7/11
  * 功能：主界面
  */
 public class MainActivity extends BaseActivity<MainPresenter, MainModel> implements MainContract.View {

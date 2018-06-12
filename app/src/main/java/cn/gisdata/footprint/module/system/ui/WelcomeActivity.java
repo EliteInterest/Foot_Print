@@ -23,7 +23,7 @@ import java.util.List;
 
 
 /**
- * Create By Xiangb On 2017/7/11
+ * Create By fxs On 2017/7/11
  * 功能：欢迎页
  */
 public class WelcomeActivity extends BaseActivity<WelcomePresenter, WelcomeModel> implements WelcomeContract.View {

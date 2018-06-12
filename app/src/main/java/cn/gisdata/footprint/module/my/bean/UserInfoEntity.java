@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Create By Xiangb On 2017/7/11
+ * Create By fxs On 2017/7/11
  * 功能：登录结果返回
  */
 public class UserInfoEntity {

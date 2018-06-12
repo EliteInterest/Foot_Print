@@ -3,7 +3,7 @@ package cn.gisdata.footprint.module.map.bean;
 import java.io.Serializable;
 
 /**
- * Created by Xiangb on 2018/5/31.
+ * Created by fxs on 2018/5/31.
  * 功能：
  */
 public class MapUrlBean implements Serializable {

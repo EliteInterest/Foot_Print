@@ -7,7 +7,7 @@ import java.util.Map;
 
 
 /**
- * Create By Xiangb On 2017/7/11
+ * Create By fxs On 2017/7/11
  * 功能：网络请求参数配置
  */
 
