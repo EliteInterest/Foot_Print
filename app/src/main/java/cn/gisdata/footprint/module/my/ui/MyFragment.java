@@ -140,7 +140,7 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
 
     @OnClick({R.id.layout_head, R.id.layout_settings, R.id.layout_contact,
                 R.id.RouteCount_layout,R.id.FootmarkCount_layout,R.id.Integral_layout,
-                R.id.VisitVolume_layout,R.id.layout_delete_cache})
+                R.id.VisitVolume_layout,R.id.layout_delete_cache,R.id.layout_draft_box})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout_head:
@@ -234,6 +234,10 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
                         showToast("缓存清除成功");
                     }
                 });
+                break;
+
+            case R.id.layout_draft_box:
+                MyDraftActivity.startAction(getActivity(),false,0);
                 break;
 
             default:
