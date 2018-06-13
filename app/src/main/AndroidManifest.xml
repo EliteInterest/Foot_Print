@@ -113,6 +113,10 @@
             android:name=".module.my.ui.MyFootListActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity
+            android:name=".module.my.ui.MyDraftActivity"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>
