@@ -38,6 +38,7 @@ public class RouteListFragment extends BaseFragment<RouteListPresenter, RouteLis
     private List<MyFootRouteEntity> routeList = new ArrayList();
     private int deletePosition = 0;
     private RouteListAdapter routeListAdapter;
+    public static boolean isShareClick = false;
 
     public static RouteListFragment newInstance() {
         RouteListFragment fragment = new RouteListFragment();
@@ -57,7 +58,15 @@ public class RouteListFragment extends BaseFragment<RouteListPresenter, RouteLis
         srlRouteRefresh.setOnRefreshListener(() -> loadData());
 
         ZXRecyclerDeleteHelper deleteHelper = new ZXRecyclerDeleteHelper(getActivity(), rvRouteList)
-//                .setClickable(i -> PreviewActivity.startAction(getActivity(), false, routeList.get(i).getName(), routeList.get(i).getDetailsUrlPath()))
+                .setClickable(i -> {
+                    if(!isShareClick)
+                    {
+                        PreviewActivity.startAction(getActivity(), false,
+                            routeList.get(i).getName(), routeList.get(i).getDetailsUrlPath());
+                    }
+                    else
+                        isShareClick = false;
+                })
                 .setSwipeOptionViews(R.id.tv_delete)
                 .setSwipeable(R.id.ll_item_content, R.id.ll_list_menu, new ZXRecyclerDeleteHelper.OnSwipeOptionsClickListener() {
                     @Override

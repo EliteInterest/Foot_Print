@@ -238,7 +238,7 @@
             android:layout_toStartOf="@+id/person_account_content"
             android:gravity="center_vertical"
             android:padding="5dp"
-            android:text="设置"
+            android:text="轨迹记录间隔设置"
             android:textSize="@dimen/text_size_normal" />
 
         <TextView
@@ -337,7 +337,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="30dp"
             android:layout_marginStart="30dp"
-            android:background="@mipmap/setting"
+            android:background="@mipmap/delete_cache"
             android:gravity="center_vertical" />
 
         <TextView
@@ -391,7 +391,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="30dp"
             android:layout_marginStart="30dp"
-            android:background="@mipmap/setting"
+            android:background="@mipmap/draft"
             android:gravity="center_vertical" />
 
         <TextView

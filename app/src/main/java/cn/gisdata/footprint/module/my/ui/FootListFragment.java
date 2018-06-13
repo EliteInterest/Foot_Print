@@ -36,6 +36,7 @@ public class FootListFragment extends BaseFragment<FootListPresenter, FootListMo
     private List<MyfootMarkEntity> footList = new ArrayList();
     private int deletePosition = 0;
     private FootListAdapter footListAdapter;
+    public static boolean isShareClick = false;
 
     public static FootListFragment newInstance() {
         FootListFragment fragment = new FootListFragment();
@@ -55,7 +56,13 @@ public class FootListFragment extends BaseFragment<FootListPresenter, FootListMo
         srlFootRefresh.setOnRefreshListener(() -> loadData());
 
         ZXRecyclerDeleteHelper deleteHelper = new ZXRecyclerDeleteHelper(getActivity(), rvFootList)
-//                .setClickable(i -> PreviewActivity.startAction(getActivity(), false, footList.get(i).getName(), footList.get(i).getDetailsUrlPath()))
+                .setClickable(i -> {
+                    if(!isShareClick)
+                    {
+                        PreviewActivity.startAction(getActivity(), false, footList.get(i).getName(), footList.get(i).getDetailsUrlPath());
+                    }else
+                        isShareClick = false;
+                })
                 .setSwipeOptionViews(R.id.tv_delete)
                 .setSwipeable(R.id.ll_item_content, R.id.ll_list_menu, new ZXRecyclerDeleteHelper.OnSwipeOptionsClickListener() {
                     @Override

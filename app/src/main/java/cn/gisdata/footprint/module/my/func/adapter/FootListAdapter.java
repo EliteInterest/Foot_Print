@@ -15,7 +15,7 @@ import cn.gisdata.footprint.R;
 import cn.gisdata.footprint.module.foot.func.tool.ShareTool;
 import cn.gisdata.footprint.module.map.func.util.BaiduMapUtil;
 import cn.gisdata.footprint.module.my.bean.MyfootMarkEntity;
-import cn.gisdata.footprint.module.my.ui.PreviewActivity;
+import cn.gisdata.footprint.module.my.ui.FootListFragment;
 import cn.gisdata.footprint.util.DateUtil;
 import com.bumptech.glide.Glide;
 
@@ -58,20 +58,33 @@ public class FootListAdapter extends RecyclerView.Adapter<FootListAdapter.MyHold
                 .centerCrop()
                 .into(holder.myImage);
 
-        holder.myShare.setOnClickListener(new View.OnClickListener() {
+        holder.myShare.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                String url = dataList.get(position).getDetailsUrlPath();
-                ShareTool.doShare(context, url);
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN)
+                {
+                    FootListFragment.isShareClick = true;
+                    String url = dataList.get(position).getDetailsUrlPath();
+                    ShareTool.doShare(context, url);
+                }
+                return true;
             }
         });
 
-        holder.myImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PreviewActivity.startAction(activity, false, dataList.get(position).getName(), dataList.get(position).getDetailsUrlPath());
-            }
-        });
+//        holder.myShare.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String url = dataList.get(position).getDetailsUrlPath();
+//                ShareTool.doShare(context, url);
+//            }
+//        });
+
+//        holder.myImage.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                PreviewActivity.startAction(activity, false, dataList.get(position).getName(), dataList.get(position).getDetailsUrlPath());
+//            }
+//        });
     }
 
     @Override
