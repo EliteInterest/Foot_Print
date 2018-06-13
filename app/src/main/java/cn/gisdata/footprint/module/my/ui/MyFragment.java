@@ -210,7 +210,7 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
 
             case R.id.layout_delete_cache:
                 final boolean recordStatus = mSharedPrefUtil.getBool("record_status", false);
-                ZXDialogUtil.showInfoDialog(getActivity(), "提示", "是否清除缓存？", new DialogInterface.OnClickListener() {
+                ZXDialogUtil.showYesNoDialog(getActivity(), "提示", "是否清除缓存？", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if(recordStatus)
