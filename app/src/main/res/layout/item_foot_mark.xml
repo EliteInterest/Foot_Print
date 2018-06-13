@@ -81,6 +81,16 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_small"/>
 
+            <TextView
+                android:id="@+id/my_foot_share"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="20dp"
+                android:gravity="center"
+                android:text="分享"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_small"/>
+
         </LinearLayout>
 
         <ImageView

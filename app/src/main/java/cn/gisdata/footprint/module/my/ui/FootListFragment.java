@@ -49,13 +49,13 @@ public class FootListFragment extends BaseFragment<FootListPresenter, FootListMo
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        footListAdapter = new FootListAdapter(footList);
+        footListAdapter = new FootListAdapter(footList,getActivity());
         rvFootList.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvFootList.setAdapter(footListAdapter);
         srlFootRefresh.setOnRefreshListener(() -> loadData());
 
         ZXRecyclerDeleteHelper deleteHelper = new ZXRecyclerDeleteHelper(getActivity(), rvFootList)
-                .setClickable(i -> PreviewActivity.startAction(getActivity(), false, footList.get(i).getName(), footList.get(i).getDetailsUrlPath()))
+//                .setClickable(i -> PreviewActivity.startAction(getActivity(), false, footList.get(i).getName(), footList.get(i).getDetailsUrlPath()))
                 .setSwipeOptionViews(R.id.tv_delete)
                 .setSwipeable(R.id.ll_item_content, R.id.ll_list_menu, new ZXRecyclerDeleteHelper.OnSwipeOptionsClickListener() {
                     @Override

@@ -1,17 +1,21 @@
 package cn.gisdata.footprint.module.my.func.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import cn.gisdata.footprint.R;
+import cn.gisdata.footprint.module.foot.func.tool.ShareTool;
 import cn.gisdata.footprint.module.map.func.util.BaiduMapUtil;
 import cn.gisdata.footprint.module.my.bean.MyfootMarkEntity;
+import cn.gisdata.footprint.module.my.ui.PreviewActivity;
 import cn.gisdata.footprint.util.DateUtil;
 import com.bumptech.glide.Glide;
 
@@ -25,9 +29,11 @@ public class FootListAdapter extends RecyclerView.Adapter<FootListAdapter.MyHold
 
     private List<MyfootMarkEntity> dataList;
     private Context context;
+    private Activity activity;
 
-    public FootListAdapter(List<MyfootMarkEntity> dataList) {
+    public FootListAdapter(List<MyfootMarkEntity> dataList, Activity activity) {
         this.dataList = dataList;
+        this.activity = activity;
     }
 
     @NonNull
@@ -51,6 +57,21 @@ public class FootListAdapter extends RecyclerView.Adapter<FootListAdapter.MyHold
                 .load(BaiduMapUtil.getStaticBitmapPath(entity.getLongitude(), entity.getLatitude()))
                 .centerCrop()
                 .into(holder.myImage);
+
+        holder.myShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = dataList.get(position).getDetailsUrlPath();
+                ShareTool.doShare(context, url);
+            }
+        });
+
+        holder.myImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PreviewActivity.startAction(activity, false, dataList.get(position).getName(), dataList.get(position).getDetailsUrlPath());
+            }
+        });
     }
 
     @Override
@@ -64,6 +85,7 @@ public class FootListAdapter extends RecyclerView.Adapter<FootListAdapter.MyHold
         public TextView myTime;
         public TextView myVisitCount;
         public ImageView myImage;
+        public TextView myShare;
 
         public MyHolder(View itemView) {
             super(itemView);
@@ -71,6 +93,7 @@ public class FootListAdapter extends RecyclerView.Adapter<FootListAdapter.MyHold
             myTime = itemView.findViewById(R.id.my_foot_time);
             myVisitCount = itemView.findViewById(R.id.my_foot_visitcount);
             myImage = itemView.findViewById(R.id.my_foot_des_img);
+            myShare = itemView.findViewById(R.id.my_foot_share);
         }
     }
 

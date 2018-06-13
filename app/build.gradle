@@ -13,7 +13,7 @@ android {
     buildToolsVersion '27.0.3'
 //    useLibrary 'org.apache.http.legacy'
     defaultConfig {
-        applicationId "com.app.footprint"
+        applicationId "cn.gisdata.footprint"
         minSdkVersion 16
         targetSdkVersion 27
         versionCode 1
