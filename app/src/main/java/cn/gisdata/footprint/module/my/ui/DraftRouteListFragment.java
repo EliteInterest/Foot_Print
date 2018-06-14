@@ -110,6 +110,7 @@ public class DraftRouteListFragment extends BaseFragment<FootPresenter, FootMode
                         map.put("file", mediaFiles);
                     }
                     mPresenter.commitRoute(map);
+                    showLoading("正在上传中...");
                 });
             }
         });
@@ -136,12 +137,15 @@ public class DraftRouteListFragment extends BaseFragment<FootPresenter, FootMode
 
     @Override
     public void onRouteCommitResult(String url) {
+        dismissLoading();
         showToast("上传成功！");
         deleteDraft(uploadPosition);
     }
 
     @Override
-    public void onRouteCommitError() {
+    public void onRouteCommitError()
+    {
+        dismissLoading();
         showToast("上传失败，该数据可能已损坏，请重试或删除后重新添加");
     }
 }

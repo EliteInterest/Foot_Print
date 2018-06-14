@@ -100,6 +100,7 @@ public class DraftFootListFragment extends BaseFragment<EditInfoPresenter, EditI
                         map.put("file", files);
                     }
                     mPresenter.commitFile(map);
+                    showLoading("正在上传中...");
                 });
             }
         });
@@ -121,12 +122,14 @@ public class DraftFootListFragment extends BaseFragment<EditInfoPresenter, EditI
 
     @Override
     public void onFileCommitResult(String result) {
+        dismissLoading();
         showToast("上传成功！");
         deleteDraft(uploadPosition);
     }
 
     @Override
     public void onFileCommitError() {
+        dismissLoading();
         showToast("上传失败，该数据可能已损坏，请重试或删除后重新添加");
     }
 }

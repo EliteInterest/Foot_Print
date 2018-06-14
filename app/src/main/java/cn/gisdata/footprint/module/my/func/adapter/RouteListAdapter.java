@@ -50,7 +50,7 @@ public class RouteListAdapter extends RecyclerView.Adapter<RouteListAdapter.MyHo
         MyFootRouteEntity entity = dataList.get(position);
         String time = entity.getName() == null ? "" : entity.getName();
         holder.myName.setText(time);
-        String startTime = DateUtil.getDateFromMillis(entity.getStartTime());
+        String startTime = DateUtil.getDateFromMillis(Long.valueOf(entity.getStartTime()) * 1000);
         holder.myTime.setText(startTime);
         int visitcount = entity.getVisitVolume();
         holder.myVisitCount.setText(visitcount + "次访问");
@@ -83,11 +83,6 @@ public class RouteListAdapter extends RecyclerView.Adapter<RouteListAdapter.MyHo
                 .centerCrop()
                 .into(holder.myImage);
 
-//        holder.myShare.setOnClickListener(v -> {
-//            String url = dataList.get(position).getDetailsUrlPath();
-//            ShareTool.doShare(context, url);
-//        });
-
         holder.myShare.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -101,7 +96,20 @@ public class RouteListAdapter extends RecyclerView.Adapter<RouteListAdapter.MyHo
             }
         });
 
-//        holder.myImage.setOnClickListener(v -> PreviewActivity.startAction(activity, false, dataList.get(position).getName(), dataList.get(position).getDetailsUrlPath()));
+//        holder.myShare.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String url = dataList.get(position).getDetailsUrlPath();
+//                ShareTool.doShare(context, url);
+//            }
+//        });
+
+//        holder.myImage.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                PreviewActivity.startAction(activity, false, dataList.get(position).getName(), dataList.get(position).getDetailsUrlPath());
+//            }
+//        });
     }
 
     @Override
