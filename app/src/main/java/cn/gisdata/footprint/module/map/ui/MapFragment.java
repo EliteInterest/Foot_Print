@@ -25,6 +25,7 @@ import cn.gisdata.footprint.R;
 import cn.gisdata.footprint.app.ConstStrings;
 import cn.gisdata.footprint.base.BaseFragment;
 import cn.gisdata.footprint.module.foot.func.view.FootRecordView;
+import cn.gisdata.footprint.module.map.bean.BaiduSearchBean;
 import cn.gisdata.footprint.module.map.bean.MapUrlBean;
 import cn.gisdata.footprint.module.map.func.tool.tiditu.TianDiTuLayer;
 import cn.gisdata.footprint.module.map.func.tool.tiditu.TianDiTuLayerTypes;
@@ -208,8 +209,17 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
             if (msg.what == 0) {
                 Location location = GpsUtil.getLocation(getActivity());
                 if (location != null) {
-                    BaiduMapUtil.searchPoi(location.getLongitude(), location.getLatitude(),
-                            baiduSearchBean -> tvAddress.setText(baiduSearchBean.getResult().getFormatted_address()));
+                    BaiduMapUtil.searchPoi(location.getLongitude(), location.getLatitude(), new BaiduMapUtil.OnBaiduSearchListener() {
+                                @Override
+                                public void onSearchBack(BaiduSearchBean baiduSearchBean) {
+                                    tvAddress.setText(baiduSearchBean.getResult().getFormatted_address());
+                                }
+
+                                @Override
+                                public void onSearchError() {
+
+                                }
+                            });
                 }
             }
         }

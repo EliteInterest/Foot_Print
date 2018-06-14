@@ -54,8 +54,6 @@ public class EditInfoPresenter extends EditInfoContract.Presenter {
                 requestBody = builder.build();
                 break;
         }
-
-
         mModel.commitFile(requestBody)
                 .compose(RxHelper.bindToLifecycle(mView))
                 .subscribe(new RxSubscriber<String>(mView, "正在上传中...") {
@@ -68,6 +66,8 @@ public class EditInfoPresenter extends EditInfoContract.Presenter {
                     protected void _onError(String message) {
                         mView.onFileCommitError();
                     }
+
                 });
+
     }
 }

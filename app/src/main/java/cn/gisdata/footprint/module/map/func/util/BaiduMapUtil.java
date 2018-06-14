@@ -96,12 +96,14 @@ public class BaiduMapUtil {
                     baiduSearchListener.onSearchBack(baiduSearchBean);
                 } else {
 //                    ZXToastUtil.showToast("请求位置信息失败");
+                    baiduSearchListener.onSearchError();
                 }
             }
 
             @Override
             protected void _onError(String message) {
 //                ZXToastUtil.showToast("请求位置信息失败");
+                baiduSearchListener.onSearchError();
             }
         });
 
@@ -110,6 +112,8 @@ public class BaiduMapUtil {
 
     public interface OnBaiduSearchListener {
         void onSearchBack(BaiduSearchBean baiduSearchBean);
+
+        void onSearchError();
     }
 
     public static String getMcode() {

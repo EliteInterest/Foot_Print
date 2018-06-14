@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -307,6 +308,11 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
                 tvLocationPoint.setText("(" + decimalFormat.format(point.getX()) + "," + decimalFormat.format(point.getY()) + ")");
                 itemBean.setPoint(point.getX() + "," + point.getY() + point.getZ());
             }
+
+            @Override
+            public void onSearchError() {
+
+            }
         });
     }
 
@@ -358,8 +364,8 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
 
             FootMarkTextInfo.FootMarkTextBean footMarkTextBean = new FootMarkTextInfo.FootMarkTextBean();
             footMarkTextBean.setUserId(mSharedPrefUtil.getString("userId", ""));
-            footMarkTextBean.setName(itemBean.getStreetAddress());
-            footMarkTextBean.setDesc(itemBean.getFormatAddress());
+            footMarkTextBean.setName(TextUtils.isEmpty(itemBean.getStreetAddress())?"streetUnKnow":itemBean.getStreetAddress());
+            footMarkTextBean.setDesc(TextUtils.isEmpty(itemBean.getFormatAddress())?"formatUnKnow":itemBean.getFormatAddress());
             footMarkTextBean.setConsumptionTime("0");
             footMarkTextBean.setStartTime(String.valueOf(System.currentTimeMillis()));
             footMarkTextBean.setEndTime(String.valueOf(System.currentTimeMillis()));
@@ -370,8 +376,8 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             footMarkTextBean1.setLatitude(point.getY());
             footMarkTextBean1.setLongitude(point.getX());
             footMarkTextBean1.setAltitude(point.getZ());
-            footMarkTextBean1.setAddr(itemBean.getStreetAddress());
-            footMarkTextBean1.setDesc(itemBean.getFormatAddress());
+            footMarkTextBean1.setAddr(TextUtils.isEmpty(itemBean.getStreetAddress())?"streetUnKnow":itemBean.getStreetAddress());
+            footMarkTextBean1.setDesc(TextUtils.isEmpty(itemBean.getFormatAddress())?"formatUnKnow":itemBean.getFormatAddress());
             footMarkTextBean1.setPointType(2);
             footMarkTextInfo.setPointPosition(footMarkTextBean1);
 
@@ -398,7 +404,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             map.put("FootmarkInfo", jsonsStr);
             map.put("uploadType", 2);
             map.put("file", files);
-            draftFootBean = new DraftFootBean(ZXTimeUtil.getCurrentTime(), footMarkTextBean.Name, jsonsStr, filePaths, 2);
+            draftFootBean = new DraftFootBean(ZXTimeUtil.getCurrentTime(), footMarkTextBean.Name, jsonsStr, filePaths, 2, pointString);
             mPresenter.commitFile(map);
         } else if (editType == EditType.MapFootVedio) {//地图-足迹-视频
             itemBean.setVedioPath(vedioPath);
@@ -408,8 +414,8 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
 
             FootMarkTextInfo.FootMarkTextBean footMarkTextBean = new FootMarkTextInfo.FootMarkTextBean();
             footMarkTextBean.setUserId(mSharedPrefUtil.getString("userId", ""));
-            footMarkTextBean.setName(itemBean.getStreetAddress());
-            footMarkTextBean.setDesc(itemBean.getFormatAddress());
+            footMarkTextBean.setName(TextUtils.isEmpty(itemBean.getStreetAddress())?"streetUnKnow":itemBean.getStreetAddress());
+            footMarkTextBean.setDesc(TextUtils.isEmpty(itemBean.getFormatAddress())?"formatUnKnow":itemBean.getFormatAddress());
             footMarkTextBean.setConsumptionTime("0");
             footMarkTextBean.setStartTime(String.valueOf(itemBean.getStartTime()));
             footMarkTextBean.setEndTime(String.valueOf(itemBean.getEndTime()));
@@ -420,8 +426,8 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             footMarkTextBean1.setLatitude(point.getY());
             footMarkTextBean1.setLongitude(point.getX());
             footMarkTextBean1.setAltitude(point.getZ());
-            footMarkTextBean1.setAddr(itemBean.getStreetAddress());
-            footMarkTextBean1.setDesc(itemBean.getFormatAddress());
+            footMarkTextBean1.setAddr(TextUtils.isEmpty(itemBean.getStreetAddress())?"streetUnKnow":itemBean.getStreetAddress());
+            footMarkTextBean1.setDesc(TextUtils.isEmpty(itemBean.getFormatAddress())?"formatUnKnow":itemBean.getFormatAddress());
             footMarkTextBean1.setPointType(3);
             footMarkTextInfo.setPointPosition(footMarkTextBean1);
 
@@ -449,7 +455,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             map.put("FootmarkInfo", jsonsStr);
             map.put("uploadType", 3);
             map.put("file", files);
-            draftFootBean = new DraftFootBean(ZXTimeUtil.getCurrentTime(), footMarkTextBean.Name, jsonsStr, filePaths, 3);
+            draftFootBean = new DraftFootBean(ZXTimeUtil.getCurrentTime(), footMarkTextBean.Name, jsonsStr, filePaths, 3, pointString);
             mPresenter.commitFile(map);
         } else if (editType == EditType.MapFootText) {//地图-足迹-文本
             itemBean.setTextName(etName.getText().toString());
@@ -458,8 +464,8 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
 
             FootMarkTextInfo.FootMarkTextBean footMarkTextBean = new FootMarkTextInfo.FootMarkTextBean();
             footMarkTextBean.setUserId(mSharedPrefUtil.getString("userId", ""));
-            footMarkTextBean.setName(itemBean.getStreetAddress());
-            footMarkTextBean.setDesc(itemBean.getFormatAddress());
+            footMarkTextBean.setName(TextUtils.isEmpty(itemBean.getStreetAddress())?"streetUnKnow":itemBean.getStreetAddress());
+            footMarkTextBean.setDesc(TextUtils.isEmpty(itemBean.getFormatAddress())?"formatUnKnow":itemBean.getFormatAddress());
             footMarkTextBean.setConsumptionTime("0");
             footMarkTextBean.setStartTime(String.valueOf(itemBean.getStartTime()));
             footMarkTextBean.setEndTime(String.valueOf(itemBean.getEndTime()));
@@ -470,8 +476,8 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             footMarkTextBean1.setLatitude(point.getY());
             footMarkTextBean1.setLongitude(point.getX());
             footMarkTextBean1.setAltitude(point.getZ());
-            footMarkTextBean1.setAddr(itemBean.getStreetAddress());
-            footMarkTextBean1.setDesc(itemBean.getFormatAddress());
+            footMarkTextBean1.setAddr(TextUtils.isEmpty(itemBean.getStreetAddress())?"streetUnKnow":itemBean.getStreetAddress());
+            footMarkTextBean1.setDesc(TextUtils.isEmpty(itemBean.getFormatAddress())?"formatUnKnow":itemBean.getFormatAddress());
 
             footMarkTextBean1.setPointType(1);
             footMarkTextInfo.setPointPosition(footMarkTextBean1);
@@ -489,7 +495,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             Map<String, Object> map = new HashMap<>();
             map.put("FootmarkInfo", jsonsStr);
             map.put("uploadType", 1);
-            draftFootBean = new DraftFootBean(ZXTimeUtil.getCurrentTime(), footMarkTextBean.Name, jsonsStr, null, 1);
+            draftFootBean = new DraftFootBean(ZXTimeUtil.getCurrentTime(), footMarkTextBean.Name, jsonsStr, null, 1, pointString);
             mPresenter.commitFile(map);
 
         }

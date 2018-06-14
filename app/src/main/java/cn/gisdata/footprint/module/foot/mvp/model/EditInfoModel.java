@@ -1,15 +1,11 @@
 package cn.gisdata.footprint.module.foot.mvp.model;
 
-import cn.gisdata.footprint.api.service.ApiService;
 import com.frame.zxmvp.base.BaseModel;
-
-import cn.gisdata.footprint.module.foot.mvp.contract.EditInfoContract;
 import com.frame.zxmvp.baserx.RxHelper;
 import com.frame.zxmvp.baserx.RxSchedulers;
 
-import java.util.List;
-import java.util.Map;
-
+import cn.gisdata.footprint.api.service.ApiService;
+import cn.gisdata.footprint.module.foot.mvp.contract.EditInfoContract;
 import okhttp3.RequestBody;
 import rx.Observable;
 

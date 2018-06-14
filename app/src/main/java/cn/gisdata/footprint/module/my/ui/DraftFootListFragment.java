@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.zx.zxutils.util.ZXDialogUtil;
@@ -24,6 +25,8 @@ import cn.gisdata.footprint.module.foot.func.tool.FootUtil;
 import cn.gisdata.footprint.module.foot.mvp.contract.EditInfoContract;
 import cn.gisdata.footprint.module.foot.mvp.model.EditInfoModel;
 import cn.gisdata.footprint.module.foot.mvp.presenter.EditInfoPresenter;
+import cn.gisdata.footprint.module.map.bean.BaiduSearchBean;
+import cn.gisdata.footprint.module.map.func.util.BaiduMapUtil;
 import cn.gisdata.footprint.module.my.func.adapter.DraftListAdapter;
 
 /**
@@ -84,26 +87,73 @@ public class DraftFootListFragment extends BaseFragment<EditInfoPresenter, EditI
                 ZXDialogUtil.showYesNoDialog(getActivity(), "提示", "是否重新上传?", (dialog, which) -> {
                     uploadPosition = position;
                     DraftFootBean draftFootBean = footDraft.get(position);
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("FootmarkInfo", draftFootBean.getMarkInfoJson());
-                    map.put("uploadType", draftFootBean.getUploadType());
-                    List<File> files = new ArrayList<>();
-                    if (draftFootBean.getFilePaths() != null && draftFootBean.getFilePaths().size() > 0) {
-                        for (String path : draftFootBean.getFilePaths()) {
-                            File file = new File(path);
-                            if (file.exists()) {
-                                files.add(file);
+                    String pointString = draftFootBean.getPoint();
+                    if (!TextUtils.isEmpty(pointString)) {
+                        String[] points = pointString.split(",");
+                        if (points != null & points.length > 1) {
+                            try {
+                                getAddress(Double.valueOf(points[0]), Double.valueOf(points[1]), draftFootBean);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                uploadInfo(draftFootBean);
                             }
+                            return;
                         }
                     }
-                    if (files.size() > 0) {
-                        map.put("file", files);
-                    }
-                    mPresenter.commitFile(map);
-                    showLoading("正在上传中...");
+                    uploadInfo(draftFootBean);
                 });
             }
         });
+    }
+
+    /**
+     * 获取地理位置信息
+     */
+    private void getAddress(double x, double y, DraftFootBean draftFootBean) {
+        BaiduMapUtil.searchPoi(x, y, new BaiduMapUtil.OnBaiduSearchListener() {
+            @Override
+            public void onSearchBack(BaiduSearchBean baiduSearchBean) {
+                String streetName = "";
+                String formatName = "";
+                streetName = baiduSearchBean.getResult().getAddressComponent().getStreet();
+                formatName = baiduSearchBean.getResult().getFormatted_address();
+                if (streetName == null || streetName.length() == 0) {
+                    streetName = formatName;
+                }
+                draftFootBean.setMarkInfoJson(draftFootBean.getMarkInfoJson()
+                        .replaceAll("streetUnKnow", streetName)
+                        .replaceAll("formatUnKnow", formatName));
+                uploadInfo(draftFootBean);
+            }
+
+            @Override
+            public void onSearchError() {
+                uploadInfo(draftFootBean);
+            }
+        });
+    }
+
+    private void uploadInfo(DraftFootBean draftFootBean) {
+        draftFootBean.setMarkInfoJson(draftFootBean.getMarkInfoJson()
+                .replaceAll("streetUnKnow", "未知位置")
+                .replaceAll("formatUnKnow", "未知位置"));
+        Map<String, Object> map = new HashMap<>();
+        map.put("FootmarkInfo", draftFootBean.getMarkInfoJson());
+        map.put("uploadType", draftFootBean.getUploadType());
+        List<File> files = new ArrayList<>();
+        if (draftFootBean.getFilePaths() != null && draftFootBean.getFilePaths().size() > 0) {
+            for (String path : draftFootBean.getFilePaths()) {
+                File file = new File(path);
+                if (file.exists()) {
+                    files.add(file);
+                }
+            }
+        }
+        if (files.size() > 0) {
+            map.put("file", files);
+        }
+        mPresenter.commitFile(map);
+        showLoading("正在上传中...");
     }
 
     private void deleteDraft(int position) {
