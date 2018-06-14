@@ -10,17 +10,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import cn.gisdata.footprint.R;
-import cn.gisdata.footprint.api.ApiParamUtil;
-import cn.gisdata.footprint.app.ConstStrings;
-import cn.gisdata.footprint.base.BaseFragment;
-import cn.gisdata.footprint.module.foot.func.view.FootRecordView;
-import cn.gisdata.footprint.module.foot.ui.FootFragment;
-import cn.gisdata.footprint.module.my.bean.UserInfoEntity;
-import cn.gisdata.footprint.module.my.mvp.contract.MyContract;
-import cn.gisdata.footprint.module.my.mvp.model.MyModel;
-import cn.gisdata.footprint.module.my.mvp.presenter.MyPresenter;
-import cn.gisdata.footprint.module.my.func.tool.MyTool;
 import com.zx.zxutils.util.ZXDialogUtil;
 import com.zx.zxutils.util.ZXFileUtil;
 import com.zx.zxutils.views.BottomSheet.SheetData;
@@ -30,6 +19,17 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.gisdata.footprint.R;
+import cn.gisdata.footprint.api.ApiParamUtil;
+import cn.gisdata.footprint.app.ConstStrings;
+import cn.gisdata.footprint.base.BaseFragment;
+import cn.gisdata.footprint.module.foot.func.view.FootRecordView;
+import cn.gisdata.footprint.module.foot.ui.FootFragment;
+import cn.gisdata.footprint.module.my.bean.UserInfoEntity;
+import cn.gisdata.footprint.module.my.func.tool.MyTool;
+import cn.gisdata.footprint.module.my.mvp.contract.MyContract;
+import cn.gisdata.footprint.module.my.mvp.model.MyModel;
+import cn.gisdata.footprint.module.my.mvp.presenter.MyPresenter;
 
 /**
  * Create By admin On 2017/7/11
@@ -221,7 +221,7 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
                                 FootRecordView footRecordView = FootFragment.mapFragment.getFootRecordView();
                                 if(footRecordView!=null)
                                 {
-                                    footRecordView.closeRoute();
+                                    footRecordView.closeRoute(true);
                                 }
                             }
                         }else{

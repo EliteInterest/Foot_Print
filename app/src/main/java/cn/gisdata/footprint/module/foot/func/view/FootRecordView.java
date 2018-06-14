@@ -15,12 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import cn.gisdata.footprint.R;
-import cn.gisdata.footprint.app.ConstStrings;
-import cn.gisdata.footprint.module.foot.bean.FootFileBean;
-import cn.gisdata.footprint.module.foot.func.tool.FootUtil;
-import cn.gisdata.footprint.module.foot.ui.EditInfoActivity;
-import cn.gisdata.footprint.module.map.func.util.GpsUtil;
 import com.esri.android.map.GraphicsLayer;
 import com.esri.android.map.Layer;
 import com.esri.android.map.MapView;
@@ -35,7 +29,6 @@ import com.esri.core.symbol.SimpleLineSymbol;
 import com.esri.core.symbol.SimpleMarkerSymbol;
 import com.frame.zxmvp.baserx.RxManager;
 import com.zx.zxutils.util.ZXDialogUtil;
-import com.zx.zxutils.util.ZXFileUtil;
 import com.zx.zxutils.util.ZXSharedPrefUtil;
 import com.zx.zxutils.util.ZXTimeUtil;
 import com.zx.zxutils.util.ZXToastUtil;
@@ -51,6 +44,12 @@ import java.util.TimerTask;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.gisdata.footprint.R;
+import cn.gisdata.footprint.app.ConstStrings;
+import cn.gisdata.footprint.module.foot.bean.FootFileBean;
+import cn.gisdata.footprint.module.foot.func.tool.FootUtil;
+import cn.gisdata.footprint.module.foot.ui.EditInfoActivity;
+import cn.gisdata.footprint.module.map.func.util.GpsUtil;
 
 /**
  * Created by fxs on 2018/5/17.
@@ -87,10 +86,6 @@ public class FootRecordView extends RelativeLayout {
     private int countTime = 0;//计时
     private double countSize = 0;//里程
     private long lastCurrentTime = 0;
-
-    private static final String RECORD_START_TIME = "record_start_time";
-    private static final String RECORD_POINTS = "record_points";
-    private static final String RECORD_STATUS = "record_status";
 
     public FootRecordView(Context context) {
         super(context);
@@ -135,15 +130,15 @@ public class FootRecordView extends RelativeLayout {
         routeLayer.setName("footRouteLayer");
         mapView.addLayer(routeLayer);
 
-        if (zxSharedPrefUtil.getBool(RECORD_STATUS)
-                && zxSharedPrefUtil.getLong(RECORD_START_TIME) > 0) {//之前处于绘制状态
+        if (zxSharedPrefUtil.getBool(ConstStrings.RECORD_STATUS)
+                && zxSharedPrefUtil.getLong(ConstStrings.RECORD_START_TIME) > 0) {//之前处于绘制状态
             ZXDialogUtil.showYesNoDialog(context, "提示", "检测到之前处于绘制状态，是否继续之前的绘制？", "继续", "放弃",
                     (dialog, which) -> {//继续
                         cvRecordTab.setVisibility(VISIBLE);
                         startTimer(true);
                     },
                     (dialog, which) -> {//放弃
-                        clearSharedPref();
+                        FootUtil.clearFootCache();
                     });
         }
 
@@ -170,17 +165,6 @@ public class FootRecordView extends RelativeLayout {
         });
     }
 
-    /**
-     * 清除sharepref
-     */
-    public void clearSharedPref() {
-        zxSharedPrefUtil.remove(RECORD_POINTS);
-        zxSharedPrefUtil.remove(RECORD_START_TIME);
-        zxSharedPrefUtil.putBool(RECORD_STATUS, false);
-        zxSharedPrefUtil.putList(ConstStrings.FootFiles, new ArrayList<>());
-        ZXFileUtil.deleteFiles(ConstStrings.getCachePath());
-    }
-
     @OnClick({R.id.iv_record_foot_text, R.id.iv_record_mode_route, R.id.iv_record_mode_foot, R.id.ll_record_foot_start, R.id.iv_record_tab_cancel, R.id.ll_record_tab_commit,
             R.id.cv_record_tab, R.id.iv_record_tab_camera, R.id.iv_record_tab_vedio, R.id.iv_record_tab_text, R.id.iv_record_foot_camera, R.id.iv_record_foot_vedio})
     public void onViewClicked(View v) {
@@ -194,13 +178,13 @@ public class FootRecordView extends RelativeLayout {
                 llModeFoot.setVisibility(GONE);
                 break;
             case R.id.ll_record_foot_start://开始录制
-                clearSharedPref();
+                FootUtil.clearFootCache();
                 cvRecordTab.setVisibility(VISIBLE);
                 startTimer(false);
                 break;
             case R.id.iv_record_tab_cancel://录制取消
                 ZXDialogUtil.showYesNoDialog(context, "提示", "是否取消路线录制？", (dialog, which) -> {
-                    closeRoute();
+                    closeRoute(true);
                 });
                 break;
             case R.id.cv_record_tab:
@@ -240,13 +224,15 @@ public class FootRecordView extends RelativeLayout {
         }
     }
 
-    public void closeRoute() {
+    public void closeRoute(boolean deleteFile) {
         cvRecordTab.setVisibility(GONE);
         timeTimer.cancel();
         mPoints.clear();
         mGraphicList.clear();
         routeLayer.removeAll();
-        clearSharedPref();
+        if (deleteFile) {
+            FootUtil.clearFootCache();
+        }
     }
 
     /**
@@ -255,13 +241,13 @@ public class FootRecordView extends RelativeLayout {
      * @param resumeRoute 继续绘制
      */
     private void startTimer(boolean resumeRoute) {
-        zxSharedPrefUtil.putBool(RECORD_STATUS, true);
+        zxSharedPrefUtil.putBool(ConstStrings.RECORD_STATUS, true);
         if (resumeRoute) {
-            lastCurrentTime = zxSharedPrefUtil.getLong(RECORD_START_TIME);
+            lastCurrentTime = zxSharedPrefUtil.getLong(ConstStrings.RECORD_START_TIME);
             long nowCurrentTime = System.currentTimeMillis();
             tvTabDate.setText(ZXTimeUtil.getTime(lastCurrentTime) + " " + ZXTimeUtil.dateToWeek(lastCurrentTime).replace("周", "星期"));
             countTime = (int) ((nowCurrentTime - lastCurrentTime) / 1000);
-            mPoints = zxSharedPrefUtil.getList(RECORD_POINTS);
+            mPoints = zxSharedPrefUtil.getList(ConstStrings.RECORD_POINTS);
             for (int i = 0; i < mPoints.size() - 1; i++) {
                 Line line = new Line();
                 line.setStart(mPoints.get(i));
@@ -347,8 +333,8 @@ public class FootRecordView extends RelativeLayout {
                 }
             }
             //信息保存
-            zxSharedPrefUtil.putLong(RECORD_START_TIME, lastCurrentTime);//保存开始时间
-            zxSharedPrefUtil.putList(RECORD_POINTS, mPoints);//保存点集
+            zxSharedPrefUtil.putLong(ConstStrings.RECORD_START_TIME, lastCurrentTime);//保存开始时间
+            zxSharedPrefUtil.putList(ConstStrings.RECORD_POINTS, mPoints);//保存点集
         }
     };
 
@@ -394,8 +380,7 @@ public class FootRecordView extends RelativeLayout {
         }
     }
 
-    public int getCountTime()
-    {
+    public int getCountTime() {
         return countTime;
     }
 

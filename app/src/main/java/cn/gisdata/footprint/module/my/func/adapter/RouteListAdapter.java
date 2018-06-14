@@ -11,16 +11,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
+import java.util.List;
+
 import cn.gisdata.footprint.R;
 import cn.gisdata.footprint.module.foot.func.tool.ShareTool;
 import cn.gisdata.footprint.module.map.func.util.BaiduMapUtil;
 import cn.gisdata.footprint.module.my.bean.MyFootRouteEntity;
 import cn.gisdata.footprint.module.my.ui.RouteListFragment;
 import cn.gisdata.footprint.util.DateUtil;
-
-import com.bumptech.glide.Glide;
-
-import java.util.List;
 
 /**
  * Created by fxs on 2018/5/30.
@@ -83,6 +83,11 @@ public class RouteListAdapter extends RecyclerView.Adapter<RouteListAdapter.MyHo
                 .centerCrop()
                 .into(holder.myImage);
 
+//        holder.myShare.setOnClickListener(v -> {
+//            String url = dataList.get(position).getDetailsUrlPath();
+//            ShareTool.doShare(context, url);
+//        });
+
         holder.myShare.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -96,20 +101,7 @@ public class RouteListAdapter extends RecyclerView.Adapter<RouteListAdapter.MyHo
             }
         });
 
-//        holder.myShare.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String url = dataList.get(position).getDetailsUrlPath();
-//                ShareTool.doShare(context, url);
-//            }
-//        });
-
-//        holder.myImage.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                PreviewActivity.startAction(activity, false, dataList.get(position).getName(), dataList.get(position).getDetailsUrlPath());
-//            }
-//        });
+//        holder.myImage.setOnClickListener(v -> PreviewActivity.startAction(activity, false, dataList.get(position).getName(), dataList.get(position).getDetailsUrlPath()));
     }
 
     @Override

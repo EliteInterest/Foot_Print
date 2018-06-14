@@ -1,13 +1,12 @@
 package cn.gisdata.footprint.module.my.mvp.presenter;
 
-import cn.gisdata.footprint.module.my.bean.IntegralEntity;
-import cn.gisdata.footprint.module.my.bean.UserInfoEntity;
-import cn.gisdata.footprint.module.my.mvp.contract.MyContract;
-import cn.gisdata.footprint.module.system.bean.LoginEntity;
 import com.frame.zxmvp.baserx.RxHelper;
 import com.frame.zxmvp.baserx.RxSubscriber;
 
 import java.util.Map;
+
+import cn.gisdata.footprint.module.my.bean.UserInfoEntity;
+import cn.gisdata.footprint.module.my.mvp.contract.MyContract;
 
 
 /**
@@ -26,7 +25,7 @@ public class MyPresenter extends MyContract.Presenter {
 
                     @Override
                     protected void _onError(String message) {
-                        mView.showToast(message);
+//                        mView.showToast(message);
                     }
                 });
     }

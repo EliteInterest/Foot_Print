@@ -87,7 +87,11 @@ public abstract class RxSubscriber<T> extends Subscriber<T> {
                 message = "网络访问错误，请稍后再试";
             }
         }
-        _onError(message);
+        if (message != null && message.length() > 20) {
+            _onError("网络访问错误，请稍后再试");
+        } else {
+            _onError(message);
+        }
     }
 
     protected abstract void _onNext(T t);

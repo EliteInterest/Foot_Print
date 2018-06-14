@@ -2,6 +2,7 @@ package cn.gisdata.footprint.module.foot.ui;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
@@ -10,19 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import cn.gisdata.footprint.R;
-import cn.gisdata.footprint.app.ConstStrings;
-import cn.gisdata.footprint.base.BaseFragment;
-import cn.gisdata.footprint.module.foot.bean.FootFileBean;
-import cn.gisdata.footprint.module.foot.bean.FootRouteTextInfo;
-import cn.gisdata.footprint.module.foot.func.view.FootRecordView;
-import cn.gisdata.footprint.module.foot.mvp.contract.FootContract;
-import cn.gisdata.footprint.module.foot.mvp.model.FootModel;
-import cn.gisdata.footprint.module.foot.mvp.presenter.FootPresenter;
-import cn.gisdata.footprint.module.map.func.util.BaiduMapUtil;
-import cn.gisdata.footprint.module.map.func.util.GpsUtil;
-import cn.gisdata.footprint.module.map.ui.MapFragment;
-import cn.gisdata.footprint.module.my.ui.PreviewActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -30,6 +18,7 @@ import com.esri.core.geometry.Point;
 import com.google.gson.Gson;
 import com.zx.zxutils.util.ZXFragmentUtil;
 import com.zx.zxutils.util.ZXSharedPrefUtil;
+import com.zx.zxutils.util.ZXTimeUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -43,6 +32,21 @@ import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.gisdata.footprint.R;
+import cn.gisdata.footprint.app.ConstStrings;
+import cn.gisdata.footprint.base.BaseFragment;
+import cn.gisdata.footprint.module.foot.bean.DraftFootBean;
+import cn.gisdata.footprint.module.foot.bean.FootFileBean;
+import cn.gisdata.footprint.module.foot.bean.FootRouteTextInfo;
+import cn.gisdata.footprint.module.foot.func.tool.FootUtil;
+import cn.gisdata.footprint.module.foot.func.view.FootRecordView;
+import cn.gisdata.footprint.module.foot.mvp.contract.FootContract;
+import cn.gisdata.footprint.module.foot.mvp.model.FootModel;
+import cn.gisdata.footprint.module.foot.mvp.presenter.FootPresenter;
+import cn.gisdata.footprint.module.map.func.util.BaiduMapUtil;
+import cn.gisdata.footprint.module.map.func.util.GpsUtil;
+import cn.gisdata.footprint.module.map.ui.MapFragment;
+import cn.gisdata.footprint.module.my.ui.PreviewActivity;
 import rx.functions.Action1;
 
 /**
@@ -65,6 +69,8 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
     EditText etRouteDetail;
     public static MapFragment mapFragment;
     private ZXSharedPrefUtil zxSharedPrefUtil;
+
+    private DraftFootBean draftFootBean;
 
     public static FootFragment newInstance() {
         FootFragment fragment = new FootFragment();
@@ -109,13 +115,11 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
             case R.id.iv_title_back:
                 mRxManager.post("commitRoute", false);
                 break;
-            case R.id.tv_title_save://分享
+            case R.id.tv_title_save:
                 if (etRouteName.getText().toString().length() == 0) {
                     showToast("路线名称不能为空");
                     break;
                 }
-
-                showLoading("正在上传...");
 
                 FootRecordView footRecordView = mapFragment.getFootRecordView();
                 //upload file
@@ -127,8 +131,8 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
                 footRouteTextInfoFootprint.setMileage(Float.valueOf(zxSharedPrefUtil.getString("Mileage")));
 //                footRouteTextInfoFootprint.setConsumptionTime(zxSharedPrefUtil.getString("ConsumptionTime"));
                 footRouteTextInfoFootprint.setConsumptionTime(footRecordView.getCountTime());
-                footRouteTextInfoFootprint.setStartTime(String.valueOf(zxSharedPrefUtil.getLong("record_start_time")/1000));
-                footRouteTextInfoFootprint.setEndTime(String.valueOf(System.currentTimeMillis()/1000));        
+                footRouteTextInfoFootprint.setStartTime(String.valueOf(zxSharedPrefUtil.getLong("record_start_time") / 1000));
+                footRouteTextInfoFootprint.setEndTime(String.valueOf(System.currentTimeMillis() / 1000));
 
                 footRouteTextInfo.setFootprint(footRouteTextInfoFootprint);
 
@@ -136,6 +140,7 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
                 List<FootRouteTextInfo.FootRouteTextInfoBeanDetail> footRouteTextInfoBeanList = new ArrayList<>();
                 List<FootRouteTextInfo.FootRouteSaveInfoDetail> footRouteSaveInfoList = new ArrayList<>();
                 List<FootRouteTextInfo.FootRouteFileInfo> mediaFiles = new ArrayList<>();
+
 
                 //first file is screenshot
                 Location location = GpsUtil.getLocation(getActivity());
@@ -145,6 +150,8 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
                 Glide.with(getActivity()).load(imgUrl).asBitmap().into(new SimpleTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        String footprintInfo = "", textInfo = "", pathInfo = "", saveInfo = "";
+                        List<DraftFootBean.FilePathBean> filePathBeans = new ArrayList<>();
                         int result = -2;
                         result = savePhotoToSDCard(resource, ConstStrings.getCachePath(), imageName);
                         switch (result) {
@@ -194,6 +201,7 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
                                             fileInfo.setMediaFile(file);
                                             fileInfo.setFileType(2);
                                             mediaFiles.add(fileInfo);
+                                            filePathBeans.add(new DraftFootBean.FilePathBean(ConstStrings.getCachePath() + bean1.getPath(), 2));
                                         }
                                     } else if (type == FootFileBean.Type.Vedio) {
                                         uploadType = 3;
@@ -207,6 +215,7 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
                                         fileInfo.setMediaFile(file);
                                         fileInfo.setFileType(3);
                                         mediaFiles.add(fileInfo);
+                                        filePathBeans.add(new DraftFootBean.FilePathBean(ConstStrings.getCachePath() + bean.getVedioPath(), 3));
                                     }
                                     footRouteTextInfoPointPositions.setPointType(uploadType);
                                     footRouteTextInfoPointPositionsList.add(footRouteTextInfoPointPositions);
@@ -216,16 +225,16 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
                                 //设置FootprintInfo域
                                 footRouteTextInfo.setPointPositions(footRouteTextInfoPointPositionsList);
                                 Gson gson = new Gson();
-                                String jsonsStr = gson.toJson(footRouteTextInfo);
-                                map.put("FootprintInfo", jsonsStr);
+                                footprintInfo = gson.toJson(footRouteTextInfo);
+                                map.put("FootprintInfo", footprintInfo);
 
                                 //设置TextInfo域
                                 if (footRouteTextInfoBeanList.size() > 0) {
                                     FootRouteTextInfo.FootRouteTextInfoBean footRouteTextInfoBean = new FootRouteTextInfo.FootRouteTextInfoBean();
                                     footRouteTextInfoBean.setTextInfo(footRouteTextInfoBeanList);
                                     gson = new Gson();
-                                    jsonsStr = gson.toJson(footRouteTextInfoBean);
-                                    map.put("TextInfo", jsonsStr);
+                                    textInfo = gson.toJson(footRouteTextInfoBean);
+                                    map.put("TextInfo", textInfo);
                                 }
 
                                 //设置PathInfo域
@@ -242,8 +251,8 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
                                     pointStringList.add(doubles);
                                 }
 
-                                String pointJson = new Gson().toJson(pointStringList.toArray());
-                                map.put("PathInfo", pointJson);
+                                pathInfo = new Gson().toJson(pointStringList.toArray());
+                                map.put("PathInfo", pathInfo);
 
                                 //设置SaveInfo域
                                 if (footRouteSaveInfoList.size() > 0) {
@@ -251,14 +260,14 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
                                     footRouteSaveInfo.setTotalDesc("");
                                     footRouteSaveInfo.setMediaInfo(footRouteSaveInfoList);
                                     gson = new Gson();
-                                    jsonsStr = gson.toJson(footRouteSaveInfo);
-                                    map.put("SaveInfo", jsonsStr);
+                                    saveInfo = gson.toJson(footRouteSaveInfo);
+                                    map.put("SaveInfo", saveInfo);
                                 }
 
                                 if (mediaFiles.size() > 0) {
                                     map.put("file", mediaFiles);
                                 }
-
+                                draftFootBean = new DraftFootBean(ZXTimeUtil.getCurrentTime(), etRouteName.getText().toString(), footprintInfo, textInfo, pathInfo, saveInfo, filePathBeans);
                                 mPresenter.commitRoute(map);
                                 return;
 
@@ -276,6 +285,12 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
                                 break;
                         }
                     }
+
+                    @Override
+                    public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                        super.onLoadFailed(e, errorDrawable);
+                        showToast("网络请求失败，请先检查网络");
+                    }
                 });
                 break;
         }
@@ -286,9 +301,29 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
     public void onRouteCommitResult(String url) {
         dismissLoading();
         llRouteEdite.setVisibility(View.GONE);
-        mapFragment.clearSharedPref();
+        FootUtil.deleteFootFile(draftFootBean.getFilePaths());
         PreviewActivity.startAction(getActivity(), false, "路径预览", url);
-        mapFragment.resetMap();
+        mapFragment.resetMap(true);
+        rlTitle.setVisibility(View.GONE);
+        llRouteEdite.setVisibility(View.GONE);
+        etRouteName.setText("");
+        etRouteDetail.setText("");
+    }
+
+    @Override
+    public void onRouteCommitError() {
+        showToast("上传失败，已收至草稿箱");
+        if (!zxSharedPrefUtil.contains(ConstStrings.DraftFootList)) {
+            zxSharedPrefUtil.putList(ConstStrings.DraftFootList, new ArrayList<>());
+        }
+        List<DraftFootBean> draftFootBeans = zxSharedPrefUtil.getList(ConstStrings.DraftFootList);
+        if (draftFootBeans == null) {
+            draftFootBeans = new ArrayList<>();
+        }
+        draftFootBeans.add(0, draftFootBean);
+        zxSharedPrefUtil.putList(ConstStrings.DraftFootList, draftFootBeans);
+        mapFragment.resetMap(false);
+        llRouteEdite.setVisibility(View.GONE);
         rlTitle.setVisibility(View.GONE);
         llRouteEdite.setVisibility(View.GONE);
         etRouteName.setText("");

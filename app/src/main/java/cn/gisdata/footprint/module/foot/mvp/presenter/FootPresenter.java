@@ -1,13 +1,14 @@
 package cn.gisdata.footprint.module.foot.mvp.presenter;
 
-import cn.gisdata.footprint.module.foot.bean.FootRouteTextInfo;
-import cn.gisdata.footprint.module.foot.mvp.contract.FootContract;
 import com.frame.zxmvp.baserx.RxHelper;
 import com.frame.zxmvp.baserx.RxSubscriber;
+import com.zx.zxutils.util.ZXFileUtil;
 
 import java.util.List;
 import java.util.Map;
 
+import cn.gisdata.footprint.module.foot.bean.FootRouteTextInfo;
+import cn.gisdata.footprint.module.foot.mvp.contract.FootContract;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -37,10 +38,12 @@ public class FootPresenter extends FootContract.Presenter {
 
         if (files != null && files.size() > 0) {
             for (FootRouteTextInfo.FootRouteFileInfo file : files) {
-                if (file.getFileType() == 2) {
-                    builder.addFormDataPart("FileInfo", file.getMediaInfo().getName(), RequestBody.create(MediaType.parse("image/*"), file.getMediaInfo()));
-                } else {
-                    builder.addFormDataPart("FileInfo", file.getMediaInfo().getName(), RequestBody.create(MediaType.parse("video/*"), file.getMediaInfo()));
+                if (ZXFileUtil.isFileExists(file.MediaFile)) {
+                    if (file.getFileType() == 2) {
+                        builder.addFormDataPart("FileInfo", file.getMediaInfo().getName(), RequestBody.create(MediaType.parse("image/*"), file.getMediaInfo()));
+                    } else {
+                        builder.addFormDataPart("FileInfo", file.getMediaInfo().getName(), RequestBody.create(MediaType.parse("video/*"), file.getMediaInfo()));
+                    }
                 }
             }
         }
@@ -57,8 +60,7 @@ public class FootPresenter extends FootContract.Presenter {
 
                     @Override
                     protected void _onError(String message) {
-
-                        mView.showToast(message);
+                        mView.onRouteCommitError();
                     }
                 });
     }

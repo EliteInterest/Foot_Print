@@ -8,19 +8,6 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import cn.gisdata.footprint.R;
-import cn.gisdata.footprint.app.ConstStrings;
-import cn.gisdata.footprint.base.BaseFragment;
-import cn.gisdata.footprint.module.foot.func.view.FootRecordView;
-import cn.gisdata.footprint.module.map.bean.MapUrlBean;
-import cn.gisdata.footprint.module.map.func.tool.tiditu.TianDiTuLayer;
-import cn.gisdata.footprint.module.map.func.tool.tiditu.TianDiTuLayerTypes;
-import cn.gisdata.footprint.module.map.func.util.BaiduMapUtil;
-import cn.gisdata.footprint.module.map.func.util.GpsUtil;
-import cn.gisdata.footprint.module.map.func.view.OnlineTileLayer;
-import cn.gisdata.footprint.module.map.mvp.contract.MapContract;
-import cn.gisdata.footprint.module.map.mvp.model.MapModel;
-import cn.gisdata.footprint.module.map.mvp.presenter.MapPresenter;
 import com.esri.android.map.GraphicsLayer;
 import com.esri.android.map.MapOnTouchListener;
 import com.esri.android.map.MapView;
@@ -34,6 +21,19 @@ import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.gisdata.footprint.R;
+import cn.gisdata.footprint.app.ConstStrings;
+import cn.gisdata.footprint.base.BaseFragment;
+import cn.gisdata.footprint.module.foot.func.view.FootRecordView;
+import cn.gisdata.footprint.module.map.bean.MapUrlBean;
+import cn.gisdata.footprint.module.map.func.tool.tiditu.TianDiTuLayer;
+import cn.gisdata.footprint.module.map.func.tool.tiditu.TianDiTuLayerTypes;
+import cn.gisdata.footprint.module.map.func.util.BaiduMapUtil;
+import cn.gisdata.footprint.module.map.func.util.GpsUtil;
+import cn.gisdata.footprint.module.map.func.view.OnlineTileLayer;
+import cn.gisdata.footprint.module.map.mvp.contract.MapContract;
+import cn.gisdata.footprint.module.map.mvp.model.MapModel;
+import cn.gisdata.footprint.module.map.mvp.presenter.MapPresenter;
 import rx.functions.Action1;
 
 /**
@@ -250,15 +250,11 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
         }
     }
 
-    public void clearSharedPref() {
-        footRecordView.clearSharedPref();
-    }
-
     public FootRecordView getFootRecordView() {
         return footRecordView;
     }
 
-    public void resetMap() {
-        footRecordView.closeRoute();
+    public void resetMap(boolean deleteFile) {
+        footRecordView.closeRoute(deleteFile);
     }
 }

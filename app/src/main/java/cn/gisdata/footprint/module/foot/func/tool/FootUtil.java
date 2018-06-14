@@ -11,6 +11,14 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 
 import com.zx.zxutils.util.ZXBitmapUtil;
+import com.zx.zxutils.util.ZXFileUtil;
+import com.zx.zxutils.util.ZXSharedPrefUtil;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import cn.gisdata.footprint.app.ConstStrings;
+import cn.gisdata.footprint.module.foot.bean.FootFileBean;
 
 /**
  * Created by fxs on 2018/5/24.
@@ -19,7 +27,7 @@ import com.zx.zxutils.util.ZXBitmapUtil;
 
 public class FootUtil {
 
-    public static Drawable drawTextToDrawable(Context context, int resourceId, String mText){
+    public static Drawable drawTextToDrawable(Context context, int resourceId, String mText) {
         try {
             Resources resources = context.getResources();
             float scale = resources.getDisplayMetrics().density;
@@ -61,6 +69,32 @@ public class FootUtil {
         } catch (Exception e) {
             // TODO: handle exception
             return null;
+        }
+    }
+
+    public static void clearFootCache() {
+        ZXSharedPrefUtil zxSharedPrefUtil = new ZXSharedPrefUtil();
+        List<FootFileBean> footFileBeans = zxSharedPrefUtil.getList(ConstStrings.FootFiles);
+        if (footFileBeans != null && footFileBeans.size() > 0) {
+            for (FootFileBean file : footFileBeans) {
+                ZXFileUtil.deleteFiles(ConstStrings.getCachePath() + file.getVedioShootPath());
+                ZXFileUtil.deleteFiles(ConstStrings.getCachePath() + file.getVedioPath());
+                if (file.getPicPaths() != null && file.getPicPaths().size() > 0) {
+                    for (FootFileBean.PicBean picBean : file.getPicPaths()) {
+                        ZXFileUtil.deleteFiles(ConstStrings.getCachePath() + picBean.getPath());
+                    }
+                }
+            }
+        }
+        zxSharedPrefUtil.remove(ConstStrings.RECORD_POINTS);
+        zxSharedPrefUtil.remove(ConstStrings.RECORD_START_TIME);
+        zxSharedPrefUtil.putBool(ConstStrings.RECORD_STATUS, false);
+        zxSharedPrefUtil.putList(ConstStrings.FootFiles, new ArrayList<>());
+    }
+
+    public static void deleteFootFile(List<String> filePaths) {
+        for (String path : filePaths) {
+            ZXFileUtil.deleteFiles(path);
         }
     }
 

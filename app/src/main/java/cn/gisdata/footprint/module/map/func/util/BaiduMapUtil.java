@@ -2,19 +2,18 @@ package cn.gisdata.footprint.module.map.func.util;
 
 import android.content.pm.ApplicationInfo;
 
-import cn.gisdata.footprint.api.service.ApiService;
-import cn.gisdata.footprint.app.MyApplication;
-import cn.gisdata.footprint.module.map.bean.BaiduLatlngBean;
-import cn.gisdata.footprint.module.map.bean.BaiduSearchBean;
 import com.frame.zxmvp.baserx.RxSchedulers;
 import com.frame.zxmvp.baserx.RxSubscriber;
 import com.zx.zxutils.ZXApp;
 import com.zx.zxutils.util.ZXSystemUtil;
-import com.zx.zxutils.util.ZXToastUtil;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.gisdata.footprint.api.service.ApiService;
+import cn.gisdata.footprint.app.MyApplication;
+import cn.gisdata.footprint.module.map.bean.BaiduLatlngBean;
+import cn.gisdata.footprint.module.map.bean.BaiduSearchBean;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -96,13 +95,13 @@ public class BaiduMapUtil {
                 if (baiduSearchBean.getStatus() == 0) {
                     baiduSearchListener.onSearchBack(baiduSearchBean);
                 } else {
-                    ZXToastUtil.showToast("请求位置信息失败");
+//                    ZXToastUtil.showToast("请求位置信息失败");
                 }
             }
 
             @Override
             protected void _onError(String message) {
-                ZXToastUtil.showToast("请求位置信息失败");
+//                ZXToastUtil.showToast("请求位置信息失败");
             }
         });
 

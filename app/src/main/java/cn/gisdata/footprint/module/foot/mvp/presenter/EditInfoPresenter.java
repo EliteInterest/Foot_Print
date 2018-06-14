@@ -1,13 +1,15 @@
 package cn.gisdata.footprint.module.foot.mvp.presenter;
 
-import cn.gisdata.footprint.module.foot.mvp.contract.EditInfoContract;
 import com.frame.zxmvp.baserx.RxHelper;
 import com.frame.zxmvp.baserx.RxSubscriber;
+import com.google.gson.Gson;
+import com.zx.zxutils.util.ZXSharedPrefUtil;
 
 import java.io.File;
 import java.util.List;
 import java.util.Map;
 
+import cn.gisdata.footprint.module.foot.mvp.contract.EditInfoContract;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -21,6 +23,10 @@ public class EditInfoPresenter extends EditInfoContract.Presenter {
 
     @Override
     public void commitFile(Map<String, Object> map) {
+
+        ZXSharedPrefUtil zxSharedPrefUtil = new ZXSharedPrefUtil();
+        Gson gson = new Gson();
+
         String FootmarkInfo = (String) map.get("FootmarkInfo");
         int uploadType = (int) map.get("uploadType");
         RequestBody requestBody = null;
@@ -49,6 +55,7 @@ public class EditInfoPresenter extends EditInfoContract.Presenter {
                 break;
         }
 
+
         mModel.commitFile(requestBody)
                 .compose(RxHelper.bindToLifecycle(mView))
                 .subscribe(new RxSubscriber<String>(mView, "正在上传中...") {
@@ -59,8 +66,7 @@ public class EditInfoPresenter extends EditInfoContract.Presenter {
 
                     @Override
                     protected void _onError(String message) {
-
-                        mView.showToast(message);
+                        mView.onFileCommitError();
                     }
                 });
     }

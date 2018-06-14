@@ -14,23 +14,12 @@ import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
 
-import cn.gisdata.footprint.R;
-import cn.gisdata.footprint.app.ConstStrings;
-import cn.gisdata.footprint.base.BaseActivity;
-import cn.gisdata.footprint.module.foot.bean.FootFileBean;
-import cn.gisdata.footprint.module.foot.bean.FootMarkTextInfo;
-import cn.gisdata.footprint.module.foot.func.adapter.FootPicAdapter;
-import cn.gisdata.footprint.module.foot.mvp.contract.EditInfoContract;
-import cn.gisdata.footprint.module.foot.mvp.model.EditInfoModel;
-import cn.gisdata.footprint.module.foot.mvp.presenter.EditInfoPresenter;
-import cn.gisdata.footprint.module.map.bean.BaiduSearchBean;
-import cn.gisdata.footprint.module.map.func.util.BaiduMapUtil;
-import cn.gisdata.footprint.module.map.func.util.GpsUtil;
-import cn.gisdata.footprint.module.map.ui.MapChangeLocationActivity;
 import com.esri.core.geometry.Point;
 import com.google.gson.Gson;
 import com.zx.zxutils.other.ZXItemClickSupport;
+import com.zx.zxutils.util.ZXSharedPrefUtil;
 import com.zx.zxutils.util.ZXSystemUtil;
+import com.zx.zxutils.util.ZXTimeUtil;
 
 import java.io.File;
 import java.io.Serializable;
@@ -42,6 +31,21 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.gisdata.footprint.R;
+import cn.gisdata.footprint.app.ConstStrings;
+import cn.gisdata.footprint.base.BaseActivity;
+import cn.gisdata.footprint.module.foot.bean.DraftFootBean;
+import cn.gisdata.footprint.module.foot.bean.FootFileBean;
+import cn.gisdata.footprint.module.foot.bean.FootMarkTextInfo;
+import cn.gisdata.footprint.module.foot.func.adapter.FootPicAdapter;
+import cn.gisdata.footprint.module.foot.func.tool.FootUtil;
+import cn.gisdata.footprint.module.foot.mvp.contract.EditInfoContract;
+import cn.gisdata.footprint.module.foot.mvp.model.EditInfoModel;
+import cn.gisdata.footprint.module.foot.mvp.presenter.EditInfoPresenter;
+import cn.gisdata.footprint.module.map.bean.BaiduSearchBean;
+import cn.gisdata.footprint.module.map.func.util.BaiduMapUtil;
+import cn.gisdata.footprint.module.map.func.util.GpsUtil;
+import cn.gisdata.footprint.module.map.ui.MapChangeLocationActivity;
 
 
 /**
@@ -74,8 +78,11 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
     private FootFileBean itemBean;
     private FootFileBean.PicBean previewPicBean;
 
+    private ZXSharedPrefUtil zxSharedPrefUtil;
     private List<FootFileBean.PicBean> picChildBeans = new ArrayList<>();
     private String vedioShootPath, vedioPath;
+
+    private DraftFootBean draftFootBean;
 
     private String footId = "";
 
@@ -100,7 +107,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
         Intent intent = new Intent(activity, EditInfoActivity.class);
         intent.putExtra("type", EditType.MapDetail);
         intent.putExtra("footId", footRouteId);
-        activity.startActivityForResult(intent,0x01);
+        activity.startActivityForResult(intent, 0x01);
         if (isFinish) activity.finish();
     }
 
@@ -111,6 +118,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
 
     @Override
     public void initView(Bundle savedInstanceState) {
+        zxSharedPrefUtil = new ZXSharedPrefUtil();
         editType = (EditType) getIntent().getSerializableExtra("type");
         Location location = GpsUtil.getLocation(this);
         itemBean = new FootFileBean();
@@ -253,9 +261,28 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
     @Override
     public void onFileCommitResult(String result) {
         itemBean.setUrl(result);
+        FootUtil.deleteFootFile(draftFootBean.getFilePaths());
         Intent intent = new Intent();
         intent.putExtra("itemBean", itemBean);
         setResult(0x02, intent);
+        finish();
+    }
+
+    /**
+     * 上传失败
+     */
+    @Override
+    public void onFileCommitError() {
+        showToast("上传失败，已收至草稿箱");
+        if (!zxSharedPrefUtil.contains(ConstStrings.DraftFootList)) {
+            zxSharedPrefUtil.putList(ConstStrings.DraftFootList, new ArrayList<>());
+        }
+        List<DraftFootBean> draftFootBeans = zxSharedPrefUtil.getList(ConstStrings.DraftFootList);
+        if (draftFootBeans == null) {
+            draftFootBeans = new ArrayList<>();
+        }
+        draftFootBeans.add(0, draftFootBean);
+        zxSharedPrefUtil.putList(ConstStrings.DraftFootList, draftFootBeans);
         finish();
     }
 
@@ -353,11 +380,13 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             footMarkTextBean2.setTotalDesc(itemBean.getDescription());
             List<String> MediaInfos = new ArrayList<>();
             List<File> files = new ArrayList<>();
+            List<String> filePaths = new ArrayList<>();
 
             for (FootFileBean.PicBean picBean : picChildBeans) {
                 MediaInfos.add(picBean.getRemark());//test
                 File file = new File(ConstStrings.getCachePath() + picBean.getPath());
                 files.add(file);
+                filePaths.add(ConstStrings.getCachePath() + picBean.getPath());
             }
 
             footMarkTextBean2.setMediaInfo(MediaInfos);
@@ -369,6 +398,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             map.put("FootmarkInfo", jsonsStr);
             map.put("uploadType", 2);
             map.put("file", files);
+            draftFootBean = new DraftFootBean(ZXTimeUtil.getCurrentTime(), footMarkTextBean.Name, jsonsStr, filePaths, 2);
             mPresenter.commitFile(map);
         } else if (editType == EditType.MapFootVedio) {//地图-足迹-视频
             itemBean.setVedioPath(vedioPath);
@@ -397,15 +427,17 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
 
 
             FootMarkTextInfo.FootMarkTextBean2 footMarkTextBean2 = new FootMarkTextInfo.FootMarkTextBean2();
-            footMarkTextBean2.setTotalDesc("这是图片集合的描述，MediaInfo的数量和上传的图片和视频数量相同");
+            footMarkTextBean2.setTotalDesc(etRemark.getText().toString());
             List<String> MediaInfos = new ArrayList<>();
             List<File> files = new ArrayList<>();
+            List<String> filePaths = new ArrayList<>();
 
 //            for(FootFileBean.PicBean picBean : picChildBeans)
 //            {
             MediaInfos.add("图片描述");//test
             File file = new File(ConstStrings.getCachePath() + vedioPath);
             files.add(file);
+            filePaths.add(ConstStrings.getCachePath() + vedioPath);
 //            }
 
             footMarkTextBean2.setMediaInfo(MediaInfos);
@@ -417,6 +449,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             map.put("FootmarkInfo", jsonsStr);
             map.put("uploadType", 3);
             map.put("file", files);
+            draftFootBean = new DraftFootBean(ZXTimeUtil.getCurrentTime(), footMarkTextBean.Name, jsonsStr, filePaths, 3);
             mPresenter.commitFile(map);
         } else if (editType == EditType.MapFootText) {//地图-足迹-文本
             itemBean.setTextName(etName.getText().toString());
@@ -456,6 +489,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             Map<String, Object> map = new HashMap<>();
             map.put("FootmarkInfo", jsonsStr);
             map.put("uploadType", 1);
+            draftFootBean = new DraftFootBean(ZXTimeUtil.getCurrentTime(), footMarkTextBean.Name, jsonsStr, null, 1);
             mPresenter.commitFile(map);
 
         }
@@ -470,13 +504,13 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             for (int i = 0; i < footFiles.size(); i++) {
                 if (itemBean.getId().equals(footFiles.get(i).getId())) {
                     footFiles.set(i, itemBean);
-                    Log.i("wangwansheng","itemBean is " +itemBean.getPoint());
+                    Log.i("wangwansheng", "itemBean is " + itemBean.getPoint());
                     break;
                 }
             }
         } else {
             footFiles.add(itemBean);
-            Log.i("wangwansheng","itemBean is " +itemBean.getPoint());
+            Log.i("wangwansheng", "itemBean is " + itemBean.getPoint());
         }
         mSharedPrefUtil.putList(ConstStrings.FootFiles, footFiles);
         setResult(0x01);
