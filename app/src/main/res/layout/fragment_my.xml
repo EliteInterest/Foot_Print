@@ -408,16 +408,20 @@
             android:text="草稿箱"
             android:textSize="@dimen/text_size_normal" />
 
-        <ImageView
-            android:id="@+id/delete_draft_arrow"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+        <TextView
+            android:id="@+id/delete_draft_account"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/layout_draft_box_tip_image"
-            android:layout_marginEnd="25dp"
-            android:layout_marginRight="25dp"
-            android:background="@mipmap/right_extend2" />
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="@dimen/px30"
+            android:layout_marginRight="18dp"
+            android:gravity="center_vertical"
+            android:padding="5dp"
+            android:text="0"
+            android:textColor="@color/dp_blue"
+            android:textSize="@dimen/text_size_normal" />
     </RelativeLayout>
 
     <RelativeLayout

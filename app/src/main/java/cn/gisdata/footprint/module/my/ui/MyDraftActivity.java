@@ -29,6 +29,8 @@ public class MyDraftActivity extends BaseActivity<MyFootListPresenter, MyFootLis
     TabLayout tlFootList;
     @BindView(R.id.vp_foot_list)
     ViewPager vpFootList;
+    @BindView(R.id.personal_edit_title)
+    TextView title;
 
     private MyPagerAdapter pagerAdapter;
 
@@ -46,6 +48,7 @@ public class MyDraftActivity extends BaseActivity<MyFootListPresenter, MyFootLis
 
     @Override
     public void initView(Bundle savedInstanceState) {
+        title.setText("我的草稿箱");
         pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
         pagerAdapter.addFragment(DraftRouteListFragment.newInstance(), "路线");
         pagerAdapter.addFragment(DraftFootListFragment.newInstance(), "脚印");

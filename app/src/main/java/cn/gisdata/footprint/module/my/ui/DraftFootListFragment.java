@@ -130,6 +130,6 @@ public class DraftFootListFragment extends BaseFragment<EditInfoPresenter, EditI
     @Override
     public void onFileCommitError() {
         dismissLoading();
-        showToast("上传失败，该数据可能已损坏，请重试或删除后重新添加");
+        showToast("上传失败，请重试或删除后重新添加");
     }
 }

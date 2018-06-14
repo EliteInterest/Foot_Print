@@ -41,8 +41,9 @@ public class DraftListAdapter extends RecyclerView.Adapter<DraftListAdapter.MyHo
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
         DraftFootBean entity = dataList.get(position);
-        String name = entity.getName() == null ? "" : entity.getName();
-        holder.tvName.setText(entity.getName());
+        String name = entity.getName() == null ? "未知" : entity.getName();
+        name = name.length() == 0 ? "未知" : name;
+        holder.tvName.setText(name);
         holder.tvTime.setText(entity.getDate());
 
     }

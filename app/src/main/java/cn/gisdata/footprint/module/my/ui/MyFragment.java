@@ -16,6 +16,7 @@ import com.zx.zxutils.views.BottomSheet.SheetData;
 import com.zx.zxutils.views.BottomSheet.ZXBottomSheet;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -23,6 +24,7 @@ import cn.gisdata.footprint.R;
 import cn.gisdata.footprint.api.ApiParamUtil;
 import cn.gisdata.footprint.app.ConstStrings;
 import cn.gisdata.footprint.base.BaseFragment;
+import cn.gisdata.footprint.module.foot.bean.DraftFootBean;
 import cn.gisdata.footprint.module.foot.func.view.FootRecordView;
 import cn.gisdata.footprint.module.foot.ui.FootFragment;
 import cn.gisdata.footprint.module.my.bean.UserInfoEntity;
@@ -71,6 +73,9 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
     @BindView(R.id.personal_image)
     ImageView mHeadImage;
 
+    @BindView(R.id.delete_draft_account)
+    TextView mDraftCount;
+
 
     public static MyFragment newInstance() {
         MyFragment fragment = new MyFragment();
@@ -99,14 +104,12 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
         String nickName = mSharedPrefUtil.getString("nickName");
         int footPeriod = mSharedPrefUtil.getInt("footPeriod", 0);
         String headUrl = mSharedPrefUtil.getString("headPortraits");
-        if(headUrl!=null && !TextUtils.isEmpty(headUrl))
-            MyTool.setIamge(getActivity(),mHeadImage,headUrl,70,70);
-        if(bitmap != null)
-        {
-            Log.i(TAG,"bitmap is not NULL!");
-        }
-        else
-            Log.i(TAG,"bitmap is NULL!");
+        if (headUrl != null && !TextUtils.isEmpty(headUrl))
+            MyTool.setIamge(getActivity(), mHeadImage, headUrl, 70, 70);
+        if (bitmap != null) {
+            Log.i(TAG, "bitmap is not NULL!");
+        } else
+            Log.i(TAG, "bitmap is NULL!");
 
         Log.i(TAG, "username is " + userName);
         if (!TextUtils.isEmpty(userName)) {
@@ -131,6 +134,11 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
         }
 
         mSettingsView.setText(period);
+
+        List<DraftFootBean> draftFootBeans = mSharedPrefUtil.getList(ConstStrings.DraftFootList);
+        if (draftFootBeans != null) {
+            mDraftCount.setText("" + draftFootBeans.size());
+        }
     }
 
     private void doUserData() {
@@ -139,8 +147,8 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
     }
 
     @OnClick({R.id.layout_head, R.id.layout_settings, R.id.layout_contact,
-                R.id.RouteCount_layout,R.id.FootmarkCount_layout,R.id.Integral_layout,
-                R.id.VisitVolume_layout,R.id.layout_delete_cache,R.id.layout_draft_box})
+            R.id.RouteCount_layout, R.id.FootmarkCount_layout, R.id.Integral_layout,
+            R.id.VisitVolume_layout, R.id.layout_delete_cache, R.id.layout_draft_box})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout_head:
@@ -194,15 +202,15 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
                 break;
 
             case R.id.RouteCount_layout://路线
-                MyFootListActivity.startAction(getActivity(),false,0);
+                MyFootListActivity.startAction(getActivity(), false, 0);
                 break;
 
             case R.id.FootmarkCount_layout://脚印
-                MyFootListActivity.startAction(getActivity(),false,1);
+                MyFootListActivity.startAction(getActivity(), false, 1);
                 break;
 
             case R.id.Integral_layout://积分
-                IntegralActivity.startAction(getActivity(),false);
+                IntegralActivity.startAction(getActivity(), false);
                 break;
 
             case R.id.VisitVolume_layout://访问
@@ -213,18 +221,15 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
                 ZXDialogUtil.showYesNoDialog(getActivity(), "提示", "是否清除缓存？", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if(recordStatus)
-                        {
+                        if (recordStatus) {
                             //recording... so first stop it!
-                            if(FootFragment.mapFragment!=null)
-                            {
+                            if (FootFragment.mapFragment != null) {
                                 FootRecordView footRecordView = FootFragment.mapFragment.getFootRecordView();
-                                if(footRecordView!=null)
-                                {
+                                if (footRecordView != null) {
                                     footRecordView.closeRoute(true);
                                 }
                             }
-                        }else{
+                        } else {
                             mSharedPrefUtil.remove("record_points");
                             mSharedPrefUtil.remove("record_start_time");
                             mSharedPrefUtil.putList(ConstStrings.FootFiles, new ArrayList<>());
@@ -237,7 +242,7 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
                 break;
 
             case R.id.layout_draft_box:
-                MyDraftActivity.startAction(getActivity(),false,0);
+                MyDraftActivity.startAction(getActivity(), false, 0);
                 break;
 
             default:

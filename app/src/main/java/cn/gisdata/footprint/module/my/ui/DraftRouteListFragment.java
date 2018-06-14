@@ -146,6 +146,6 @@ public class DraftRouteListFragment extends BaseFragment<FootPresenter, FootMode
     public void onRouteCommitError()
     {
         dismissLoading();
-        showToast("上传失败，该数据可能已损坏，请重试或删除后重新添加");
+        showToast("上传失败，请重试或删除后重新添加");
     }
 }
