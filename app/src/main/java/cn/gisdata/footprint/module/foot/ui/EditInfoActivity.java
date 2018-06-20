@@ -162,8 +162,8 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
                         playVedio(footFileBean.getVedioPath());
                     } else if (footFileBean.getType() == FootFileBean.Type.Text) {
                         editType = EditType.MapRouteText;
-                        etName.setText(footFileBean.getTextName());
                     }
+                    etName.setText(footFileBean.getTextName());
                     etRemark.setText(footFileBean.getDescription());
                     point = footFileBean.getMapPoint();
                     break;
@@ -192,7 +192,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
         } else if (editType == EditType.MapRouteText) {//地图-轨迹-文本
             rvPicture.setVisibility(View.GONE);
             vedioView.setVisibility(View.GONE);
-            etName.setVisibility(View.VISIBLE);
+//            etName.setVisibility(View.VISIBLE);
             itemBean.setType(FootFileBean.Type.Text);
             etRemark.setHint("事件简介");
             itemBean.setRoute(true);
@@ -217,7 +217,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
         } else if (editType == EditType.MapFootText) {//地图-足迹-文本
             rvPicture.setVisibility(View.GONE);
             vedioView.setVisibility(View.GONE);
-            etName.setVisibility(View.VISIBLE);
+//            etName.setVisibility(View.VISIBLE);
             itemBean.setType(FootFileBean.Type.Text);
             etRemark.setHint("事件简介");
             itemBean.setRoute(false);
@@ -343,6 +343,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
         String pointString = point.getX() + "," + point.getY() + "," + point.getZ();
         itemBean.setPoint(pointString);
         itemBean.setDescription(etRemark.getText().toString());
+        itemBean.setTextName(etName.getText().toString());
         if (editType == EditType.MapRoutePic) {//地图-轨迹-图片
             itemBean.setPicPaths(picChildBeans);
             itemBean.setType(FootFileBean.Type.Camera);
@@ -353,7 +354,6 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             itemBean.setType(FootFileBean.Type.Vedio);
             addFootBean();
         } else if (editType == EditType.MapRouteText) {//地图-轨迹-文本
-            itemBean.setTextName(etName.getText().toString());
             itemBean.setDescription(etRemark.getText().toString());
             itemBean.setType(FootFileBean.Type.Text);
             addFootBean();
@@ -364,8 +364,8 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
 
             FootMarkTextInfo.FootMarkTextBean footMarkTextBean = new FootMarkTextInfo.FootMarkTextBean();
             footMarkTextBean.setUserId(mSharedPrefUtil.getString("userId", ""));
-            footMarkTextBean.setName(TextUtils.isEmpty(itemBean.getStreetAddress())?"streetUnKnow":itemBean.getStreetAddress());
-            footMarkTextBean.setDesc(TextUtils.isEmpty(itemBean.getFormatAddress())?"formatUnKnow":itemBean.getFormatAddress());
+            footMarkTextBean.setName(TextUtils.isEmpty(itemBean.getStreetAddress()) ? "streetUnKnow" : itemBean.getStreetAddress());
+            footMarkTextBean.setDesc(TextUtils.isEmpty(itemBean.getFormatAddress()) ? "formatUnKnow" : itemBean.getFormatAddress());
             footMarkTextBean.setConsumptionTime("0");
             footMarkTextBean.setStartTime(String.valueOf(System.currentTimeMillis()));
             footMarkTextBean.setEndTime(String.valueOf(System.currentTimeMillis()));
@@ -376,8 +376,8 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             footMarkTextBean1.setLatitude(point.getY());
             footMarkTextBean1.setLongitude(point.getX());
             footMarkTextBean1.setAltitude(point.getZ());
-            footMarkTextBean1.setAddr(TextUtils.isEmpty(itemBean.getStreetAddress())?"streetUnKnow":itemBean.getStreetAddress());
-            footMarkTextBean1.setDesc(TextUtils.isEmpty(itemBean.getFormatAddress())?"formatUnKnow":itemBean.getFormatAddress());
+            footMarkTextBean1.setAddr(TextUtils.isEmpty(itemBean.getStreetAddress()) ? "streetUnKnow" : itemBean.getStreetAddress());
+            footMarkTextBean1.setDesc(TextUtils.isEmpty(itemBean.getFormatAddress()) ? "formatUnKnow" : itemBean.getFormatAddress());
             footMarkTextBean1.setPointType(2);
             footMarkTextInfo.setPointPosition(footMarkTextBean1);
 
@@ -414,8 +414,8 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
 
             FootMarkTextInfo.FootMarkTextBean footMarkTextBean = new FootMarkTextInfo.FootMarkTextBean();
             footMarkTextBean.setUserId(mSharedPrefUtil.getString("userId", ""));
-            footMarkTextBean.setName(TextUtils.isEmpty(itemBean.getStreetAddress())?"streetUnKnow":itemBean.getStreetAddress());
-            footMarkTextBean.setDesc(TextUtils.isEmpty(itemBean.getFormatAddress())?"formatUnKnow":itemBean.getFormatAddress());
+            footMarkTextBean.setName(TextUtils.isEmpty(itemBean.getStreetAddress()) ? "streetUnKnow" : itemBean.getStreetAddress());
+            footMarkTextBean.setDesc(TextUtils.isEmpty(itemBean.getFormatAddress()) ? "formatUnKnow" : itemBean.getFormatAddress());
             footMarkTextBean.setConsumptionTime("0");
             footMarkTextBean.setStartTime(String.valueOf(itemBean.getStartTime()));
             footMarkTextBean.setEndTime(String.valueOf(itemBean.getEndTime()));
@@ -426,8 +426,8 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             footMarkTextBean1.setLatitude(point.getY());
             footMarkTextBean1.setLongitude(point.getX());
             footMarkTextBean1.setAltitude(point.getZ());
-            footMarkTextBean1.setAddr(TextUtils.isEmpty(itemBean.getStreetAddress())?"streetUnKnow":itemBean.getStreetAddress());
-            footMarkTextBean1.setDesc(TextUtils.isEmpty(itemBean.getFormatAddress())?"formatUnKnow":itemBean.getFormatAddress());
+            footMarkTextBean1.setAddr(TextUtils.isEmpty(itemBean.getStreetAddress()) ? "streetUnKnow" : itemBean.getStreetAddress());
+            footMarkTextBean1.setDesc(TextUtils.isEmpty(itemBean.getFormatAddress()) ? "formatUnKnow" : itemBean.getFormatAddress());
             footMarkTextBean1.setPointType(3);
             footMarkTextInfo.setPointPosition(footMarkTextBean1);
 
@@ -458,14 +458,14 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             draftFootBean = new DraftFootBean(ZXTimeUtil.getCurrentTime(), footMarkTextBean.Name, jsonsStr, filePaths, 3, pointString);
             mPresenter.commitFile(map);
         } else if (editType == EditType.MapFootText) {//地图-足迹-文本
-            itemBean.setTextName(etName.getText().toString());
+//            itemBean.setTextName(etName.getText().toString());
             //初始化JSON文本
             FootMarkTextInfo footMarkTextInfo = new FootMarkTextInfo();
 
             FootMarkTextInfo.FootMarkTextBean footMarkTextBean = new FootMarkTextInfo.FootMarkTextBean();
             footMarkTextBean.setUserId(mSharedPrefUtil.getString("userId", ""));
-            footMarkTextBean.setName(TextUtils.isEmpty(itemBean.getStreetAddress())?"streetUnKnow":itemBean.getStreetAddress());
-            footMarkTextBean.setDesc(TextUtils.isEmpty(itemBean.getFormatAddress())?"formatUnKnow":itemBean.getFormatAddress());
+            footMarkTextBean.setName(TextUtils.isEmpty(itemBean.getStreetAddress()) ? "streetUnKnow" : itemBean.getStreetAddress());
+            footMarkTextBean.setDesc(TextUtils.isEmpty(itemBean.getFormatAddress()) ? "formatUnKnow" : itemBean.getFormatAddress());
             footMarkTextBean.setConsumptionTime("0");
             footMarkTextBean.setStartTime(String.valueOf(itemBean.getStartTime()));
             footMarkTextBean.setEndTime(String.valueOf(itemBean.getEndTime()));
@@ -476,8 +476,8 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             footMarkTextBean1.setLatitude(point.getY());
             footMarkTextBean1.setLongitude(point.getX());
             footMarkTextBean1.setAltitude(point.getZ());
-            footMarkTextBean1.setAddr(TextUtils.isEmpty(itemBean.getStreetAddress())?"streetUnKnow":itemBean.getStreetAddress());
-            footMarkTextBean1.setDesc(TextUtils.isEmpty(itemBean.getFormatAddress())?"formatUnKnow":itemBean.getFormatAddress());
+            footMarkTextBean1.setAddr(TextUtils.isEmpty(itemBean.getStreetAddress()) ? "streetUnKnow" : itemBean.getStreetAddress());
+            footMarkTextBean1.setDesc(TextUtils.isEmpty(itemBean.getFormatAddress()) ? "formatUnKnow" : itemBean.getFormatAddress());
 
             footMarkTextBean1.setPointType(1);
             footMarkTextInfo.setPointPosition(footMarkTextBean1);

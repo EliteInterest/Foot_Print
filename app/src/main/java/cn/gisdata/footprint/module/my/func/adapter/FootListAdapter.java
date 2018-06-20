@@ -11,15 +11,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
+import java.util.List;
+
 import cn.gisdata.footprint.R;
 import cn.gisdata.footprint.module.foot.func.tool.ShareTool;
 import cn.gisdata.footprint.module.map.func.util.BaiduMapUtil;
 import cn.gisdata.footprint.module.my.bean.MyfootMarkEntity;
 import cn.gisdata.footprint.module.my.ui.FootListFragment;
 import cn.gisdata.footprint.util.DateUtil;
-import com.bumptech.glide.Glide;
-
-import java.util.List;
 
 /**
  * Created by fxs on 2018/5/30.
@@ -64,7 +65,7 @@ public class FootListAdapter extends RecyclerView.Adapter<FootListAdapter.MyHold
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     FootListFragment.isShareClick = true;
                     String url = dataList.get(position).getDetailsUrlPath();
-                    ShareTool.doShare(context, url);
+                    ShareTool.doShare(context, url, time);
                 }
                 return true;
             }

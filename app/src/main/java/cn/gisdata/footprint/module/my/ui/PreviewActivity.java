@@ -6,6 +6,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.zx.zxutils.util.ZXFragmentUtil;
+
+import butterknife.BindView;
+import butterknife.OnClick;
 import cn.gisdata.footprint.R;
 import cn.gisdata.footprint.base.BaseActivity;
 import cn.gisdata.footprint.module.foot.func.tool.ShareTool;
@@ -13,10 +17,6 @@ import cn.gisdata.footprint.module.foot.ui.WebViewFragment;
 import cn.gisdata.footprint.module.my.mvp.contract.PreviewContract;
 import cn.gisdata.footprint.module.my.mvp.model.PreviewModel;
 import cn.gisdata.footprint.module.my.mvp.presenter.PreviewPresenter;
-import com.zx.zxutils.util.ZXFragmentUtil;
-
-import butterknife.BindView;
-import butterknife.OnClick;
 
 
 /**
@@ -60,7 +60,7 @@ public class PreviewActivity extends BaseActivity<PreviewPresenter, PreviewModel
                 finish();
                 break;
             case R.id.tv_title_save:
-                ShareTool.doShare(this, url);
+                ShareTool.doShare(this, url, name);
                 break;
         }
     }

@@ -89,7 +89,7 @@
         android:hint="事件名称(必填)"
         android:singleLine="true"
         android:textSize="@dimen/text_size_normal"
-        android:visibility="gone"/>
+        android:visibility="visible"/>
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -3,7 +3,6 @@ package cn.gisdata.footprint.module.foot.func.tool;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 
-import cn.gisdata.footprint.R;
 import com.zx.zxutils.util.ZXBitmapUtil;
 import com.zx.zxutils.util.ZXSharedPrefUtil;
 import com.zx.zxutils.util.ZXToastUtil;
@@ -12,6 +11,7 @@ import com.zx.zxutils.views.BottomSheet.ZXBottomSheet;
 
 import java.util.HashMap;
 
+import cn.gisdata.footprint.R;
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.onekeyshare.OnekeyShare;
@@ -30,7 +30,7 @@ public class ShareTool {
 
     private static ZXBottomSheet bottomSheet;
 
-    public static void doShare(Context context, String url) {
+    public static void doShare(Context context, String url, String msg) {
         bottomSheet = ZXBottomSheet.initGrid(context)
                 .addItem("QQ", ContextCompat.getDrawable(context, R.mipmap.share_qq))
                 .addItem("QQ空间", ContextCompat.getDrawable(context, R.mipmap.share_qzone))
@@ -45,22 +45,22 @@ public class ShareTool {
                     public void onSheetItemClick(SheetData sheetData, int i) {
                         switch (i) {
                             case 0:
-                                showshare(context, QQ.NAME, url);
+                                showshare(context, QQ.NAME, url,msg);
                                 break;
                             case 1:
-                                showshare(context, QZone.NAME, url);
+                                showshare(context, QZone.NAME, url,msg);
                                 break;
                             case 2:
-                                showshare(context, SinaWeibo.NAME, url);
+                                showshare(context, SinaWeibo.NAME, url,msg);
                                 break;
                             case 3:
-                                showshare(context, Wechat.NAME, url);
+                                showshare(context, Wechat.NAME, url,msg);
                                 break;
                             case 4:
-                                showshare(context, WechatMoments.NAME, url);
+                                showshare(context, WechatMoments.NAME, url,msg);
                                 break;
                             case 5:
-                                showshare(context, WechatFavorite.NAME, url);
+                                showshare(context, WechatFavorite.NAME, url,msg);
                                 break;
                             default:
                                 break;
@@ -72,7 +72,7 @@ public class ShareTool {
 
     }
 
-    private static void showshare(Context context, String platForm, String url) {
+    private static void showshare(Context context, String platForm, String url, String msg) {
         ZXSharedPrefUtil zxSharedPrefUtil = new ZXSharedPrefUtil();
         OnekeyShare oks = new OnekeyShare();
         oks.setPlatform(platForm);
@@ -84,7 +84,7 @@ public class ShareTool {
         // titleUrl QQ和QQ空间跳转链接
         oks.setTitleUrl(url);
         // text是分享文本，所有平台都需要这个字段
-        oks.setText("我的足迹分享");
+        oks.setText(msg);
         // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
         if (zxSharedPrefUtil.contains("headPortraits")) {
             oks.setImageUrl(zxSharedPrefUtil.getString("headPortraits"));

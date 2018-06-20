@@ -90,7 +90,7 @@ public class RouteListAdapter extends RecyclerView.Adapter<RouteListAdapter.MyHo
                 {
                     RouteListFragment.isShareClick = true;
                     String url = dataList.get(position).getDetailsUrlPath();
-                    ShareTool.doShare(context, url);
+                    ShareTool.doShare(context, url, time);
                 }
                 return true;
             }
