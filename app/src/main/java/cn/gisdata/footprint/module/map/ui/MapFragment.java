@@ -125,14 +125,14 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
         imageLayer.setVisible(false);
         imageLabelLayer.setVisible(false);
         tianDiTuImageLayer.setVisible(false);
-        new Handler().postDelayed(() -> {
-            try {
-                GpsUtil.location(mMapView, getActivity());
-            } catch (Exception e) {
-                e.printStackTrace();
-                mMapView.zoomToScale(DEFAULTPOINT, DEFAULT_SCALE);
-            }
-        }, 500);
+//        new Handler().postDelayed(() -> {
+//            try {
+//                GpsUtil.location(mMapView, getActivity());
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//                mMapView.zoomToScale(DEFAULTPOINT, DEFAULT_SCALE);
+//            }
+//        }, 500);
     }
 
     @OnClick({R.id.iv_map_layer_vector, R.id.iv_map_layer_img, R.id.iv_map_location})

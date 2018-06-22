@@ -138,8 +138,10 @@ public class DraftFootBean implements Serializable {
             return filePaths;
         } else {
             List<String> paths = new ArrayList<>();
-            for (FilePathBean file : filePathBeans) {
-                paths.add(file.getPath());
+            if (filePathBeans != null && filePathBeans.size() > 0) {
+                for (FilePathBean file : filePathBeans) {
+                    paths.add(file.getPath());
+                }
             }
             return paths;
         }
