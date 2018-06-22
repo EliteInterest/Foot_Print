@@ -57,6 +57,7 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
     private MapOnTouchListener defaultListener;
 
     private TianDiTuLayer tianDiTuVectorLayer, tianDiTuImageLayer;
+    private TianDiTuLayer tianDiTuVectorLabelLayer, tianDiTuImageLabelLayer;
     private OnlineTileLayer vectorLayer, imageLayer, imageLabelLayer;
     private GraphicsLayer idenLayer = new GraphicsLayer();
 
@@ -106,8 +107,12 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
 
         tianDiTuVectorLayer = new TianDiTuLayer(TianDiTuLayerTypes.TIANDITU_VECTOR_2000);
         tianDiTuImageLayer = new TianDiTuLayer(TianDiTuLayerTypes.TIANDITU_IMAGE_2000);
+        tianDiTuVectorLabelLayer = new TianDiTuLayer(TianDiTuLayerTypes.TIANDITU_VECTOR_ANNOTATION_CHINESE_2000);
+        tianDiTuImageLabelLayer = new TianDiTuLayer(TianDiTuLayerTypes.TIANDITU_IMAGE_ANNOTATION_CHINESE_2000);
         mMapView.addLayer(tianDiTuVectorLayer);
         mMapView.addLayer(tianDiTuImageLayer);
+        mMapView.addLayer(tianDiTuVectorLabelLayer);
+        mMapView.addLayer(tianDiTuImageLabelLayer);
         List<MapUrlBean> mapUrlBeans = mSharedPrefUtil.getList("mapUrl");
         if (mapUrlBeans != null && mapUrlBeans.size() != 0) {
             for (MapUrlBean bean : mapUrlBeans) {
@@ -125,6 +130,7 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
         imageLayer.setVisible(false);
         imageLabelLayer.setVisible(false);
         tianDiTuImageLayer.setVisible(false);
+        tianDiTuImageLabelLayer.setVisible(false);
 //        new Handler().postDelayed(() -> {
 //            try {
 //                GpsUtil.location(mMapView, getActivity());
@@ -143,14 +149,18 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
                 imageLayer.setVisible(false);
                 imageLabelLayer.setVisible(false);
                 tianDiTuVectorLayer.setVisible(true);
+                tianDiTuVectorLabelLayer.setVisible(true);
                 tianDiTuImageLayer.setVisible(false);
+                tianDiTuImageLabelLayer.setVisible(false);
                 break;
             case R.id.iv_map_layer_img:
                 vectorLayer.setVisible(false);
                 imageLayer.setVisible(true);
                 imageLabelLayer.setVisible(true);
                 tianDiTuVectorLayer.setVisible(false);
+                tianDiTuVectorLabelLayer.setVisible(false);
                 tianDiTuImageLayer.setVisible(true);
+                tianDiTuImageLabelLayer.setVisible(true);
                 break;
             case R.id.iv_map_location:
                 try {

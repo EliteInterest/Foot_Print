@@ -50,7 +50,13 @@ public class FootListAdapter extends RecyclerView.Adapter<FootListAdapter.MyHold
         MyfootMarkEntity entity = dataList.get(position);
         String time = entity.getName() == null ? "" : entity.getName();
         holder.myName.setText(time);
-        String startTime = DateUtil.getDateFromMillis(Long.valueOf(entity.getStartTime()) * 1000);
+        String startTime = entity.getStartTime();
+        if (startTime.contains(".")) {
+            startTime = startTime.substring(0, startTime.indexOf(".")) + "000";
+        } else if (startTime.length() == 10) {
+            startTime = startTime + "000";
+        }
+        startTime = DateUtil.getDateFromMillis(startTime);
         holder.myTime.setText(startTime);
         int visitcount = entity.getVisitVolume();
         holder.myVisitCount.setText(visitcount + "次访问");

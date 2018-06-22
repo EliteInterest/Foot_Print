@@ -131,8 +131,8 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
                 footRouteTextInfoFootprint.setMileage(Float.valueOf(zxSharedPrefUtil.getString("Mileage")));
 //                footRouteTextInfoFootprint.setConsumptionTime(zxSharedPrefUtil.getString("ConsumptionTime"));
                 footRouteTextInfoFootprint.setConsumptionTime(footRecordView.getCountTime());
-                footRouteTextInfoFootprint.setStartTime(String.valueOf(zxSharedPrefUtil.getLong("record_start_time") / 1000));
-                footRouteTextInfoFootprint.setEndTime(String.valueOf(System.currentTimeMillis() / 1000));
+                footRouteTextInfoFootprint.setStartTime(String.valueOf(zxSharedPrefUtil.getLong("record_start_time")/1000));
+                footRouteTextInfoFootprint.setEndTime(String.valueOf(System.currentTimeMillis()/1000));
 
                 footRouteTextInfo.setFootprint(footRouteTextInfoFootprint);
 

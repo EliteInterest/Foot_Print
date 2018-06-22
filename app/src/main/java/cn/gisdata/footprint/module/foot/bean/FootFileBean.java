@@ -21,8 +21,8 @@ public class FootFileBean implements Serializable {
     private String vedioShootPath;
     private String vedioPath;
     private String textName;
-    private String startTime;
-    private String endTime;
+    private long startTime;
+    private long endTime;
     private String url;
     private String streetAddress;
     private String formatAddress;
@@ -89,19 +89,19 @@ public class FootFileBean implements Serializable {
         this.url = url;
     }
 
-    public String getStartTime() {
+    public long getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(String startTime) {
+    public void setStartTime(long startTime) {
         this.startTime = startTime;
     }
 
-    public String getEndTime() {
+    public long getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(String endTime) {
+    public void setEndTime(long endTime) {
         this.endTime = endTime;
     }
 

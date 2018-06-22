@@ -32,7 +32,7 @@ public class RouteListAdapter extends RecyclerView.Adapter<RouteListAdapter.MyHo
     private Context context;
     private Activity activity;
 
-    public RouteListAdapter(List<MyFootRouteEntity> dataList,Activity activity) {
+    public RouteListAdapter(List<MyFootRouteEntity> dataList, Activity activity) {
         this.dataList = dataList;
         this.activity = activity;
     }
@@ -50,7 +50,13 @@ public class RouteListAdapter extends RecyclerView.Adapter<RouteListAdapter.MyHo
         MyFootRouteEntity entity = dataList.get(position);
         String time = entity.getName() == null ? "" : entity.getName();
         holder.myName.setText(time);
-        String startTime = DateUtil.getDateFromMillis(Long.valueOf(entity.getStartTime()) * 1000);
+        String startTime = entity.getStartTime();
+        if (startTime.contains(".")) {
+            startTime = startTime.substring(0, startTime.indexOf(".")) + "000";
+        } else if (startTime.length() == 10) {
+            startTime = startTime + "000";
+        }
+        startTime = DateUtil.getDateFromMillis(startTime);
         holder.myTime.setText(startTime);
         int visitcount = entity.getVisitVolume();
         holder.myVisitCount.setText(visitcount + "次访问");
@@ -86,8 +92,7 @@ public class RouteListAdapter extends RecyclerView.Adapter<RouteListAdapter.MyHo
         holder.myShare.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction() == MotionEvent.ACTION_DOWN)
-                {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     RouteListFragment.isShareClick = true;
                     String url = dataList.get(position).getDetailsUrlPath();
                     ShareTool.doShare(context, url, time);
