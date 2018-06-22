@@ -339,7 +339,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
      * 根据类型进行保存
      */
     private void saveByType() {
-        itemBean.setEndTime(System.currentTimeMillis()/1000);
+        itemBean.setEndTime(System.currentTimeMillis());
         String pointString = point.getX() + "," + point.getY() + "," + point.getZ();
         itemBean.setPoint(pointString);
         itemBean.setDescription(etRemark.getText().toString());
@@ -379,6 +379,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             footMarkTextBean1.setAddr(TextUtils.isEmpty(itemBean.getStreetAddress()) ? "streetUnKnow" : itemBean.getStreetAddress());
             footMarkTextBean1.setDesc(TextUtils.isEmpty(itemBean.getFormatAddress()) ? "formatUnKnow" : itemBean.getFormatAddress());
             footMarkTextBean1.setPointType(2);
+            footMarkTextBean1.setName(etName.getText().toString());
             footMarkTextInfo.setPointPosition(footMarkTextBean1);
 
 
@@ -406,6 +407,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             map.put("file", files);
             draftFootBean = new DraftFootBean(ZXTimeUtil.getCurrentTime(), footMarkTextBean.Name, jsonsStr, filePaths, 2, pointString);
             mPresenter.commitFile(map);
+            showLoading("正在上传中...");
         } else if (editType == EditType.MapFootVedio) {//地图-足迹-视频
             itemBean.setVedioPath(vedioPath);
             itemBean.setVedioShootPath(vedioShootPath);
@@ -429,6 +431,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             footMarkTextBean1.setAddr(TextUtils.isEmpty(itemBean.getStreetAddress()) ? "streetUnKnow" : itemBean.getStreetAddress());
             footMarkTextBean1.setDesc(TextUtils.isEmpty(itemBean.getFormatAddress()) ? "formatUnKnow" : itemBean.getFormatAddress());
             footMarkTextBean1.setPointType(3);
+            footMarkTextBean1.setName(etName.getText().toString());
             footMarkTextInfo.setPointPosition(footMarkTextBean1);
 
 
@@ -438,13 +441,10 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             List<File> files = new ArrayList<>();
             List<String> filePaths = new ArrayList<>();
 
-//            for(FootFileBean.PicBean picBean : picChildBeans)
-//            {
             MediaInfos.add("图片描述");//test
             File file = new File(ConstStrings.getCachePath() + vedioPath);
             files.add(file);
             filePaths.add(ConstStrings.getCachePath() + vedioPath);
-//            }
 
             footMarkTextBean2.setMediaInfo(MediaInfos);
             footMarkTextInfo.setFileInfo(footMarkTextBean2);
@@ -457,6 +457,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             map.put("file", files);
             draftFootBean = new DraftFootBean(ZXTimeUtil.getCurrentTime(), footMarkTextBean.Name, jsonsStr, filePaths, 3, pointString);
             mPresenter.commitFile(map);
+            showLoading("正在上传中...");
         } else if (editType == EditType.MapFootText) {//地图-足迹-文本
 //            itemBean.setTextName(etName.getText().toString());
             //初始化JSON文本
@@ -478,8 +479,8 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             footMarkTextBean1.setAltitude(point.getZ());
             footMarkTextBean1.setAddr(TextUtils.isEmpty(itemBean.getStreetAddress()) ? "streetUnKnow" : itemBean.getStreetAddress());
             footMarkTextBean1.setDesc(TextUtils.isEmpty(itemBean.getFormatAddress()) ? "formatUnKnow" : itemBean.getFormatAddress());
-
             footMarkTextBean1.setPointType(1);
+            footMarkTextBean1.setName(etName.getText().toString());
             footMarkTextInfo.setPointPosition(footMarkTextBean1);
 
             FootMarkTextInfo.FootMarkTextBean3 footMarkTextBean3 = new FootMarkTextInfo.FootMarkTextBean3();
@@ -497,7 +498,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             map.put("uploadType", 1);
             draftFootBean = new DraftFootBean(ZXTimeUtil.getCurrentTime(), footMarkTextBean.Name, jsonsStr, null, 1, pointString);
             mPresenter.commitFile(map);
-
+            showLoading("正在上传中...");
         }
         ZXSystemUtil.closeKeybord(this);
     }
