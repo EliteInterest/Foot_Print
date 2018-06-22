@@ -4,6 +4,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -65,7 +66,7 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
     private GraphicsLayer idenLayer = new GraphicsLayer();
 
     private boolean isShowToPerson = true;
-
+    private boolean isSearchPoition = false;
     private Timer timer = new Timer();
 
     public static MapFragment newInstance() {
@@ -225,8 +226,10 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (msg.what == 0) {
-                Location location = GpsUtil.getLocation(getActivity()); 
                 double length = 0;
+                Location location = GpsUtil.getLocation(getActivity());
+                if(location == null)
+                    return;
                 if (lastLocation != null) {
                     Line line = new Line();
                     line.setStart(new Point(lastLocation.getLongitude(), lastLocation.getLatitude()));
@@ -234,12 +237,23 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
                     Polyline polyline = new Polyline();
                     polyline.addSegment(line, true);
                     length = GeometryEngine.geodesicLength(polyline, mMapView.getSpatialReference(), null) / 1000;
+
+                    if(length > 10)
+                    {
+                        lastLocation = location;
+                        isSearchPoition = false;
+                    }
+                }else
+                {
+                    lastLocation = location;
                 }
-                if ((lastLocation == null || length > 10) && location != null) {
+                if (!isSearchPoition) {
+                    Log.i("wangwansheng","isSearchPoition is " + isSearchPoition + "; length is " +length);
                     BaiduMapUtil.searchPoi(location.getLongitude(), location.getLatitude(), new BaiduMapUtil.OnBaiduSearchListener() {
                         @Override
                         public void onSearchBack(BaiduSearchBean baiduSearchBean) {
                             tvAddress.setText(baiduSearchBean.getResult().getFormatted_address());
+                            isSearchPoition = true;
                         }
 
                         @Override
@@ -290,7 +304,15 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
+        Log.i("wangwansheng","isVisibleToUser is " +isVisibleToUser);
         isShowToPerson = isVisibleToUser;
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+//        super.onHiddenChanged(hidden);
+        Log.i("wangwansheng","hidden is " +isShowToPerson);
+        isShowToPerson = hidden;
     }
 
     public FootRecordView getFootRecordView() {

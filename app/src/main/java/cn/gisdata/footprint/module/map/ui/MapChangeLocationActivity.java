@@ -39,6 +39,7 @@ public class MapChangeLocationActivity extends BaseActivity<MapChangeLocationPre
     private static final double DEFAULT_SCALE = 30000;
 
     private TianDiTuLayer tianDiTuVectorLayer;
+    private TianDiTuLayer tianDiTuVectorLabelLayer;
     private ArcGISTiledMapServiceLayer vectorLayer;
     private Point point;
 
@@ -81,10 +82,12 @@ public class MapChangeLocationActivity extends BaseActivity<MapChangeLocationPre
             }
         }
         tianDiTuVectorLayer = new TianDiTuLayer(TianDiTuLayerTypes.TIANDITU_VECTOR_2000);
+        tianDiTuVectorLabelLayer = new TianDiTuLayer(TianDiTuLayerTypes.TIANDITU_VECTOR_ANNOTATION_CHINESE_2000);
 //        if (vectorLayer == null) {
             mMapView.addLayer(tianDiTuVectorLayer);
 //        } else {
             mMapView.addLayer(vectorLayer);
+            mMapView.addLayer(tianDiTuVectorLabelLayer);
 //        }
     }
 
