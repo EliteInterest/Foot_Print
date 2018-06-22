@@ -110,6 +110,7 @@ public class FootRouteTextInfo implements Serializable {
         public String Addr;
         public String Desc;
         public int PointType;
+        public String Name;
 
         public String getPointId() {
             return PointId;
@@ -166,6 +167,14 @@ public class FootRouteTextInfo implements Serializable {
 
         public void setPointType(int pointType) {
             PointType = pointType;
+        }
+
+        public String getName() {
+            return Name;
+        }
+
+        public void setName(String name) {
+            Name = name;
         }
     }
 

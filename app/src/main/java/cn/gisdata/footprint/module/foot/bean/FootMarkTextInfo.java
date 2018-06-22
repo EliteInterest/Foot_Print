@@ -109,6 +109,7 @@ public class FootMarkTextInfo implements Serializable {
         public String Addr;
         public String Desc;
         public int PointType;
+        public String Name;
 
         public String getPointId() {
             return PointId;
@@ -165,6 +166,14 @@ public class FootMarkTextInfo implements Serializable {
 
         public void setPointType(int pointType) {
             PointType = pointType;
+        }
+
+        public String getName() {
+            return Name == null ? "":Name;
+        }
+
+        public void setName(String name) {
+            Name = name;
         }
     }
 
