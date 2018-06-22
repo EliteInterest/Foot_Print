@@ -225,7 +225,7 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (msg.what == 0) {
-                Location location = GpsUtil.getLocation(getActivity());
+                Location location = GpsUtil.getLocation(getActivity()); 
                 double length = 0;
                 if (lastLocation != null) {
                     Line line = new Line();
