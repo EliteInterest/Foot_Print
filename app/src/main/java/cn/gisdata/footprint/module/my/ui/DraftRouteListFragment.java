@@ -1,6 +1,9 @@
 package cn.gisdata.footprint.module.my.ui;
 
+import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +29,9 @@ import cn.gisdata.footprint.module.foot.func.tool.FootUtil;
 import cn.gisdata.footprint.module.foot.mvp.contract.FootContract;
 import cn.gisdata.footprint.module.foot.mvp.model.FootModel;
 import cn.gisdata.footprint.module.foot.mvp.presenter.FootPresenter;
+import cn.gisdata.footprint.module.map.bean.BaiduSearchBean;
+import cn.gisdata.footprint.module.map.func.util.BaiduMapUtil;
+import cn.gisdata.footprint.module.map.func.util.GpsUtil;
 import cn.gisdata.footprint.module.my.func.adapter.DraftListAdapter;
 
 /**
@@ -137,7 +143,7 @@ public class DraftRouteListFragment extends BaseFragment<FootPresenter, FootMode
 
     @Override
     public void onRouteCommitResult(String url) {
-        dismissLoading();
+//        dismissLoading();
         showToast("上传成功！");
         deleteDraft(uploadPosition);
     }
@@ -145,7 +151,7 @@ public class DraftRouteListFragment extends BaseFragment<FootPresenter, FootMode
     @Override
     public void onRouteCommitError()
     {
-        dismissLoading();
+//        dismissLoading();
         showToast("上传失败，请重试或删除后重新添加");
     }
 }

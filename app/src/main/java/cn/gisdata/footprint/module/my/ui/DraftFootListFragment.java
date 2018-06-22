@@ -1,6 +1,8 @@
 package cn.gisdata.footprint.module.my.ui;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -140,18 +142,22 @@ public class DraftFootListFragment extends BaseFragment<EditInfoPresenter, EditI
         Map<String, Object> map = new HashMap<>();
         map.put("FootmarkInfo", draftFootBean.getMarkInfoJson());
         map.put("uploadType", draftFootBean.getUploadType());
-        List<File> files = new ArrayList<>();
-        if (draftFootBean.getFilePaths() != null && draftFootBean.getFilePaths().size() > 0) {
-            for (String path : draftFootBean.getFilePaths()) {
-                File file = new File(path);
-                if (file.exists()) {
-                    files.add(file);
+
+        if (draftFootBean.getUploadType() != 1) {
+            List<File> files = new ArrayList<>();
+            if (draftFootBean.getFilePaths() != null && draftFootBean.getFilePaths().size() > 0) {
+                for (String path : draftFootBean.getFilePaths()) {
+                    File file = new File(path);
+                    if (file.exists()) {
+                        files.add(file);
+                    }
                 }
             }
+            if (files.size() > 0) {
+                map.put("file", files);
+            }
         }
-        if (files.size() > 0) {
-            map.put("file", files);
-        }
+
         mPresenter.commitFile(map);
         showLoading("正在上传中...");
     }
@@ -172,14 +178,14 @@ public class DraftFootListFragment extends BaseFragment<EditInfoPresenter, EditI
 
     @Override
     public void onFileCommitResult(String result) {
-        dismissLoading();
+//        dismissLoading();
         showToast("上传成功！");
         deleteDraft(uploadPosition);
     }
 
     @Override
     public void onFileCommitError() {
-        dismissLoading();
+//        dismissLoading();
         showToast("上传失败，请重试或删除后重新添加");
     }
 }

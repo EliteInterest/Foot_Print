@@ -218,6 +218,7 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
                                         filePathBeans.add(new DraftFootBean.FilePathBean(ConstStrings.getCachePath() + bean.getVedioPath(), 3));
                                     }
                                     footRouteTextInfoPointPositions.setPointType(uploadType);
+                                    footRouteTextInfoPointPositions.setName(bean.getTextName());
                                     footRouteTextInfoPointPositionsList.add(footRouteTextInfoPointPositions);
                                 }
 
@@ -269,6 +270,7 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
                                 }
                                 draftFootBean = new DraftFootBean(ZXTimeUtil.getCurrentTime(), etRouteName.getText().toString(), footprintInfo, textInfo, pathInfo, saveInfo, filePathBeans);
                                 mPresenter.commitRoute(map);
+                                showLoading("正在上传中...");
                                 return;
 
                             case -1:
@@ -312,6 +314,7 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
 
     @Override
     public void onRouteCommitError() {
+        dismissLoading();
         showToast("上传失败，已收至草稿箱");
         if (!zxSharedPrefUtil.contains(ConstStrings.DraftFootList)) {
             zxSharedPrefUtil.putList(ConstStrings.DraftFootList, new ArrayList<>());

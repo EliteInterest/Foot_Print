@@ -40,7 +40,7 @@ public class FootFileBean implements Serializable {
         this.id = UUID.randomUUID().toString().substring(0, 10);
     }
 
-    public FootFileBean(String point, String description,  List<PicBean> picPaths) {
+    public FootFileBean(String point, String description, List<PicBean> picPaths) {
         this.point = point;
         this.description = description;
         this.picPaths = picPaths;
@@ -57,7 +57,7 @@ public class FootFileBean implements Serializable {
         this.id = UUID.randomUUID().toString().substring(0, 10);
     }
 
-    public FootFileBean(String point, String description,  String textName) {
+    public FootFileBean(String point, String description, String textName) {
         this.point = point;
         this.description = description;
         this.textName = textName;
@@ -184,7 +184,7 @@ public class FootFileBean implements Serializable {
     }
 
     public String getTextName() {
-        return textName;
+        return textName == null ? "" : textName;
     }
 
     public void setTextName(String textName) {
