@@ -13,7 +13,10 @@ import com.esri.android.map.MapOnTouchListener;
 import com.esri.android.map.MapView;
 import com.esri.android.map.event.OnStatusChangedListener;
 import com.esri.android.runtime.ArcGISRuntime;
+import com.esri.core.geometry.GeometryEngine;
+import com.esri.core.geometry.Line;
 import com.esri.core.geometry.Point;
+import com.esri.core.geometry.Polyline;
 
 import java.util.List;
 import java.util.Timer;
@@ -61,6 +64,8 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
     private OnlineTileLayer vectorLayer, imageLayer, imageLabelLayer;
     private GraphicsLayer idenLayer = new GraphicsLayer();
 
+    private boolean isShowToPerson = true;
+
     private Timer timer = new Timer();
 
     public static MapFragment newInstance() {
@@ -84,9 +89,11 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                handler.sendEmptyMessage(0);
+                if (isShowToPerson) {
+                    handler.sendEmptyMessage(0);
+                }
             }
-        }, 100, 1000 * 10);
+        }, 100, 2000 * 10);
         mRxManager.on("destory", (Action1<Boolean>) aBoolean -> {
             if (footRecordView != null) {
                 footRecordView.onDestory();
@@ -117,9 +124,9 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
         if (mapUrlBeans != null && mapUrlBeans.size() != 0) {
             for (MapUrlBean bean : mapUrlBeans) {
                 if (bean.getType() == 1) {//矢量
-                    vectorLayer = new OnlineTileLayer(getActivity(), bean.getMapUrl(),"vector_layer");
+                    vectorLayer = new OnlineTileLayer(getActivity(), bean.getMapUrl(), "vector_layer");
                 } else if (bean.getType() == 2) {
-                    imageLayer = new OnlineTileLayer(getActivity(), bean.getMapUrl(),"image_layer");
+                    imageLayer = new OnlineTileLayer(getActivity(), bean.getMapUrl(), "image_layer");
                     imageLabelLayer = new OnlineTileLayer(getActivity(), bean.getLabelUrl(), "image_lable_layer");
                 }
             }
@@ -212,24 +219,34 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
     };
 
 
+    private Location lastLocation = null;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (msg.what == 0) {
                 Location location = GpsUtil.getLocation(getActivity());
-                if (location != null) {
+                double length = 0;
+                if (lastLocation != null) {
+                    Line line = new Line();
+                    line.setStart(new Point(lastLocation.getLongitude(), lastLocation.getLatitude()));
+                    line.setEnd(new Point(location.getLongitude(), location.getLatitude()));
+                    Polyline polyline = new Polyline();
+                    polyline.addSegment(line, true);
+                    length = GeometryEngine.geodesicLength(polyline, mMapView.getSpatialReference(), null) / 1000;
+                }
+                if ((lastLocation == null || length > 10) && location != null) {
                     BaiduMapUtil.searchPoi(location.getLongitude(), location.getLatitude(), new BaiduMapUtil.OnBaiduSearchListener() {
-                                @Override
-                                public void onSearchBack(BaiduSearchBean baiduSearchBean) {
-                                    tvAddress.setText(baiduSearchBean.getResult().getFormatted_address());
-                                }
+                        @Override
+                        public void onSearchBack(BaiduSearchBean baiduSearchBean) {
+                            tvAddress.setText(baiduSearchBean.getResult().getFormatted_address());
+                        }
 
-                                @Override
-                                public void onSearchError() {
+                        @Override
+                        public void onSearchError() {
 
-                                }
-                            });
+                        }
+                    });
                 }
             }
         }
@@ -258,7 +275,7 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
     public void onResume() {
         super.onResume();
         mMapView.unpause();
-    } 
+    }
 
 
     @Override
@@ -268,6 +285,12 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
         if (footRecordView != null) {
             footRecordView.onDestory();
         }
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        isShowToPerson = isVisibleToUser;
     }
 
     public FootRecordView getFootRecordView() {

@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/FootPrint.iml" filepath="$PROJECT_DIR$/FootPrint.iml" />
       <module fileurl="file://$PROJECT_DIR$/Foot_Print.iml" filepath="$PROJECT_DIR$/Foot_Print.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zxmvp/zxmvp.iml" filepath="$PROJECT_DIR$/zxmvp/zxmvp.iml" />
       <module fileurl="file://$PROJECT_DIR$/zxmvp/zxmvp.iml" filepath="$PROJECT_DIR$/zxmvp/zxmvp.iml" />
     </modules>
   </component>
