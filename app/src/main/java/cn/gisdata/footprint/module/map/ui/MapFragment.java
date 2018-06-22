@@ -258,7 +258,7 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
     public void onResume() {
         super.onResume();
         mMapView.unpause();
-    }
+    } 
 
 
     @Override
