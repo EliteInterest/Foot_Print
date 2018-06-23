@@ -4,13 +4,18 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.OnClick;
 import cn.gisdata.footprint.R;
 import cn.gisdata.footprint.api.ApiParamUtil;
 import cn.gisdata.footprint.base.BaseActivity;
@@ -18,19 +23,6 @@ import cn.gisdata.footprint.module.my.bean.IntegralEntity;
 import cn.gisdata.footprint.module.my.mvp.contract.IntegralContract;
 import cn.gisdata.footprint.module.my.mvp.model.IntegralModel;
 import cn.gisdata.footprint.module.my.mvp.presenter.IntegralPresenter;
-import com.zx.zxutils.other.ZXRecyclerAdapter.RvHolder;
-import com.zx.zxutils.other.ZXRecyclerAdapter.ZXRecycleAdapter;
-import com.zx.zxutils.other.ZXRecyclerAdapter.ZXRecycleSimpleAdapter;
-import com.zx.zxutils.other.ZXRecyclerAdapter.ZxRvHolder;
-import com.zx.zxutils.util.ZXToastUtil;
-import com.zx.zxutils.views.SwipeRecylerView.ZXSRListener;
-import com.zx.zxutils.views.SwipeRecylerView.ZXSwipeRecyler;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import butterknife.BindView;
-import butterknife.OnClick;
 
 
 /**
@@ -38,11 +30,11 @@ import butterknife.OnClick;
  * 功能：
  */
 public class IntegralActivity extends BaseActivity<IntegralPresenter, IntegralModel> implements IntegralContract.View {
-    private ZXRecycleSimpleAdapter recyclerAdapter;
+    private RecyclerView.Adapter recyclerAdapter;
     private List<IntegralEntity.DetailsBean> adapterList = new ArrayList();
 
     @BindView(R.id.mine_integral_detail_content)
-    ZXSwipeRecyler swipeRecyler;
+    RecyclerView recyclerView;
 
     @BindView(R.id.mine_integral_content)
     TextView mineIntegalCount;
@@ -71,6 +63,7 @@ public class IntegralActivity extends BaseActivity<IntegralPresenter, IntegralMo
     @BindView(R.id.TVLogin)
     TextView tvLogin;
 
+    private MyAdapter myAdapter;
 
     public static void startAction(Activity activity, boolean isFinish) {
         Intent intent = new Intent(activity, IntegralActivity.class);
@@ -85,68 +78,10 @@ public class IntegralActivity extends BaseActivity<IntegralPresenter, IntegralMo
 
     @Override
     public void initView(Bundle savedInstanceState) {
-        recyclerAdapter = new ZXRecycleSimpleAdapter() {
-            @Override
-            public RecyclerView.ViewHolder onItemHolder(ViewGroup viewGroup, int i) {
-                View view;
-                view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_integral, viewGroup, false);
-                RvHolder holder = new RvHolder(view);
-                return holder;
-            }
 
-            @Override
-            public void onBindHolder(RecyclerView.ViewHolder viewHolder, int i) {
-                if(RvHolder.class.isInstance(viewHolder))
-                {
-                    RvHolder holder = (RvHolder) viewHolder;
-                    ZxRvHolder zxRvHolder = holder.getViewHolder();
-                    List<IntegralEntity.DetailsBean> dataList = (List<IntegralEntity.DetailsBean>) recyclerAdapter.getDataList();
-                    IntegralEntity.DetailsBean info = dataList.get(i);
-                    TextView loginTime = zxRvHolder.getTextView(R.id.item_integral_time);
-                    TextView loginCount = zxRvHolder.getTextView(R.id.item_integral_count);
-
-                    String time = info.getRecodeTime() == null ? "" : info.getRecodeTime();
-                    int count = info.getIntegral();
-
-                    loginTime.setText(time);
-                    loginCount.setText("+" + count);
-                }
-            }
-
-            @Override
-            public List<?> onItemList() {
-                return adapterList;
-            }
-        };
-
-        swipeRecyler.setSimpleAdapter(recyclerAdapter)
-                .showLoadInfo(true)
-                .setSRListener(new ZXSRListener<IntegralEntity.DetailsBean>() {
-                    @Override
-                    public void onItemClick(IntegralEntity.DetailsBean o, int i) {
-//                        ZXToastUtil.showToast("点击:" + o.toString());
-                    }
-
-                    @Override
-                    public void onItemLongClick(IntegralEntity.DetailsBean o, int i) {
-//                        ZXToastUtil.showToast("长按:" + o.toString());
-                    }
-
-                    @Override
-                    public void onRefresh() {
-                        showLoading("正在获取积分");
-                        String userId = mSharedPrefUtil.getString("userId");
-                        mPresenter.doRequestintegralInfo(ApiParamUtil.getUserDataInfo(userId));
-                    }
-
-                    @Override
-                    public void onLoadMore() {
-                        showLoading("正在获取积分");
-                        String userId = mSharedPrefUtil.getString("userId");
-                        mPresenter.doRequestintegralInfo(ApiParamUtil.getUserDataInfo(userId));
-                    }
-                });
-
+        myAdapter = new MyAdapter();
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(myAdapter);
 
         showLoading("正在获取积分");
         String userId = mSharedPrefUtil.getString("userId");
@@ -188,9 +123,47 @@ public class IntegralActivity extends BaseActivity<IntegralPresenter, IntegralMo
 
         mineIntegalCount.setText(String.valueOf(login + count + foot * 10 + visit));//总积分
 
+        adapterList.clear();
         adapterList.addAll(integralEntity.getDetailsInfo());
-        swipeRecyler.stopRefresh();
-        swipeRecyler.notifyDataSetChanged();
-        swipeRecyler.setLoadInfo(50);//total size
+        myAdapter.notifyDataSetChanged();
+    }
+
+    class MyAdapter extends RecyclerView.Adapter<MyHolder> {
+        @NonNull
+        @Override
+        public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_integral, parent, false);
+            return new MyHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull MyHolder holder, int position) {
+            IntegralEntity.DetailsBean info = adapterList.get(position);
+
+            String time = info.getRecodeTime() == null ? "" : info.getRecodeTime();
+            int count = info.getIntegral();
+
+            holder.loginTime.setText(time);
+            holder.loginCount.setText("+" + count);
+        }
+
+        @Override
+        public int getItemCount() {
+            return adapterList.size();
+        }
+
+    };
+
+    class MyHolder extends RecyclerView.ViewHolder{
+
+
+        public TextView loginTime;
+        public TextView loginCount;
+
+        public MyHolder(View itemView) {
+            super(itemView);
+            loginTime = itemView.findViewById(R.id.item_integral_time);
+            loginCount = itemView.findViewById(R.id.item_integral_count);
+        }
     }
 }

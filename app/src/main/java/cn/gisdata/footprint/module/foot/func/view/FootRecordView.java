@@ -248,17 +248,19 @@ public class FootRecordView extends RelativeLayout {
             tvTabDate.setText(ZXTimeUtil.getTime(lastCurrentTime) + " " + ZXTimeUtil.dateToWeek(lastCurrentTime).replace("周", "星期"));
             countTime = (int) ((nowCurrentTime - lastCurrentTime) / 1000);
             mPoints = zxSharedPrefUtil.getList(ConstStrings.RECORD_POINTS);
-            for (int i = 0; i < mPoints.size() - 1; i++) {
-                Line line = new Line();
-                line.setStart(mPoints.get(i));
-                line.setEnd(mPoints.get(i + 1));
-                Polyline polyline = new Polyline();
-                polyline.addSegment(line, true);
-                Graphic lineGraphic = new Graphic(polyline, lineSymbol);
-                mGraphicList.add(lineGraphic);
-                routeLayer.addGraphic(lineGraphic);
-                double length = GeometryEngine.geodesicLength(polyline, mapView.getSpatialReference(), null);
-                countSize += length / 1000;
+            if (mPoints != null && mPoints.size() > 0) {
+                for (int i = 0; i < mPoints.size() - 1; i++) {
+                    Line line = new Line();
+                    line.setStart(mPoints.get(i));
+                    line.setEnd(mPoints.get(i + 1));
+                    Polyline polyline = new Polyline();
+                    polyline.addSegment(line, true);
+                    Graphic lineGraphic = new Graphic(polyline, lineSymbol);
+                    mGraphicList.add(lineGraphic);
+                    routeLayer.addGraphic(lineGraphic);
+                    double length = GeometryEngine.geodesicLength(polyline, mapView.getSpatialReference(), null);
+                    countSize += length / 1000;
+                }
             }
             DecimalFormat df = new DecimalFormat("#.00");
             tvTabCountSize.setText(df.format(countSize).startsWith(".") ? "0" + df.format(countSize) : df.format(countSize));

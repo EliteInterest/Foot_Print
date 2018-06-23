@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:background="@color/light_gray"
-                android:orientation="vertical">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/light_gray"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/mine_integral_title"
@@ -17,7 +17,7 @@
             android:layout_height="30dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:background="@mipmap/title_back"/>
+            android:background="@mipmap/title_back" />
 
         <TextView
             android:id="@+id/personal_edit_title"
@@ -26,7 +26,7 @@
             android:layout_centerInParent="true"
             android:text="我的积分"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_size_large"/>
+            android:textSize="@dimen/text_size_large" />
 
     </RelativeLayout>
 
@@ -48,7 +48,7 @@
             android:layout_marginRight="50dp"
             android:layout_toLeftOf="@+id/mine_integral_content"
             android:text="积分"
-            android:textSize="@dimen/text_size_large"/>
+            android:textSize="@dimen/text_size_large" />
 
         <TextView
             android:id="@+id/mine_integral_content"
@@ -57,7 +57,7 @@
             android:layout_centerInParent="true"
             android:text="0"
             android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/text_size_normal"/>
+            android:textSize="@dimen/text_size_normal" />
 
     </RelativeLayout>
 
@@ -92,11 +92,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="路线"
-                android:textSize="@dimen/text_size_normal"/>
+                android:textSize="@dimen/text_size_normal" />
 
             <View
                 android:layout_width="fill_parent"
-                android:layout_height="10dp"/>
+                android:layout_height="10dp" />
 
             <TextView
                 android:id="@+id/RouteCount"
@@ -105,7 +105,7 @@
                 android:layout_gravity="center"
                 android:text="+0"
                 android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/text_size_normal"/>
+                android:textSize="@dimen/text_size_normal" />
         </LinearLayout>
 
         <LinearLayout
@@ -125,11 +125,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="脚印"
-                android:textSize="@dimen/text_size_normal"/>
+                android:textSize="@dimen/text_size_normal" />
 
             <View
                 android:layout_width="fill_parent"
-                android:layout_height="10dp"/>
+                android:layout_height="10dp" />
 
             <TextView
                 android:id="@+id/FootmarkCount"
@@ -138,7 +138,7 @@
                 android:layout_gravity="center"
                 android:text="+0"
                 android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/text_size_normal"/>
+                android:textSize="@dimen/text_size_normal" />
         </LinearLayout>
 
         <LinearLayout
@@ -160,11 +160,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="访问"
-                android:textSize="@dimen/text_size_normal"/>
+                android:textSize="@dimen/text_size_normal" />
 
             <View
                 android:layout_width="fill_parent"
-                android:layout_height="10dp"/>
+                android:layout_height="10dp" />
 
             <TextView
                 android:id="@+id/VisitVolumel"
@@ -173,7 +173,7 @@
                 android:layout_gravity="center"
                 android:text="+0"
                 android:textColor="@color/colorPrimary"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -195,11 +195,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="登录"
-                android:textSize="@dimen/text_size_normal"/>
+                android:textSize="@dimen/text_size_normal" />
 
             <View
                 android:layout_width="fill_parent"
-                android:layout_height="10dp"/>
+                android:layout_height="10dp" />
 
             <TextView
                 android:id="@+id/IntegralCount"
@@ -208,7 +208,7 @@
                 android:layout_gravity="center"
                 android:text="+0"
                 android:textColor="@color/colorPrimary"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
         </LinearLayout>
     </GridLayout>
 
@@ -232,14 +232,13 @@
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/px20"
             android:text="积分明细"
-            android:textSize="@dimen/text_size_normal"/>
+            android:textSize="@dimen/text_size_normal" />
 
-        <com.zx.zxutils.views.SwipeRecylerView.ZXSwipeRecyler
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/mine_integral_detail_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/mine_integral_detail_tile">
-        </com.zx.zxutils.views.SwipeRecylerView.ZXSwipeRecyler>
+            android:layout_below="@+id/mine_integral_detail_tile" />
 
     </RelativeLayout>
 </RelativeLayout>

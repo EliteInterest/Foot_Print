@@ -122,6 +122,10 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
         zxSharedPrefUtil = new ZXSharedPrefUtil();
         editType = (EditType) getIntent().getSerializableExtra("type");
         Location location = GpsUtil.getLocation(this);
+        if (location == null) {
+            showToast("获取坐标信息失败，请检查后再试");
+            finish();
+        }
         itemBean = new FootFileBean();
 
         footFiles = mSharedPrefUtil.getList(ConstStrings.FootFiles);
@@ -367,8 +371,8 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             footMarkTextBean.setName(TextUtils.isEmpty(itemBean.getStreetAddress()) ? "streetUnKnow" : itemBean.getStreetAddress());
             footMarkTextBean.setDesc(TextUtils.isEmpty(itemBean.getFormatAddress()) ? "formatUnKnow" : itemBean.getFormatAddress());
             footMarkTextBean.setConsumptionTime("0");
-            footMarkTextBean.setStartTime(String.valueOf(System.currentTimeMillis()/1000));
-            footMarkTextBean.setEndTime(String.valueOf(System.currentTimeMillis()/1000));
+            footMarkTextBean.setStartTime(String.valueOf(System.currentTimeMillis() / 1000));
+            footMarkTextBean.setEndTime(String.valueOf(System.currentTimeMillis() / 1000));
             footMarkTextInfo.setFootprint(footMarkTextBean);
 
             FootMarkTextInfo.FootMarkTextBean1 footMarkTextBean1 = new FootMarkTextInfo.FootMarkTextBean1();
@@ -419,8 +423,8 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             footMarkTextBean.setName(TextUtils.isEmpty(itemBean.getStreetAddress()) ? "streetUnKnow" : itemBean.getStreetAddress());
             footMarkTextBean.setDesc(TextUtils.isEmpty(itemBean.getFormatAddress()) ? "formatUnKnow" : itemBean.getFormatAddress());
             footMarkTextBean.setConsumptionTime("0");
-            footMarkTextBean.setStartTime(String.valueOf(itemBean.getStartTime()/1000));
-            footMarkTextBean.setEndTime(String.valueOf(itemBean.getEndTime()/1000));
+            footMarkTextBean.setStartTime(String.valueOf(itemBean.getStartTime() / 1000));
+            footMarkTextBean.setEndTime(String.valueOf(itemBean.getEndTime() / 1000));
             footMarkTextInfo.setFootprint(footMarkTextBean);
 
             FootMarkTextInfo.FootMarkTextBean1 footMarkTextBean1 = new FootMarkTextInfo.FootMarkTextBean1();
@@ -468,8 +472,8 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             footMarkTextBean.setName(TextUtils.isEmpty(itemBean.getStreetAddress()) ? "streetUnKnow" : itemBean.getStreetAddress());
             footMarkTextBean.setDesc(TextUtils.isEmpty(itemBean.getFormatAddress()) ? "formatUnKnow" : itemBean.getFormatAddress());
             footMarkTextBean.setConsumptionTime("0");
-            footMarkTextBean.setStartTime(String.valueOf(itemBean.getStartTime()/1000));
-            footMarkTextBean.setEndTime(String.valueOf(itemBean.getEndTime()/1000));
+            footMarkTextBean.setStartTime(String.valueOf(itemBean.getStartTime() / 1000));
+            footMarkTextBean.setEndTime(String.valueOf(itemBean.getEndTime() / 1000));
             footMarkTextInfo.setFootprint(footMarkTextBean);
 
             FootMarkTextInfo.FootMarkTextBean1 footMarkTextBean1 = new FootMarkTextInfo.FootMarkTextBean1();
