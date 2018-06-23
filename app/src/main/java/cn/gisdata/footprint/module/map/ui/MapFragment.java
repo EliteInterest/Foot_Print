@@ -4,7 +4,6 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -39,6 +38,7 @@ import cn.gisdata.footprint.module.map.func.view.OnlineTileLayer;
 import cn.gisdata.footprint.module.map.mvp.contract.MapContract;
 import cn.gisdata.footprint.module.map.mvp.model.MapModel;
 import cn.gisdata.footprint.module.map.mvp.presenter.MapPresenter;
+import cn.gisdata.footprint.module.system.ui.MainActivity;
 import rx.functions.Action1;
 
 /**
@@ -90,7 +90,7 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                if (isShowToPerson) {
+                if (isShowToPerson && MainActivity.tvpMain.getSelectedPosition() == 0) {
                     handler.sendEmptyMessage(0);
                 }
             }
@@ -248,7 +248,6 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
                     lastLocation = location;
                 }
                 if (!isSearchPoition) {
-                    Log.i("wangwansheng","isSearchPoition is " + isSearchPoition + "; length is " +length);
                     BaiduMapUtil.searchPoi(location.getLongitude(), location.getLatitude(), new BaiduMapUtil.OnBaiduSearchListener() {
                         @Override
                         public void onSearchBack(BaiduSearchBean baiduSearchBean) {
@@ -283,12 +282,14 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
     public void onPause() {
         super.onPause();
         mMapView.pause();
+        isShowToPerson = false;
     }
 
     @Override
     public void onResume() {
         super.onResume();
         mMapView.unpause();
+        isShowToPerson = true;
     }
 
 
@@ -304,14 +305,12 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        Log.i("wangwansheng","isVisibleToUser is " +isVisibleToUser);
         isShowToPerson = isVisibleToUser;
     }
 
     @Override
     public void onHiddenChanged(boolean hidden) {
-//        super.onHiddenChanged(hidden);
-        Log.i("wangwansheng","hidden is " +isShowToPerson);
+        super.onHiddenChanged(hidden);
         isShowToPerson = hidden;
     }
 

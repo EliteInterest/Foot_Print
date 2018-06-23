@@ -31,8 +31,8 @@ import butterknife.BindView;
  */
 public class MainActivity extends BaseActivity<MainPresenter, MainModel> implements MainContract.View {
 
-    @BindView(R.id.tvp_main)
-    ZXTabViewPager tvpMain;
+//    @BindView(R.id.tvp_main)
+    public static ZXTabViewPager tvpMain;
 
     private FootFragment footFragment;
 
@@ -50,6 +50,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
     @Override
     public void initView(Bundle savedInstanceState) {
 //        mPresenter.getVersionInfo(ApiParamUtil.getVersionUpdateDataInfo(ZXSystemUtil.getVersionName()));
+        tvpMain = findViewById(R.id.tvp_main);
         footFragment = FootFragment.newInstance();
         tvpMain.setManager(getSupportFragmentManager())
                 .setTabLayoutGravity(ZXTabViewPager.TabGravity.GRAVITY_BOTTOM)
