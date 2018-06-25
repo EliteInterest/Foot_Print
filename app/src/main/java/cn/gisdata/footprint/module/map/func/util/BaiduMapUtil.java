@@ -23,7 +23,9 @@ import rx.functions.Func1;
  */
 public class BaiduMapUtil {
 
-    private static String ak = "WUSFaSubKbTnqf5tylC7awzDhZ5sKjNi";
+//    private static String ak = "WUSFaSubKbTnqf5tylC7awzDhZ5sKjNi";
+    private static String ak = "5OBCNS1Or059Fns48ooP3OhQ44zI9q2Q";
+
 
     public static String getStaticBitmapPath(double longitude, double latitude) {
         String point = longitude + "," + latitude;
@@ -124,7 +126,8 @@ public class BaiduMapUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return (isDebug ? "75:05:81:E9:7D:22:22:90:3C:1B:AD:D3:72:26:55:0C:A6:80:64:5E" : "7C:84:99:A0:B0:6F:A9:35:31:BF:C4:CE:45:67:7F:EB:99:01:FE:55") + ";" + ZXSystemUtil.getPackageName();
+//        return (isDebug ? "75:05:81:E9:7D:22:22:90:3C:1B:AD:D3:72:26:55:0C:A6:80:64:5E" : "7C:84:99:A0:B0:6F:A9:35:31:BF:C4:CE:45:67:7F:EB:99:01:FE:55") + ";" + ZXSystemUtil.getPackageName();
+        return (isDebug ? "75:05:81:E9:7D:22:22:90:3C:1B:AD:D3:72:26:55:0C:A6:80:64:5E" : "68:85:38:19:38:BA:53:91:2F:98:B0:81:63:4D:B4:4C:9E:49:8E:4C") + ";" + ZXSystemUtil.getPackageName();
     }
 
 }

@@ -67,6 +67,7 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
 
     private boolean isShowToPerson = true;
     private boolean isSearchPoition = false;
+    private int lastTabId = -1;
     private Timer timer = new Timer();
 
     public static MapFragment newInstance() {
@@ -90,11 +91,18 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                if (isShowToPerson && MainActivity.tvpMain.getSelectedPosition() == 0) {
-                    handler.sendEmptyMessage(0);
+//                if (isShowToPerson) {
+                int currentId = MainActivity.tvpMain.getSelectedPosition();
+                if(currentId != lastTabId)
+                {
+                    if(currentId == 0)
+                        isSearchPoition = false;
+                    lastTabId = currentId;
                 }
+                    handler.sendEmptyMessage(0);
+//                }
             }
-        }, 100, 2000 * 10);
+        }, 100, 1000 * 10);
         mRxManager.on("destory", (Action1<Boolean>) aBoolean -> {
             if (footRecordView != null) {
                 footRecordView.onDestory();
@@ -247,6 +255,7 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
                 {
                     lastLocation = location;
                 }
+
                 if (!isSearchPoition) {
                     BaiduMapUtil.searchPoi(location.getLongitude(), location.getLatitude(), new BaiduMapUtil.OnBaiduSearchListener() {
                         @Override
@@ -290,6 +299,7 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
         super.onResume();
         mMapView.unpause();
         isShowToPerson = true;
+        isSearchPoition = false;
     }
 
 
