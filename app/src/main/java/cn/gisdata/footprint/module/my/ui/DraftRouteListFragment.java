@@ -1,19 +1,24 @@
 package cn.gisdata.footprint.module.my.ui;
 
-import android.location.Location;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.zx.zxutils.util.ZXDialogUtil;
 import com.zx.zxutils.views.RecylerMenu.ZXRecyclerDeleteHelper;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,9 +34,7 @@ import cn.gisdata.footprint.module.foot.func.tool.FootUtil;
 import cn.gisdata.footprint.module.foot.mvp.contract.FootContract;
 import cn.gisdata.footprint.module.foot.mvp.model.FootModel;
 import cn.gisdata.footprint.module.foot.mvp.presenter.FootPresenter;
-import cn.gisdata.footprint.module.map.bean.BaiduSearchBean;
 import cn.gisdata.footprint.module.map.func.util.BaiduMapUtil;
-import cn.gisdata.footprint.module.map.func.util.GpsUtil;
 import cn.gisdata.footprint.module.my.func.adapter.DraftListAdapter;
 
 /**
@@ -91,35 +94,76 @@ public class DraftRouteListFragment extends BaseFragment<FootPresenter, FootMode
                 ZXDialogUtil.showYesNoDialog(getActivity(), "提示", "是否重新上传?", (dialog, which) -> {
                     uploadPosition = position;
                     DraftFootBean bean = routeDraft.get(position);
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("FootprintInfo", bean.getRouteInfoJson());
-                    if (!TextUtils.isEmpty(bean.getTextInfoJson())) {
-                        map.put("TextInfo", bean.getTextInfoJson());
-                    }
-                    map.put("PathInfo", bean.getPathInfoJson());
-                    if (!TextUtils.isEmpty(bean.getSaveInfoJson())) {
-                        map.put("SaveInfo", bean.getSaveInfoJson());
-                    }
-                    List<FootRouteTextInfo.FootRouteFileInfo> mediaFiles = new ArrayList<>();
-                    if (bean.getFilePathBeans() != null && bean.getFilePathBeans().size() > 0) {
-                        for (DraftFootBean.FilePathBean fileBean : bean.getFilePathBeans()) {
-                            FootRouteTextInfo.FootRouteFileInfo fileInfo = new FootRouteTextInfo.FootRouteFileInfo();
-                            File file = new File(fileBean.getPath());
-                            if (file.exists()) {
-                                fileInfo.setMediaFile(new File(fileBean.getPath()));
-                                fileInfo.setFileType(fileBean.getType());
-                                mediaFiles.add(fileInfo);
+                    String[] point = bean.getPoint().split(",");
+                    String imageName = "screenshot" + System.currentTimeMillis() + ".png";
+                    //get the url of the map image
+                    String imgUrl = BaiduMapUtil.getStaticBitmapPath(Double.valueOf(point[0]), Double.valueOf(point[1]));
+                    Glide.with(getActivity()).load(imgUrl).asBitmap().into(new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                            int result = savePhotoToSDCard(resource, ConstStrings.getCachePath(), imageName);
+                            switch (result) {
+                                case 0:
+
+                                    File file = new File(ConstStrings.getCachePath() + imageName);
+                                    FootRouteTextInfo.FootRouteFileInfo fileInfo = new FootRouteTextInfo.FootRouteFileInfo();
+                                    fileInfo.setMediaFile(file);
+                                    fileInfo.setFileType(2);
+
+                                    updateDraft(bean, fileInfo);
+                                    break;
+                                case -1:
+                                    dismissLoading();
+                                    showToast("获取当前位置图片出错，请重试！");
+                                    return;
+
+                                case 1:
+                                    dismissLoading();
+                                    showToast("当前SD卡不可用，请检测设备!");
+                                    return;
                             }
                         }
-                    }
-                    if (mediaFiles.size() > 0) {
-                        map.put("file", mediaFiles);
-                    }
-                    mPresenter.commitRoute(map);
-                    showLoading("正在上传中...");
+
+                        @Override
+                        public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                            super.onLoadFailed(e, errorDrawable);
+                            showToast("网络请求失败，请先检查网络");
+                        }
+                    });
                 });
             }
         });
+    }
+
+    private void updateDraft(DraftFootBean bean, FootRouteTextInfo.FootRouteFileInfo shootFile) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("FootprintInfo", bean.getRouteInfoJson());
+        if (!TextUtils.isEmpty(bean.getTextInfoJson())) {
+            map.put("TextInfo", bean.getTextInfoJson());
+        }
+        map.put("PathInfo", bean.getPathInfoJson());
+        if (!TextUtils.isEmpty(bean.getSaveInfoJson())) {
+            map.put("SaveInfo", bean.getSaveInfoJson());
+        }
+
+        List<FootRouteTextInfo.FootRouteFileInfo> mediaFiles = new ArrayList<>();
+        mediaFiles.add(shootFile);
+        if (bean.getFilePathBeans() != null && bean.getFilePathBeans().size() > 0) {
+            for (DraftFootBean.FilePathBean fileBean : bean.getFilePathBeans()) {
+                FootRouteTextInfo.FootRouteFileInfo fileInfo = new FootRouteTextInfo.FootRouteFileInfo();
+                File file = new File(fileBean.getPath());
+                if (file.exists()) {
+                    fileInfo.setMediaFile(new File(fileBean.getPath()));
+                    fileInfo.setFileType(fileBean.getType());
+                    mediaFiles.add(fileInfo);
+                }
+            }
+        }
+        if (mediaFiles.size() > 0) {
+            map.put("file", mediaFiles);
+        }
+        mPresenter.commitRoute(map);
+        showLoading("正在上传中...");
     }
 
     private void deleteDraft(int position) {
@@ -149,9 +193,49 @@ public class DraftRouteListFragment extends BaseFragment<FootPresenter, FootMode
     }
 
     @Override
-    public void onRouteCommitError()
-    {
+    public void onRouteCommitError() {
 //        dismissLoading();
         showToast("上传失败，请重试或删除后重新添加");
+    }
+
+    public static int savePhotoToSDCard(Bitmap photoBitmap, String path, String photoName) {
+        if (checkSDCardAvailable()) {
+            File dir = new File(path);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+
+            File photoFile = new File(path, photoName);
+            FileOutputStream fileOutputStream = null;
+            try {
+                fileOutputStream = new FileOutputStream(photoFile);
+                if (photoBitmap != null) {
+                    if (photoBitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream)) {
+                        fileOutputStream.flush();
+                    }
+                }
+            } catch (FileNotFoundException e) {
+                photoFile.delete();
+                e.printStackTrace();
+                return -1;
+            } catch (IOException e) {
+                photoFile.delete();
+                e.printStackTrace();
+                return -1;
+            } finally {
+                try {
+                    fileOutputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return -1;
+                }
+            }
+            return 0;
+        }
+        return 1;
+    }
+
+    public static boolean checkSDCardAvailable() {
+        return android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
     }
 }

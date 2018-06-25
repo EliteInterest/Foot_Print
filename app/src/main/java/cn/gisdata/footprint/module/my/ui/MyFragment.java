@@ -262,4 +262,15 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
         mIntegral.setText(String.valueOf(Integral));
         mVisitVolume.setText(String.valueOf(VisitVolume));
     }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser){
+            List<DraftFootBean> draftFootBeans = mSharedPrefUtil.getList(ConstStrings.DraftFootList);
+            if (draftFootBeans != null) {
+                mDraftCount.setText("" + draftFootBeans.size());
+            }
+        }
+    }
 }

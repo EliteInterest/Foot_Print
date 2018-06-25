@@ -138,7 +138,7 @@ public class FootRecordView extends RelativeLayout {
                         startTimer(true);
                     },
                     (dialog, which) -> {//放弃
-                        FootUtil.clearFootCache();
+                        FootUtil.clearFootCache(true);
                     });
         }
 
@@ -174,8 +174,7 @@ public class FootRecordView extends RelativeLayout {
                 llModeFoot.setVisibility(VISIBLE);
                 break;
             case R.id.iv_record_mode_foot://足迹
-                if(GpsUtil.getLocation(context) == null)
-                {
+                if (GpsUtil.getLocation(context) == null) {
                     ZXToastUtil.showToast("获取坐标信息失败，请检查后再试");
                     return;
                 }
@@ -184,12 +183,11 @@ public class FootRecordView extends RelativeLayout {
                 llModeFoot.setVisibility(GONE);
                 break;
             case R.id.ll_record_foot_start://开始录制
-                if(GpsUtil.getLocation(context) == null)
-                {
+                if (GpsUtil.getLocation(context) == null) {
                     ZXToastUtil.showToast("获取坐标信息失败，请检查后再试");
                     return;
                 }
-                FootUtil.clearFootCache();
+                FootUtil.clearFootCache(true);
                 cvRecordTab.setVisibility(VISIBLE);
                 startTimer(false);
                 break;
@@ -241,9 +239,7 @@ public class FootRecordView extends RelativeLayout {
         mPoints.clear();
         mGraphicList.clear();
         routeLayer.removeAll();
-        if (deleteFile) {
-            FootUtil.clearFootCache();
-        }
+        FootUtil.clearFootCache(deleteFile);
     }
 
     /**

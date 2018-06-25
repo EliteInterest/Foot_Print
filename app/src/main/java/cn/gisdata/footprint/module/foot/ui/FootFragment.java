@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -131,21 +132,18 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
                 footRouteTextInfoFootprint.setMileage(Float.valueOf(zxSharedPrefUtil.getString("Mileage")));
 //                footRouteTextInfoFootprint.setConsumptionTime(zxSharedPrefUtil.getString("ConsumptionTime"));
                 footRouteTextInfoFootprint.setConsumptionTime(footRecordView.getCountTime());
-                footRouteTextInfoFootprint.setStartTime(String.valueOf(zxSharedPrefUtil.getLong("record_start_time")/1000));
-                footRouteTextInfoFootprint.setEndTime(String.valueOf(System.currentTimeMillis()/1000));
+                footRouteTextInfoFootprint.setStartTime(String.valueOf(zxSharedPrefUtil.getLong("record_start_time") / 1000));
+                footRouteTextInfoFootprint.setEndTime(String.valueOf(System.currentTimeMillis() / 1000));
 
                 footRouteTextInfo.setFootprint(footRouteTextInfoFootprint);
 
-                List<FootRouteTextInfo.FootRouteTextInfoPointPositions> footRouteTextInfoPointPositionsList = new ArrayList<>();
-                List<FootRouteTextInfo.FootRouteTextInfoBeanDetail> footRouteTextInfoBeanList = new ArrayList<>();
-                List<FootRouteTextInfo.FootRouteSaveInfoDetail> footRouteSaveInfoList = new ArrayList<>();
                 List<FootRouteTextInfo.FootRouteFileInfo> mediaFiles = new ArrayList<>();
 
 
                 //first file is screenshot
                 Location location = GpsUtil.getLocation(getActivity());
-                if(location == null)
-                {
+                String pointstring = location.getLongitude() + "," + location.getLatitude();
+                if (location == null) {
                     showLoading("获取坐标信息失败，请检查后再试");
                     return;
                 }
@@ -155,8 +153,7 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
                 Glide.with(getActivity()).load(imgUrl).asBitmap().into(new SimpleTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        String footprintInfo = "", textInfo = "", pathInfo = "", saveInfo = "";
-                        List<DraftFootBean.FilePathBean> filePathBeans = new ArrayList<>();
+
                         int result = -2;
                         result = savePhotoToSDCard(resource, ConstStrings.getCachePath(), imageName);
                         switch (result) {
@@ -167,113 +164,7 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
                                 fileInfo.setFileType(2);
                                 mediaFiles.add(fileInfo);
 
-                                List<FootFileBean> footFiles = zxSharedPrefUtil.getList(ConstStrings.FootFiles);
-                                int index = 1;
-                                for (FootFileBean bean : footFiles) {
-                                    FootRouteTextInfo.FootRouteTextInfoPointPositions footRouteTextInfoPointPositions = new FootRouteTextInfo.FootRouteTextInfoPointPositions();
-//                    String pointId = mSharedPrefUtil.getString("userId", "") + "-p" + index++;
-                                    String pointId = UUID.randomUUID().toString().substring(0, 32) + "-p" + index++;
-                                    footRouteTextInfoPointPositions.setPointId(pointId);
-                                    footRouteTextInfoPointPositions.setAddr(bean.getFormatAddress());
-                                    footRouteTextInfoPointPositions.setDesc(bean.getStreetAddress());
-                                    String[] point = bean.getPoint().split(",");
-                                    footRouteTextInfoPointPositions.setLongitude(Double.valueOf(point[0]));
-                                    footRouteTextInfoPointPositions.setLatitude(Double.valueOf(point[1]));
-                                    footRouteTextInfoPointPositions.setAltitude(Double.valueOf(point[2]));
-                                    FootFileBean.Type type = bean.getType();
-                                    int uploadType = 1;
-                                    if (type == FootFileBean.Type.Text) {
-                                        uploadType = 1;
-                                        //文本
-                                        FootRouteTextInfo.FootRouteTextInfoBeanDetail footRouteTextInfoBeanDetail = new FootRouteTextInfo.FootRouteTextInfoBeanDetail();
-                                        footRouteTextInfoBeanDetail.setPointId(pointId);
-                                        footRouteTextInfoBeanDetail.setTextName(bean.getTextName().toString());
-                                        footRouteTextInfoBeanDetail.setTextDesc(bean.getDescription().toString());
-                                        footRouteTextInfoBeanList.add(footRouteTextInfoBeanDetail);
-                                    } else if (type == FootFileBean.Type.Camera) {
-                                        uploadType = 2;
-                                        //照片
-                                        List<FootFileBean.PicBean> picBeanList = bean.getPicPaths();
-                                        for (FootFileBean.PicBean bean1 : picBeanList) {
-                                            //增加路径个点的说明
-                                            FootRouteTextInfo.FootRouteSaveInfoDetail footRouteSaveInfoDetail = new FootRouteTextInfo.FootRouteSaveInfoDetail();
-                                            footRouteSaveInfoDetail.setPointId(pointId);
-                                            footRouteSaveInfoDetail.setDesc(bean1.getRemark());
-                                            footRouteSaveInfoList.add(footRouteSaveInfoDetail);
-                                            //增加file路径
-                                            file = new File(ConstStrings.getCachePath() + bean1.getPath());
-                                            fileInfo = new FootRouteTextInfo.FootRouteFileInfo();
-                                            fileInfo.setMediaFile(file);
-                                            fileInfo.setFileType(2);
-                                            mediaFiles.add(fileInfo);
-                                            filePathBeans.add(new DraftFootBean.FilePathBean(ConstStrings.getCachePath() + bean1.getPath(), 2));
-                                        }
-                                    } else if (type == FootFileBean.Type.Vedio) {
-                                        uploadType = 3;
-                                        FootRouteTextInfo.FootRouteSaveInfoDetail footRouteSaveInfoDetail = new FootRouteTextInfo.FootRouteSaveInfoDetail();
-                                        footRouteSaveInfoDetail.setPointId(pointId);
-                                        footRouteSaveInfoDetail.setDesc(bean.getDescription());
-                                        footRouteSaveInfoList.add(footRouteSaveInfoDetail);
-
-                                        file = new File(ConstStrings.getCachePath() + bean.getVedioPath());
-                                        fileInfo = new FootRouteTextInfo.FootRouteFileInfo();
-                                        fileInfo.setMediaFile(file);
-                                        fileInfo.setFileType(3);
-                                        mediaFiles.add(fileInfo);
-                                        filePathBeans.add(new DraftFootBean.FilePathBean(ConstStrings.getCachePath() + bean.getVedioPath(), 3));
-                                    }
-                                    footRouteTextInfoPointPositions.setPointType(uploadType);
-                                    footRouteTextInfoPointPositions.setName(bean.getTextName());
-                                    footRouteTextInfoPointPositionsList.add(footRouteTextInfoPointPositions);
-                                }
-
-                                Map<String, Object> map = new HashMap<>();
-                                //设置FootprintInfo域
-                                footRouteTextInfo.setPointPositions(footRouteTextInfoPointPositionsList);
-                                Gson gson = new Gson();
-                                footprintInfo = gson.toJson(footRouteTextInfo);
-                                map.put("FootprintInfo", footprintInfo);
-
-                                //设置TextInfo域
-                                if (footRouteTextInfoBeanList.size() > 0) {
-                                    FootRouteTextInfo.FootRouteTextInfoBean footRouteTextInfoBean = new FootRouteTextInfo.FootRouteTextInfoBean();
-                                    footRouteTextInfoBean.setTextInfo(footRouteTextInfoBeanList);
-                                    gson = new Gson();
-                                    textInfo = gson.toJson(footRouteTextInfoBean);
-                                    map.put("TextInfo", textInfo);
-                                }
-
-                                //设置PathInfo域
-                                List<Point> pointList = zxSharedPrefUtil.getList("record_points");
-                                List<List<Double>> pointStringList = new ArrayList<>();
-                                for (Point point : pointList) {
-                                    double x = point.getX();
-                                    double y = point.getY();
-                                    double z = point.getZ();
-                                    List<Double> doubles = new ArrayList<>();
-                                    doubles.add(x);
-                                    doubles.add(y);
-                                    doubles.add(z);
-                                    pointStringList.add(doubles);
-                                }
-
-                                pathInfo = new Gson().toJson(pointStringList.toArray());
-                                map.put("PathInfo", pathInfo);
-
-                                //设置SaveInfo域
-                                if (footRouteSaveInfoList.size() > 0) {
-                                    FootRouteTextInfo.FootRouteSaveInfo footRouteSaveInfo = new FootRouteTextInfo.FootRouteSaveInfo();
-                                    footRouteSaveInfo.setTotalDesc("");
-                                    footRouteSaveInfo.setMediaInfo(footRouteSaveInfoList);
-                                    gson = new Gson();
-                                    saveInfo = gson.toJson(footRouteSaveInfo);
-                                    map.put("SaveInfo", saveInfo);
-                                }
-
-                                if (mediaFiles.size() > 0) {
-                                    map.put("file", mediaFiles);
-                                }
-                                draftFootBean = new DraftFootBean(ZXTimeUtil.getCurrentTime(), etRouteName.getText().toString(), footprintInfo, textInfo, pathInfo, saveInfo, filePathBeans);
+                                Map<String, Object> map = initDraftBean( mediaFiles, footRouteTextInfo, pointstring);
                                 mPresenter.commitRoute(map);
                                 showLoading("正在上传中...");
                                 return;
@@ -296,12 +187,133 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
                     @Override
                     public void onLoadFailed(Exception e, Drawable errorDrawable) {
                         super.onLoadFailed(e, errorDrawable);
-                        showToast("网络请求失败，请先检查网络");
+//                        showToast("网络请求失败，请先检查网络");
+                        initDraftBean( mediaFiles, footRouteTextInfo, pointstring);
+                        onRouteCommitError();
                     }
                 });
                 break;
         }
 
+    }
+
+    @NonNull
+    private Map<String, Object> initDraftBean(List<FootRouteTextInfo.FootRouteFileInfo> mediaFiles, FootRouteTextInfo footRouteTextInfo, String pointstring) {
+        String footprintInfo = "", textInfo = "", pathInfo = "", saveInfo = "";
+        List<DraftFootBean.FilePathBean> filePathBeans = new ArrayList<>();
+        List<FootRouteTextInfo.FootRouteTextInfoPointPositions> footRouteTextInfoPointPositionsList = new ArrayList<>();
+        List<FootRouteTextInfo.FootRouteTextInfoBeanDetail> footRouteTextInfoBeanList = new ArrayList<>();
+        List<FootRouteTextInfo.FootRouteSaveInfoDetail> footRouteSaveInfoList = new ArrayList<>();
+        File file;
+        FootRouteTextInfo.FootRouteFileInfo fileInfo;
+        List<FootFileBean> footFiles = zxSharedPrefUtil.getList(ConstStrings.FootFiles);
+        int index = 1;
+        for (FootFileBean bean : footFiles) {
+            FootRouteTextInfo.FootRouteTextInfoPointPositions footRouteTextInfoPointPositions = new FootRouteTextInfo.FootRouteTextInfoPointPositions();
+//                    String pointId = mSharedPrefUtil.getString("userId", "") + "-p" + index++;
+            String pointId = UUID.randomUUID().toString().substring(0, 32) + "-p" + index++;
+            footRouteTextInfoPointPositions.setPointId(pointId);
+            footRouteTextInfoPointPositions.setAddr(bean.getFormatAddress());
+            footRouteTextInfoPointPositions.setDesc(bean.getStreetAddress());
+            String[] point = bean.getPoint().split(",");
+            footRouteTextInfoPointPositions.setLongitude(Double.valueOf(point[0]));
+            footRouteTextInfoPointPositions.setLatitude(Double.valueOf(point[1]));
+            footRouteTextInfoPointPositions.setAltitude(Double.valueOf(point[2]));
+            FootFileBean.Type type = bean.getType();
+            int uploadType = 1;
+            if (type == FootFileBean.Type.Text) {
+                uploadType = 1;
+                //文本
+                FootRouteTextInfo.FootRouteTextInfoBeanDetail footRouteTextInfoBeanDetail = new FootRouteTextInfo.FootRouteTextInfoBeanDetail();
+                footRouteTextInfoBeanDetail.setPointId(pointId);
+                footRouteTextInfoBeanDetail.setTextName(bean.getTextName().toString());
+                footRouteTextInfoBeanDetail.setTextDesc(bean.getDescription().toString());
+                footRouteTextInfoBeanList.add(footRouteTextInfoBeanDetail);
+            } else if (type == FootFileBean.Type.Camera) {
+                uploadType = 2;
+                //照片
+                List<FootFileBean.PicBean> picBeanList = bean.getPicPaths();
+                for (FootFileBean.PicBean bean1 : picBeanList) {
+                    //增加路径个点的说明
+                    FootRouteTextInfo.FootRouteSaveInfoDetail footRouteSaveInfoDetail = new FootRouteTextInfo.FootRouteSaveInfoDetail();
+                    footRouteSaveInfoDetail.setPointId(pointId);
+                    footRouteSaveInfoDetail.setDesc(bean1.getRemark());
+                    footRouteSaveInfoList.add(footRouteSaveInfoDetail);
+                    //增加file路径
+                    file = new File(ConstStrings.getCachePath() + bean1.getPath());
+                    fileInfo = new FootRouteTextInfo.FootRouteFileInfo();
+                    fileInfo.setMediaFile(file);
+                    fileInfo.setFileType(2);
+                    mediaFiles.add(fileInfo);
+                    filePathBeans.add(new DraftFootBean.FilePathBean(ConstStrings.getCachePath() + bean1.getPath(), 2));
+                }
+            } else if (type == FootFileBean.Type.Vedio) {
+                uploadType = 3;
+                FootRouteTextInfo.FootRouteSaveInfoDetail footRouteSaveInfoDetail = new FootRouteTextInfo.FootRouteSaveInfoDetail();
+                footRouteSaveInfoDetail.setPointId(pointId);
+                footRouteSaveInfoDetail.setDesc(bean.getDescription());
+                footRouteSaveInfoList.add(footRouteSaveInfoDetail);
+
+                file = new File(ConstStrings.getCachePath() + bean.getVedioPath());
+                fileInfo = new FootRouteTextInfo.FootRouteFileInfo();
+                fileInfo.setMediaFile(file);
+                fileInfo.setFileType(3);
+                mediaFiles.add(fileInfo);
+                filePathBeans.add(new DraftFootBean.FilePathBean(ConstStrings.getCachePath() + bean.getVedioPath(), 3));
+            }
+            footRouteTextInfoPointPositions.setPointType(uploadType);
+            footRouteTextInfoPointPositions.setName(bean.getTextName());
+            footRouteTextInfoPointPositionsList.add(footRouteTextInfoPointPositions);
+        }
+
+        Map<String, Object> map = new HashMap<>();
+        //设置FootprintInfo域
+        footRouteTextInfo.setPointPositions(footRouteTextInfoPointPositionsList);
+        Gson gson = new Gson();
+        footprintInfo = gson.toJson(footRouteTextInfo);
+        map.put("FootprintInfo", footprintInfo);
+
+        //设置TextInfo域
+        if (footRouteTextInfoBeanList.size() > 0) {
+            FootRouteTextInfo.FootRouteTextInfoBean footRouteTextInfoBean = new FootRouteTextInfo.FootRouteTextInfoBean();
+            footRouteTextInfoBean.setTextInfo(footRouteTextInfoBeanList);
+            gson = new Gson();
+            textInfo = gson.toJson(footRouteTextInfoBean);
+            map.put("TextInfo", textInfo);
+        }
+
+        //设置PathInfo域
+        List<Point> pointList = zxSharedPrefUtil.getList("record_points");
+        List<List<Double>> pointStringList = new ArrayList<>();
+        for (Point point : pointList) {
+            double x = point.getX();
+            double y = point.getY();
+            double z = point.getZ();
+            List<Double> doubles = new ArrayList<>();
+            doubles.add(x);
+            doubles.add(y);
+            doubles.add(z);
+            pointStringList.add(doubles);
+        }
+
+        pathInfo = new Gson().toJson(pointStringList.toArray());
+        map.put("PathInfo", pathInfo);
+
+        //设置SaveInfo域
+        if (footRouteSaveInfoList.size() > 0) {
+            FootRouteTextInfo.FootRouteSaveInfo footRouteSaveInfo = new FootRouteTextInfo.FootRouteSaveInfo();
+            footRouteSaveInfo.setTotalDesc("");
+            footRouteSaveInfo.setMediaInfo(footRouteSaveInfoList);
+            gson = new Gson();
+            saveInfo = gson.toJson(footRouteSaveInfo);
+            map.put("SaveInfo", saveInfo);
+        }
+
+        if (mediaFiles.size() > 0) {
+            map.put("file", mediaFiles);
+        }
+        draftFootBean = new DraftFootBean(ZXTimeUtil.getCurrentTime(), etRouteName.getText().toString(), footprintInfo, textInfo, pathInfo, saveInfo, filePathBeans, pointstring);
+        return map;
     }
 
     @Override

@@ -34,7 +34,7 @@ public class DraftFootBean implements Serializable {
         this.uploadType = uploadType;
     }
 
-    public DraftFootBean(String date, String name, String routeInfoJson, String textInfoJson, String pathInfoJson, String saveInfoJson, List<FilePathBean> filePathBeans) {
+    public DraftFootBean(String date, String name, String routeInfoJson, String textInfoJson, String pathInfoJson, String saveInfoJson, List<FilePathBean> filePathBeans, String point) {
         footType = 1;
         this.routeInfoJson = routeInfoJson;
         this.textInfoJson = textInfoJson;
@@ -43,6 +43,7 @@ public class DraftFootBean implements Serializable {
         this.pathInfoJson = pathInfoJson;
         this.saveInfoJson = saveInfoJson;
         this.filePathBeans = filePathBeans;
+        this.point = point;
     }
 
     public String getPoint() {

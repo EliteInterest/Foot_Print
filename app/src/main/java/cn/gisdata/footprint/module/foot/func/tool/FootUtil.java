@@ -72,16 +72,18 @@ public class FootUtil {
         }
     }
 
-    public static void clearFootCache() {
+    public static void clearFootCache(boolean deleteFile) {
         ZXSharedPrefUtil zxSharedPrefUtil = new ZXSharedPrefUtil();
-        List<FootFileBean> footFileBeans = zxSharedPrefUtil.getList(ConstStrings.FootFiles);
-        if (footFileBeans != null && footFileBeans.size() > 0) {
-            for (FootFileBean file : footFileBeans) {
-                ZXFileUtil.deleteFiles(ConstStrings.getCachePath() + file.getVedioShootPath());
-                ZXFileUtil.deleteFiles(ConstStrings.getCachePath() + file.getVedioPath());
-                if (file.getPicPaths() != null && file.getPicPaths().size() > 0) {
-                    for (FootFileBean.PicBean picBean : file.getPicPaths()) {
-                        ZXFileUtil.deleteFiles(ConstStrings.getCachePath() + picBean.getPath());
+        if (deleteFile) {
+            List<FootFileBean> footFileBeans = zxSharedPrefUtil.getList(ConstStrings.FootFiles);
+            if (footFileBeans != null && footFileBeans.size() > 0) {
+                for (FootFileBean file : footFileBeans) {
+                    ZXFileUtil.deleteFiles(ConstStrings.getCachePath() + file.getVedioShootPath());
+                    ZXFileUtil.deleteFiles(ConstStrings.getCachePath() + file.getVedioPath());
+                    if (file.getPicPaths() != null && file.getPicPaths().size() > 0) {
+                        for (FootFileBean.PicBean picBean : file.getPicPaths()) {
+                            ZXFileUtil.deleteFiles(ConstStrings.getCachePath() + picBean.getPath());
+                        }
                     }
                 }
             }
