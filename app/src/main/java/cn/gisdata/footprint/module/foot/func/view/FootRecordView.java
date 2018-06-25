@@ -174,10 +174,21 @@ public class FootRecordView extends RelativeLayout {
                 llModeFoot.setVisibility(VISIBLE);
                 break;
             case R.id.iv_record_mode_foot://足迹
+                if(GpsUtil.getLocation(context) == null)
+                {
+                    ZXToastUtil.showToast("获取坐标信息失败，请检查后再试");
+                    return;
+                }
+
                 llModeRoute.setVisibility(VISIBLE);
                 llModeFoot.setVisibility(GONE);
                 break;
             case R.id.ll_record_foot_start://开始录制
+                if(GpsUtil.getLocation(context) == null)
+                {
+                    ZXToastUtil.showToast("获取坐标信息失败，请检查后再试");
+                    return;
+                }
                 FootUtil.clearFootCache();
                 cvRecordTab.setVisibility(VISIBLE);
                 startTimer(false);

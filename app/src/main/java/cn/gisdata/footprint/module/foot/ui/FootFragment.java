@@ -144,6 +144,11 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
 
                 //first file is screenshot
                 Location location = GpsUtil.getLocation(getActivity());
+                if(location == null)
+                {
+                    showLoading("获取坐标信息失败，请检查后再试");
+                    return;
+                }
                 String imageName = "screenshot" + System.currentTimeMillis() + ".png";
                 //get the url of the map image
                 String imgUrl = BaiduMapUtil.getStaticBitmapPath(location.getLongitude(), location.getLatitude());
