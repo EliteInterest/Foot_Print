@@ -114,12 +114,12 @@ public class DraftRouteListFragment extends BaseFragment<FootPresenter, FootMode
                                     break;
                                 case -1:
                                     dismissLoading();
-                                    showToast("获取当前位置图片出错，请重试！");
+                                    onRouteCommitError();
                                     return;
 
                                 case 1:
                                     dismissLoading();
-                                    showToast("当前SD卡不可用，请检测设备!");
+                                    onRouteCommitError();
                                     return;
                             }
                         }
@@ -127,7 +127,7 @@ public class DraftRouteListFragment extends BaseFragment<FootPresenter, FootMode
                         @Override
                         public void onLoadFailed(Exception e, Drawable errorDrawable) {
                             super.onLoadFailed(e, errorDrawable);
-                            showToast("网络请求失败，请先检查网络");
+                            onRouteCommitError();
                         }
                     });
                 });
