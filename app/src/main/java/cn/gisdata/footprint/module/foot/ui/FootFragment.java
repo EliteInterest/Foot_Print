@@ -164,7 +164,7 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
                                 fileInfo.setFileType(2);
                                 mediaFiles.add(fileInfo);
 
-                                Map<String, Object> map = initDraftBean( mediaFiles, footRouteTextInfo, pointstring);
+                                Map<String, Object> map = initDraftBean(mediaFiles, footRouteTextInfo, pointstring);
                                 mPresenter.commitRoute(map);
                                 showLoading("正在上传中...");
                                 return;
@@ -188,7 +188,7 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
                     public void onLoadFailed(Exception e, Drawable errorDrawable) {
                         super.onLoadFailed(e, errorDrawable);
 //                        showToast("网络请求失败，请先检查网络");
-                        initDraftBean( mediaFiles, footRouteTextInfo, pointstring);
+                        initDraftBean(mediaFiles, footRouteTextInfo, pointstring);
                         onRouteCommitError();
                     }
                 });
@@ -321,7 +321,7 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
         dismissLoading();
         llRouteEdite.setVisibility(View.GONE);
         FootUtil.deleteFootFile(draftFootBean.getFilePaths());
-        PreviewActivity.startAction(getActivity(), false, "路径预览", url);
+        PreviewActivity.startAction(getActivity(), false, etRouteName.getText().toString(), url,"我的路线");
         mapFragment.resetMap(true);
         rlTitle.setVisibility(View.GONE);
         llRouteEdite.setVisibility(View.GONE);
@@ -358,7 +358,8 @@ public class FootFragment extends BaseFragment<FootPresenter, FootModel> impleme
             mapFragment.refreshPoints();
         } else if (resultCode == 0x02) {
             FootFileBean itemBean = (FootFileBean) data.getSerializableExtra("itemBean");
-            PreviewActivity.startAction(getActivity(), false, "足迹预览", itemBean.getUrl());
+            String name = (String)data.getSerializableExtra("name");
+            PreviewActivity.startAction(getActivity(), false, name, itemBean.getUrl(),"我的足迹");
         }
     }
 

@@ -30,7 +30,7 @@ public class ShareTool {
 
     private static ZXBottomSheet bottomSheet;
 
-    public static void doShare(Context context, String url, String msg) {
+    public static void doShare(Context context, String url, String msg, String title) {
         bottomSheet = ZXBottomSheet.initGrid(context)
                 .addItem("QQ", ContextCompat.getDrawable(context, R.mipmap.share_qq))
                 .addItem("QQ空间", ContextCompat.getDrawable(context, R.mipmap.share_qzone))
@@ -40,31 +40,28 @@ public class ShareTool {
                 .addItem("微信收藏", ContextCompat.getDrawable(context, R.mipmap.share_wechat_star))
                 .showCheckMark(false)
                 .showCloseView(true)
-                .setOnItemClickListener(new ZXBottomSheet.OnSheetItemClickListener() {
-                    @Override
-                    public void onSheetItemClick(SheetData sheetData, int i) {
-                        switch (i) {
-                            case 0:
-                                showshare(context, QQ.NAME, url,msg);
-                                break;
-                            case 1:
-                                showshare(context, QZone.NAME, url,msg);
-                                break;
-                            case 2:
-                                showshare(context, SinaWeibo.NAME, url,msg);
-                                break;
-                            case 3:
-                                showshare(context, Wechat.NAME, url,msg);
-                                break;
-                            case 4:
-                                showshare(context, WechatMoments.NAME, url,msg);
-                                break;
-                            case 5:
-                                showshare(context, WechatFavorite.NAME, url,msg);
-                                break;
-                            default:
-                                break;
-                        }
+                .setOnItemClickListener((sheetData, i) -> {
+                    switch (i) {
+                        case 0:
+                            showshare(context, QQ.NAME, url, msg, title);
+                            break;
+                        case 1:
+                            showshare(context, QZone.NAME, url, msg, title);
+                            break;
+                        case 2:
+                            showshare(context, SinaWeibo.NAME, url, msg, title);
+                            break;
+                        case 3:
+                            showshare(context, Wechat.NAME, url, msg, title);
+                            break;
+                        case 4:
+                            showshare(context, WechatMoments.NAME, url, msg, title);
+                            break;
+                        case 5:
+                            showshare(context, WechatFavorite.NAME, url, msg, title);
+                            break;
+                        default:
+                            break;
                     }
                 })
                 .build()
@@ -72,7 +69,7 @@ public class ShareTool {
 
     }
 
-    private static void showshare(Context context, String platForm, String url, String msg) {
+    private static void showshare(Context context, String platForm, String url, String msg, String title) {
         ZXSharedPrefUtil zxSharedPrefUtil = new ZXSharedPrefUtil();
         OnekeyShare oks = new OnekeyShare();
         oks.setPlatform(platForm);
@@ -80,7 +77,7 @@ public class ShareTool {
         oks.disableSSOWhenAuthorize();
 
         // title标题，微信、QQ和QQ空间等平台使用
-        oks.setTitle("我的足迹");
+        oks.setTitle(title);
         // titleUrl QQ和QQ空间跳转链接
         oks.setTitleUrl(url);
         // text是分享文本，所有平台都需要这个字段

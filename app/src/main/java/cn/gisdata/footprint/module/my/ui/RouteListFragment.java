@@ -62,7 +62,7 @@ public class RouteListFragment extends BaseFragment<RouteListPresenter, RouteLis
                     if(!isShareClick)
                     {
                         PreviewActivity.startAction(getActivity(), false,
-                            routeList.get(i).getName(), routeList.get(i).getDetailsUrlPath());
+                            routeList.get(i).getName(), routeList.get(i).getDetailsUrlPath(),"我的路线");
                     }
                     else
                         isShareClick = false;

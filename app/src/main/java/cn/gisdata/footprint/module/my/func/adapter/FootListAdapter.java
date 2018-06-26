@@ -71,7 +71,7 @@ public class FootListAdapter extends RecyclerView.Adapter<FootListAdapter.MyHold
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     FootListFragment.isShareClick = true;
                     String url = dataList.get(position).getDetailsUrlPath();
-                    ShareTool.doShare(context, url, time);
+                    ShareTool.doShare(context, url, time,"我的足迹");
                 }
                 return true;
             }

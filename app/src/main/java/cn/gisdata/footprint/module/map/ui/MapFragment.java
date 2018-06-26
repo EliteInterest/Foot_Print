@@ -93,13 +93,12 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
             public void run() {
 //                if (isShowToPerson) {
                 int currentId = MainActivity.tvpMain.getSelectedPosition();
-                if(currentId != lastTabId)
-                {
-                    if(currentId == 0)
+                if (currentId != lastTabId) {
+                    if (currentId == 0)
                         isSearchPoition = false;
                     lastTabId = currentId;
                 }
-                    handler.sendEmptyMessage(0);
+                handler.sendEmptyMessage(0);
 //                }
             }
         }, 100, 1000 * 10);
@@ -236,7 +235,7 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
             if (msg.what == 0) {
                 double length = 0;
                 Location location = GpsUtil.getLocation(getActivity());
-                if(location == null)
+                if (location == null)
                     return;
                 if (lastLocation != null) {
                     Line line = new Line();
@@ -244,19 +243,20 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
                     line.setEnd(new Point(location.getLongitude(), location.getLatitude()));
                     Polyline polyline = new Polyline();
                     polyline.addSegment(line, true);
-                    length = GeometryEngine.geodesicLength(polyline, mMapView.getSpatialReference(), null) / 1000;
+                    length = GeometryEngine.geodesicLength(polyline, mMapView.getSpatialReference(), null);
 
-                    if(length > 10)
-                    {
+                    if (length > 10) {
                         lastLocation = location;
                         isSearchPoition = false;
                     }
-                }else
-                {
+
+                } else {
                     lastLocation = location;
                 }
 
+//                showToast("isSearchPoition is " + isSearchPoition + ";length is " + length);
                 if (!isSearchPoition) {
+//                    showToast("正在获取位置信息");
                     BaiduMapUtil.searchPoi(location.getLongitude(), location.getLatitude(), new BaiduMapUtil.OnBaiduSearchListener() {
                         @Override
                         public void onSearchBack(BaiduSearchBean baiduSearchBean) {
@@ -300,6 +300,7 @@ public class MapFragment extends BaseFragment<MapPresenter, MapModel> implements
         mMapView.unpause();
         isShowToPerson = true;
         isSearchPoition = false;
+        handler.sendEmptyMessage(0);
     }
 
 

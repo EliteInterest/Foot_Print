@@ -95,7 +95,7 @@ public class RouteListAdapter extends RecyclerView.Adapter<RouteListAdapter.MyHo
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     RouteListFragment.isShareClick = true;
                     String url = dataList.get(position).getDetailsUrlPath();
-                    ShareTool.doShare(context, url, time);
+                    ShareTool.doShare(context, url, time,"我的路线");
                 }
                 return true;
             }

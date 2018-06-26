@@ -30,11 +30,13 @@ public class PreviewActivity extends BaseActivity<PreviewPresenter, PreviewModel
 
     private String name = "";
     private String url = "";
+    private String title = "";
 
-    public static void startAction(Activity activity, boolean isFinish, String name, String url) {
+    public static void startAction(Activity activity, boolean isFinish, String name, String url,String title) {
         Intent intent = new Intent(activity, PreviewActivity.class);
         intent.putExtra("name", name);
         intent.putExtra("url", url);
+        intent.putExtra("title", title);
         activity.startActivity(intent);
         if (isFinish) activity.finish();
     }
@@ -48,6 +50,7 @@ public class PreviewActivity extends BaseActivity<PreviewPresenter, PreviewModel
     public void initView(Bundle savedInstanceState) {
         name = getIntent().getStringExtra("name");
         url = getIntent().getStringExtra("url");
+        title = getIntent().getStringExtra("title");
         tvTitle.setText(name);
 
         ZXFragmentUtil.addFragment(getSupportFragmentManager(), WebViewFragment.newInstance(url), R.id.fm_preview);
@@ -60,7 +63,7 @@ public class PreviewActivity extends BaseActivity<PreviewPresenter, PreviewModel
                 finish();
                 break;
             case R.id.tv_title_save:
-                ShareTool.doShare(this, url, name);
+                ShareTool.doShare(this, url, name,title);
                 break;
         }
     }

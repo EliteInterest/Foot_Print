@@ -59,7 +59,7 @@ public class FootListFragment extends BaseFragment<FootListPresenter, FootListMo
                 .setClickable(i -> {
                     if(!isShareClick)
                     {
-                        PreviewActivity.startAction(getActivity(), false, footList.get(i).getName(), footList.get(i).getDetailsUrlPath());
+                        PreviewActivity.startAction(getActivity(), false, footList.get(i).getName(), footList.get(i).getDetailsUrlPath(),"我的足迹");
                     }else
                         isShareClick = false;
                 })

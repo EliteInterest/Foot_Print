@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.MediaController;
@@ -269,6 +268,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
         FootUtil.deleteFootFile(draftFootBean.getFilePaths());
         Intent intent = new Intent();
         intent.putExtra("itemBean", itemBean);
+        intent.putExtra("name", etName.getText().toString());
         setResult(0x02, intent);
         finish();
     }
@@ -368,8 +368,8 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
 
             FootMarkTextInfo.FootMarkTextBean footMarkTextBean = new FootMarkTextInfo.FootMarkTextBean();
             footMarkTextBean.setUserId(mSharedPrefUtil.getString("userId", ""));
-            footMarkTextBean.setName(TextUtils.isEmpty(itemBean.getStreetAddress()) ? "streetUnKnow" : itemBean.getStreetAddress());
-            footMarkTextBean.setDesc(TextUtils.isEmpty(itemBean.getFormatAddress()) ? "formatUnKnow" : itemBean.getFormatAddress());
+            footMarkTextBean.setName(etName.getText().toString());
+            footMarkTextBean.setDesc(etRemark.getText().toString());
             footMarkTextBean.setConsumptionTime("0");
             footMarkTextBean.setStartTime(String.valueOf(System.currentTimeMillis() / 1000));
             footMarkTextBean.setEndTime(String.valueOf(System.currentTimeMillis() / 1000));
@@ -420,8 +420,8 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
 
             FootMarkTextInfo.FootMarkTextBean footMarkTextBean = new FootMarkTextInfo.FootMarkTextBean();
             footMarkTextBean.setUserId(mSharedPrefUtil.getString("userId", ""));
-            footMarkTextBean.setName(TextUtils.isEmpty(itemBean.getStreetAddress()) ? "streetUnKnow" : itemBean.getStreetAddress());
-            footMarkTextBean.setDesc(TextUtils.isEmpty(itemBean.getFormatAddress()) ? "formatUnKnow" : itemBean.getFormatAddress());
+            footMarkTextBean.setName(etName.getText().toString());
+            footMarkTextBean.setDesc(etRemark.getText().toString());
             footMarkTextBean.setConsumptionTime("0");
             footMarkTextBean.setStartTime(String.valueOf(itemBean.getStartTime() / 1000));
             footMarkTextBean.setEndTime(String.valueOf(itemBean.getEndTime() / 1000));
@@ -469,8 +469,8 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
 
             FootMarkTextInfo.FootMarkTextBean footMarkTextBean = new FootMarkTextInfo.FootMarkTextBean();
             footMarkTextBean.setUserId(mSharedPrefUtil.getString("userId", ""));
-            footMarkTextBean.setName(TextUtils.isEmpty(itemBean.getStreetAddress()) ? "streetUnKnow" : itemBean.getStreetAddress());
-            footMarkTextBean.setDesc(TextUtils.isEmpty(itemBean.getFormatAddress()) ? "formatUnKnow" : itemBean.getFormatAddress());
+            footMarkTextBean.setName(etName.getText().toString());
+            footMarkTextBean.setDesc(etRemark.getText().toString());
             footMarkTextBean.setConsumptionTime("0");
             footMarkTextBean.setStartTime(String.valueOf(itemBean.getStartTime() / 1000));
             footMarkTextBean.setEndTime(String.valueOf(itemBean.getEndTime() / 1000));
@@ -515,13 +515,11 @@ public class EditInfoActivity extends BaseActivity<EditInfoPresenter, EditInfoMo
             for (int i = 0; i < footFiles.size(); i++) {
                 if (itemBean.getId().equals(footFiles.get(i).getId())) {
                     footFiles.set(i, itemBean);
-                    Log.i("wangwansheng", "itemBean is " + itemBean.getPoint());
                     break;
                 }
             }
         } else {
             footFiles.add(itemBean);
-            Log.i("wangwansheng", "itemBean is " + itemBean.getPoint());
         }
         mSharedPrefUtil.putList(ConstStrings.FootFiles, footFiles);
         setResult(0x01);
