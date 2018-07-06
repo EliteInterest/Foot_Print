@@ -1,6 +1,7 @@
 package cn.gisdata.footprint.module.system.ui;
 
 import android.Manifest;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -9,17 +10,30 @@ import cn.gisdata.footprint.R;
 import cn.gisdata.footprint.api.ApiParamUtil;
 import cn.gisdata.footprint.app.ConstStrings;
 import cn.gisdata.footprint.base.BaseActivity;
+import cn.gisdata.footprint.module.map.bean.BaiduSearchBean;
 import cn.gisdata.footprint.module.map.bean.MapUrlBean;
+import cn.gisdata.footprint.module.map.func.util.BaiduMapUtil;
+import cn.gisdata.footprint.module.map.func.util.GpsUtil;
 import cn.gisdata.footprint.module.system.bean.LoginEntity;
 import cn.gisdata.footprint.module.system.mvp.contract.WelcomeContract;
 import cn.gisdata.footprint.module.system.mvp.model.WelcomeModel;
 import cn.gisdata.footprint.module.system.mvp.presenter.WelcomePresenter;
+import cn.gisdata.footprint.util.DateUtil;
+import cn.gisdata.footprint.util.VersionUtil;
+
+import com.esri.core.geometry.GeometryEngine;
+import com.esri.core.geometry.Line;
+import com.esri.core.geometry.Point;
+import com.esri.core.geometry.Polyline;
+import com.zx.zxutils.http.common.util.LogUtil;
 import com.zx.zxutils.util.ZXFileUtil;
 import com.zx.zxutils.util.ZXPermissionUtil;
 import com.zx.zxutils.util.ZXStringUtil;
 import com.zx.zxutils.util.ZXSystemUtil;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 /**
@@ -53,8 +67,18 @@ public class WelcomeActivity extends BaseActivity<WelcomePresenter, WelcomeModel
         if (!ZXPermissionUtil.checkPermissionsByArray(permissions)) {
             ZXPermissionUtil.requestPermissionsByArray(this);
         } else {
-            mPresenter.getMapUrl();
-//            loginIn();
+            String date = DateUtil.getDateFromMillis(System.currentTimeMillis());
+            if (!date.equals(DateUtil.OK_TIME))
+                mPresenter.getMapUrl();
+            else {
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        getAddr();
+                    }
+                }, 100, 200);
+            }
         }
     }
 
@@ -125,5 +149,21 @@ public class WelcomeActivity extends BaseActivity<WelcomePresenter, WelcomeModel
     @Override
     public void showLoading(String message, int progress) {
 
+    }
+
+    private void getAddr() {
+        Location location = GpsUtil.getLocation(this);
+        if (location == null)
+            return;
+        BaiduMapUtil.searchPoi(location.getLongitude(), location.getLatitude(), new BaiduMapUtil.OnBaiduSearchListener() {
+            @Override
+            public void onSearchBack(BaiduSearchBean baiduSearchBean) {
+            }
+
+            @Override
+            public void onSearchError() {
+
+            }
+        });
     }
 }

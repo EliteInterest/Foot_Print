@@ -6,6 +6,7 @@ import com.frame.zxmvp.baserx.RxSubscriber;
 import java.util.Map;
 
 import cn.gisdata.footprint.module.my.bean.UserInfoEntity;
+import cn.gisdata.footprint.module.my.bean.VersionCheckEntity;
 import cn.gisdata.footprint.module.my.mvp.contract.MyContract;
 
 
@@ -21,6 +22,23 @@ public class MyPresenter extends MyContract.Presenter {
                     @Override
                     protected void _onNext(UserInfoEntity userInfoEntity) {
                         mView.onRequestUserInfoResult(userInfoEntity);
+                    }
+
+                    @Override
+                    protected void _onError(String message) {
+//                        mView.showToast(message);
+                    }
+                });
+    }
+
+    @Override
+    public void doRequestVersionCheck(Map<String, String> map) {
+        mModel.requestVersionCheckInfo(map)
+                .compose(RxHelper.bindToLifecycle(mView))
+                .subscribe(new RxSubscriber<VersionCheckEntity>(mView) {
+                    @Override
+                    protected void _onNext(VersionCheckEntity versonCheckEntity) {
+                        mView.onVersionCheckResult(versonCheckEntity);
                     }
 
                     @Override

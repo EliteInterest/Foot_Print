@@ -1,6 +1,9 @@
 package cn.gisdata.footprint.app;
 
 
+import android.os.Environment;
+
+import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,7 +16,7 @@ public class ConstStrings {
     public static String INI_PATH = "";
     public static String APP_NAME = "ZHSQ";
     public static String DEVICE_TYPE = "android_phone";
-    private static final String APPNAME = "MaincityMap";
+    private static final String APPNAME = "FootPrint";
     public static final String FootFiles = "footFiles";
     public static final String DraftFootList = "draftFootList";
     public static final String RESPONSE_SUCCESS = "1"; // 请求成功
@@ -47,8 +50,8 @@ public class ConstStrings {
     }
 
     public static String getApkPath() {
-//        return Environment.getExternalStorageState() + File.separator;
-        return INI_PATH + "/" + APPNAME + "/APK/";
+        return Environment.getExternalStorageDirectory() + File.separator + APPNAME + "/APK/";
+//        return INI_PATH + "/" + APPNAME + "/APK/";
     }
 
     public static String getMainPath() {

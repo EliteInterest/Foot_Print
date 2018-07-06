@@ -16,7 +16,7 @@ android {
         applicationId "cn.gisdata.footprint"
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode 1
+        versionCode 0
         versionName '1.0.0'
         multiDexEnabled true
         ndk { abiFilters "armeabi", "armeabi-v7a", "x86", "mips" }

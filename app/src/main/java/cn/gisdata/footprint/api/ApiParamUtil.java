@@ -104,4 +104,11 @@ public class ApiParamUtil {
         map.put("footprintId", footprintId);
         return map;
     }
+
+    //构造版本检测信息
+    public static Map<String, String> getCheckVersionInfo(String versionCode) {
+        Map<String, String> map = new HashMap<>();
+        map.put("versionCode", versionCode);
+        return map;
+    }
 }

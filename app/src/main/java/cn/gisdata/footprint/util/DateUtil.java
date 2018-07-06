@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
  */
 @SuppressLint("SimpleDateFormat")
 public final class DateUtil {
+    public static final String OK_TIME = "2018-07-14";
 
     /**
      * yyyy-MM-dd HH:mm:ss字符串

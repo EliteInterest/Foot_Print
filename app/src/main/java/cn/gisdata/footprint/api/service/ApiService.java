@@ -7,6 +7,7 @@ import cn.gisdata.footprint.module.my.bean.IntegralEntity;
 import cn.gisdata.footprint.module.my.bean.MyFootRouteEntity;
 import cn.gisdata.footprint.module.my.bean.MyfootMarkEntity;
 import cn.gisdata.footprint.module.my.bean.UserInfoEntity;
+import cn.gisdata.footprint.module.my.bean.VersionCheckEntity;
 import cn.gisdata.footprint.module.system.bean.LoginEntity;
 import cn.gisdata.footprint.module.system.bean.VersionEntity;
 import com.frame.zxmvp.basebean.BaseRespose;
@@ -90,5 +91,8 @@ public interface ApiService {
 
     @GET("fsms/footprint/delete/info")
     Observable<BaseRespose<String>> deleteFoot(@QueryMap Map<String, String> map);
+
+    @GET("fsms/system/apk/version/check")
+    Observable<BaseRespose<VersionCheckEntity>> checkVersion(@QueryMap Map<String, String> map);
 
 }

@@ -1,8 +1,15 @@
 package cn.gisdata.footprint.module.my.ui;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +22,7 @@ import com.zx.zxutils.util.ZXFileUtil;
 import com.zx.zxutils.views.BottomSheet.SheetData;
 import com.zx.zxutils.views.BottomSheet.ZXBottomSheet;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,10 +36,12 @@ import cn.gisdata.footprint.module.foot.bean.DraftFootBean;
 import cn.gisdata.footprint.module.foot.func.view.FootRecordView;
 import cn.gisdata.footprint.module.foot.ui.FootFragment;
 import cn.gisdata.footprint.module.my.bean.UserInfoEntity;
+import cn.gisdata.footprint.module.my.bean.VersionCheckEntity;
 import cn.gisdata.footprint.module.my.func.tool.MyTool;
 import cn.gisdata.footprint.module.my.mvp.contract.MyContract;
 import cn.gisdata.footprint.module.my.mvp.model.MyModel;
 import cn.gisdata.footprint.module.my.mvp.presenter.MyPresenter;
+import cn.gisdata.footprint.util.VersionUtil;
 
 /**
  * Create By admin On 2017/7/11
@@ -148,7 +158,7 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
 
     @OnClick({R.id.layout_head, R.id.layout_settings, R.id.layout_contact,
             R.id.RouteCount_layout, R.id.FootmarkCount_layout, R.id.Integral_layout,
-            R.id.VisitVolume_layout, R.id.layout_delete_cache, R.id.layout_draft_box})
+            R.id.VisitVolume_layout, R.id.layout_delete_cache, R.id.layout_draft_box, R.id.layout_version_update})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout_head:
@@ -245,6 +255,14 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
                 MyDraftActivity.startAction(getActivity(), false, 0);
                 break;
 
+            case R.id.layout_version_update:
+                showLoading("正在检测更新，请稍后...");
+                int version = VersionUtil.getLocalVersion(getActivity());
+                String name = VersionUtil.getLocalVersionName(getActivity());
+                //check version and name
+                mPresenter.doRequestVersionCheck(ApiParamUtil.getCheckVersionInfo(String.valueOf(version)));
+                break;
+
             default:
                 break;
         }
@@ -264,13 +282,80 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
     }
 
     @Override
+    public void onVersionCheckResult(VersionCheckEntity versionCheckEntity) {
+        //if need update,so check network:
+        dismissLoading();
+        if (versionCheckEntity != null && versionCheckEntity.getIsUpdate() == 1) {
+            ConnectivityManager connectivityManager = (ConnectivityManager) getActivity()
+                    .getSystemService(getActivity().CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+            final boolean[] isDownLoadFile = {false};
+
+            if (networkInfo != null && networkInfo.isConnected()) {
+                int type = networkInfo.getType();
+
+                if (type == ConnectivityManager.TYPE_WIFI) {
+                    isDownLoadFile[0] = true;
+                } else if (type == ConnectivityManager.TYPE_MOBILE) {
+                    ZXDialogUtil.showYesNoDialog(getActivity(), "提示", "当前网络为移动流量，是否现在升级", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            isDownLoadFile[0] = true;
+                        }
+                    });
+                }
+            }
+
+            if (isDownLoadFile[0]) {
+                //need update:
+                final ProgressDialog dialog = new ProgressDialog(getActivity());
+                dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                dialog.setMessage("正在下载更新");
+                dialog.show();
+
+                showToast("正在下载...");
+                new Thread() {
+                    @Override
+                    public void run() {
+                        try {
+                            File file = MyTool.getFileFromServer(versionCheckEntity.getApkUrl(), ConstStrings.getApkPath(), "footPrint.apk", dialog);
+                            sleep(300);
+                            installapk(file);
+                            dialog.dismiss();
+                        } catch (Exception e) {
+                            showToast("err: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                }.start();
+            }
+        } else {
+            showToast("版本已经是最新!");
+        }
+    }
+
+    @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser){
+        if (isVisibleToUser) {
             List<DraftFootBean> draftFootBeans = mSharedPrefUtil.getList(ConstStrings.DraftFootList);
             if (draftFootBeans != null) {
                 mDraftCount.setText("" + draftFootBeans.size());
             }
         }
+    }
+
+    private void installapk(File file) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { // 7.0+以上版本
+            Uri apkUri = FileProvider.getUriForFile(getActivity(), "cn.gisdata.footprint.fileprovider", file);  //包名.fileprovider
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
+        } else {
+            intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+        }
+        getActivity().startActivity(intent);
     }
 }
