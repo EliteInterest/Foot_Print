@@ -64,11 +64,14 @@ public class MyTool {
             byte[] buffer = new byte[1024];
             int len;
             int total = 0;
+            float all = pd.getMax() / 1024 / 1024.0f;
             while ((len = bis.read(buffer)) != -1) {
                 fos.write(buffer, 0, len);
                 total += len;
                 //获取当前下载量
                 pd.setProgress(total);
+                float percent = total / 1024 / 1024.0f;
+                pd.setProgressNumberFormat(String.format("%.2fM/%.2fM", percent, all));
             }
             fos.close();
             bis.close();
@@ -77,5 +80,10 @@ public class MyTool {
         } else {
             return null;
         }
+    }
+
+    private String calcLen(int len) {
+        String ret = "";
+        return ret;
     }
 }
