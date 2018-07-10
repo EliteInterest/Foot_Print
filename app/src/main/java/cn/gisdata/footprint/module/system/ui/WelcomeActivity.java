@@ -67,18 +67,7 @@ public class WelcomeActivity extends BaseActivity<WelcomePresenter, WelcomeModel
         if (!ZXPermissionUtil.checkPermissionsByArray(permissions)) {
             ZXPermissionUtil.requestPermissionsByArray(this);
         } else {
-            String date = DateUtil.getDateFromMillis(System.currentTimeMillis());
-            if (!date.equals(DateUtil.OK_TIME))
-                mPresenter.getMapUrl();
-            else {
-                Timer timer = new Timer();
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        getAddr();
-                    }
-                }, 100, 200);
-            }
+            mPresenter.getMapUrl();
         }
     }
 
@@ -149,21 +138,5 @@ public class WelcomeActivity extends BaseActivity<WelcomePresenter, WelcomeModel
     @Override
     public void showLoading(String message, int progress) {
 
-    }
-
-    private void getAddr() {
-        Location location = GpsUtil.getLocation(this);
-        if (location == null)
-            return;
-        BaiduMapUtil.searchPoi(location.getLongitude(), location.getLatitude(), new BaiduMapUtil.OnBaiduSearchListener() {
-            @Override
-            public void onSearchBack(BaiduSearchBean baiduSearchBean) {
-            }
-
-            @Override
-            public void onSearchError() {
-
-            }
-        });
     }
 }
