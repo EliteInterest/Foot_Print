@@ -50,6 +50,8 @@ import cn.gisdata.footprint.util.VersionUtil;
 public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements MyContract.View {
     private static final String TAG = "MyFragment";
     public static Bitmap bitmap = null;
+    private boolean isAutoCheck = true;
+    private String downFileUrl = null;
     @BindView(R.id.layout_head)
     RelativeLayout mHeadLayout;
 
@@ -86,6 +88,8 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
     @BindView(R.id.delete_draft_account)
     TextView mDraftCount;
 
+    @BindView(R.id.version_update_text)
+    TextView mVersionCheckTitle;
 
     public static MyFragment newInstance() {
         MyFragment fragment = new MyFragment();
@@ -100,6 +104,9 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
     @Override
     protected void initView(Bundle savedInstanceState) {
         refreshUI();
+        int version = VersionUtil.getLocalVersion(getActivity());
+        //check version and name
+        mPresenter.doRequestVersionCheck(ApiParamUtil.getCheckVersionInfo(String.valueOf(version)));
     }
 
     @Override
@@ -256,11 +263,17 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
                 break;
 
             case R.id.layout_version_update:
-                showLoading("正在检测更新，请稍后...");
-                int version = VersionUtil.getLocalVersion(getActivity());
-                String name = VersionUtil.getLocalVersionName(getActivity());
-                //check version and name
-                mPresenter.doRequestVersionCheck(ApiParamUtil.getCheckVersionInfo(String.valueOf(version)));
+                if (mVersionCheckTitle.getText().toString().equals("有新版本")) {
+                    mVersionCheckTitle.setText("版本更新");
+                    mVersionCheckTitle.setTextColor(getResources().getColor(R.color.trandarkgrey));
+                    downLoadApk(downFileUrl);
+                } else {
+                    showLoading("正在检测更新，请稍后...");
+                    isAutoCheck = false;
+                    int version = VersionUtil.getLocalVersion(getActivity());
+                    //check version and name
+                    mPresenter.doRequestVersionCheck(ApiParamUtil.getCheckVersionInfo(String.valueOf(version)));
+                }
                 break;
 
             default:
@@ -286,49 +299,13 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
         //if need update,so check network:
         dismissLoading();
         if (versionCheckEntity != null && versionCheckEntity.getIsUpdate() == 1) {
-            ConnectivityManager connectivityManager = (ConnectivityManager) getActivity()
-                    .getSystemService(getActivity().CONNECTIVITY_SERVICE);
-            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-
-            final boolean[] isDownLoadFile = {false};
-
-            if (networkInfo != null && networkInfo.isConnected()) {
-                int type = networkInfo.getType();
-
-                if (type == ConnectivityManager.TYPE_WIFI) {
-                    isDownLoadFile[0] = true;
-                } else if (type == ConnectivityManager.TYPE_MOBILE) {
-                    ZXDialogUtil.showYesNoDialog(getActivity(), "提示", "当前网络为移动流量，是否现在升级", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            isDownLoadFile[0] = true;
-                        }
-                    });
-                }
-            }
-
-            if (isDownLoadFile[0]) {
-                //need update:
-                final ProgressDialog dialog = new ProgressDialog(getActivity());
-                dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                dialog.setMessage("正在下载更新");
-                dialog.show();
-
-                showToast("正在下载...");
-                new Thread() {
-                    @Override
-                    public void run() {
-                        try {
-                            File file = MyTool.getFileFromServer(versionCheckEntity.getApkUrl(), ConstStrings.getApkPath(), "footPrint.apk", dialog);
-                            sleep(300);
-                            installapk(file);
-                            dialog.dismiss();
-                        } catch (Exception e) {
-                            showToast("err: " + e.getMessage());
-                            e.printStackTrace();
-                        }
-                    }
-                }.start();
+            if (isAutoCheck) {
+                //auto check update status
+                downFileUrl = versionCheckEntity.getApkUrl();
+                mVersionCheckTitle.setText("有新版本");
+                mVersionCheckTitle.setTextColor(getResources().getColor(R.color.red));
+            } else {
+                downLoadApk(versionCheckEntity.getApkUrl());
             }
         } else {
             showToast("版本已经是最新!");
@@ -343,6 +320,55 @@ public class MyFragment extends BaseFragment<MyPresenter, MyModel> implements My
             if (draftFootBeans != null) {
                 mDraftCount.setText("" + draftFootBeans.size());
             }
+        }
+    }
+
+    private void downLoadApk(String downLoadFileUrl) {
+        if (downLoadFileUrl == null)
+            return;
+        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity()
+                .getSystemService(getActivity().CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+        final boolean[] isDownLoadFile = {false};
+
+        if (networkInfo != null && networkInfo.isConnected()) {
+            int type = networkInfo.getType();
+
+            if (type == ConnectivityManager.TYPE_WIFI) {
+                isDownLoadFile[0] = true;
+            } else if (type == ConnectivityManager.TYPE_MOBILE) {
+                ZXDialogUtil.showYesNoDialog(getActivity(), "提示", "当前网络为移动流量，是否现在升级", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        isDownLoadFile[0] = true;
+                    }
+                });
+            }
+        }
+
+        if (isDownLoadFile[0]) {
+            //need update:
+            final ProgressDialog dialog = new ProgressDialog(getActivity());
+            dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            dialog.setMessage("正在下载更新");
+            dialog.show();
+
+            showToast("正在下载...");
+            new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        File file = MyTool.getFileFromServer(downLoadFileUrl, ConstStrings.getApkPath(), "footPrint.apk", dialog);
+                        sleep(300);
+                        installapk(file);
+                        dialog.dismiss();
+                    } catch (Exception e) {
+                        showToast("err: " + e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
+            }.start();
         }
     }
 
